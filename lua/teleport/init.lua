@@ -1,6 +1,7 @@
 local M = {}
 
 --NOTE: should move things to other files
+
 -- where functions will be created to be used in commands inside of teleport.lua
 local markings = {
   [1] = "A",
@@ -65,7 +66,6 @@ function M.addMark()
       print("Teleport marked: " .. markersList[letter])
       break
     end
-
   end
 
   -- when map of marks gets full prompt user to replace one
@@ -73,77 +73,77 @@ function M.addMark()
 
     local marks = get_file_marks()
 
-    local width = 30
-    local height = 4
-
-    local buf = vim.api.nvim_create_buf(false, true)
-
-    local lines = {}
-
-    for _, mark in ipairs(marks) do
-      table.insert(lines, string.format("%s %s", markersList[mark.name], mark.file))
-    end
-
-    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-
-    local row = math.floor((vim.o.lines - height) / 2)
-    local col = math.floor((vim.o.columns - width) / 2)
-
-    local win = vim.api.nvim_open_win(buf, true, {
-      relative = "editor",
-      width = width,
-      height = height,
-      row = row,
-      col = col,
-      border = "rounded",
-      style = "minimal",
-
-      title = "All marks taken, replace?",
-      title_pos = "center",
-    })
-
-    vim.keymap.set("n", "1", function()
-      vim.api.nvim_win_close(win, true)
-      vim.cmd("mark " .. markings[1])
-    end, {buffer = buf})
-
-    vim.keymap.set("n", "2", function()
-      vim.api.nvim_win_close(win, true)
-      vim.cmd("mark " .. markings[2])
-    end, {buffer = buf})
-
-    vim.keymap.set("n", "3", function()
-      vim.api.nvim_win_close(win, true)
-      vim.cmd("mark " .. markings[3])
-    end, {buffer = buf})
-
-    vim.keymap.set("n", "4", function()
-      vim.api.nvim_win_close(win, true)
-      vim.cmd("mark " .. markings[4])
-    end, {buffer = buf})
-
-    vim.keymap.set("n", "q", function()
-      vim.api.nvim_win_close(win, true)
-    end, {buffer = buf})
-
-    vim.keymap.set("n", "<CR>", function()
-      local cursor = vim.api.nvim_win_get_cursor(win)
-      local line_num = cursor[1]
-      vim.api.nvim_win_close(win, true)
-      vim.cmd("mark " .. markings[line_num])
-    end, {buffer = buf})
+    -- local width = 30
+    -- local height = 4
+    --
+    -- local buf = vim.api.nvim_create_buf(false, true)
+    --
+    -- local lines = {}
+    --
+    -- for _, mark in ipairs(marks) do
+    --   table.insert(lines, string.format("%s %s", markersList[mark.name], mark.file))
+    -- end
+    --
+    -- vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+    --
+    -- local row = math.floor((vim.o.lines - height) / 2)
+    -- local col = math.floor((vim.o.columns - width) / 2)
+    --
+    -- local win = vim.api.nvim_open_win(buf, true, {
+    --   relative = "editor",
+    --   width = width,
+    --   height = height,
+    --   row = row,
+    --   col = col,
+    --   border = "rounded",
+    --   style = "minimal",
+    --
+    --   title = "All marks taken, replace?",
+    --   title_pos = "center",
+    -- })
+    --
+    -- vim.keymap.set("n", "1", function()
+    --   vim.api.nvim_win_close(win, true)
+    --   vim.cmd("mark " .. markings[1])
+    -- end, {buffer = buf})
+    --
+    -- vim.keymap.set("n", "2", function()
+    --   vim.api.nvim_win_close(win, true)
+    --   vim.cmd("mark " .. markings[2])
+    -- end, {buffer = buf})
+    --
+    -- vim.keymap.set("n", "3", function()
+    --   vim.api.nvim_win_close(win, true)
+    --   vim.cmd("mark " .. markings[3])
+    -- end, {buffer = buf})
+    --
+    -- vim.keymap.set("n", "4", function()
+    --   vim.api.nvim_win_close(win, true)
+    --   vim.cmd("mark " .. markings[4])
+    -- end, {buffer = buf})
+    --
+    -- vim.keymap.set("n", "q", function()
+    --   vim.api.nvim_win_close(win, true)
+    -- end, {buffer = buf})
+    --
+    -- vim.keymap.set("n", "<CR>", function()
+    --   local cursor = vim.api.nvim_win_get_cursor(win)
+    --   local line_num = cursor[1]
+    --   vim.api.nvim_win_close(win, true)
+    --   vim.cmd("mark " .. markings[line_num])
+    -- end, {buffer = buf})
 
     -- WARN: old version using a search bar, cleaner but to big 
-    -- vim.ui.select(marks, {
-    --   prompt = "All marks taken, replace?",
-    --   format_item = function(item)
-    --     return "" .. item.file
-    --   end,
-    -- }, function(choice)
-    --   if choice then
-    --     vim.cmd("mark " .. choice.name)
-    --   end
-    -- end)
+    vim.ui.select(marks, {
+      prompt = "All marks taken, replace?",
+      format_item = function(item)
+        return "" .. item.file
+      end,
+    }, function(choice)
+      if choice then
+        vim.cmd("mark " .. choice.name)
+      end
+    end)
 
   end
 
@@ -152,6 +152,12 @@ end
 -- clearMarks BCD
 function M.clearMarks()
   vim.cmd("delmarks BCD")
+end
+
+-- addMarkBypass overrides the addMark function in order to have custom mark setting rather than auto
+function M.addMarkBypass(markNum)
+  vim.cmd("mark " .. markings[markNum])
+  print("Teleport marked: " .. markNum)
 end
 
 -- navMark is a function that what ever paramitor is passed to it will be moved to that mark 
@@ -196,6 +202,8 @@ function M.list_mark_files()
 
   local width = 30
   local height = #lines
+  local row = math.floor((vim.o.lines - height) / 6)
+  local col = math.floor((vim.o.columns - width) / 2)
 
   local buf = vim.api.nvim_create_buf(false, true)
 
@@ -205,8 +213,8 @@ function M.list_mark_files()
     relative = "editor",
     width = width,
     height = height,
-    row = 3,
-    col = 112,
+    row = row,
+    col = col,
     border = "rounded",
     style = "minimal",
 

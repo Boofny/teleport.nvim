@@ -7,3 +7,8 @@ end, {})
 vim.api.nvim_create_user_command("ClearMarks", function()
   require("teleport").clearMarks()
 end, {})
+
+
+vim.api.nvim_create_user_command("TestTele", function()
+  require("teleport").testFunc()
+end, {})
