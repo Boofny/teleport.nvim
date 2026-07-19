@@ -1,7 +1,7 @@
 local M = {}
-
---NOTE: should move things to other files
-
+-- NOTE: another thing is to have a telescope type search for march like in the overflow case
+-- NOTE: also harpoon uses the full file path but idk how i like that
+-- TODO: have to use more anotation for any function that returns things 
 -- where functions will be created to be used in commands inside of teleport.lua
 local markings = {
   [1] = "A",
@@ -20,15 +20,21 @@ local markersList = {
 local ORDEREDMARKS = "ABCD"
 
 -- Gets the neovim set file marks so anything that is in the list_mark_files files
+---@class TeleportMark
+---@field markName string
+---@field fileName string
+---@field filePath string
+
+---@return TeleportMark[]
 local function get_file_marks()
   local marks = {}
 
   for _, mark in ipairs(vim.fn.getmarklist()) do
     if mark.mark:match("^'[A-D]$") then
       table.insert(marks, {
-        name = mark.mark:sub(2),
-        file = vim.fn.fnamemodify(mark.file, ":t"),
-        path = mark.file,
+        markName = mark.mark:sub(2),
+        fileName = vim.fn.fnamemodify(mark.file, ":t"),
+        filePath = mark.file,
       })
     end
   end
@@ -73,75 +79,15 @@ function M.addMark()
 
     local marks = get_file_marks()
 
-    -- local width = 30
-    -- local height = 4
-    --
-    -- local buf = vim.api.nvim_create_buf(false, true)
-    --
-    -- local lines = {}
-    --
-    -- for _, mark in ipairs(marks) do
-    --   table.insert(lines, string.format("%s %s", markersList[mark.name], mark.file))
-    -- end
-    --
-    -- vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-    --
-    -- local row = math.floor((vim.o.lines - height) / 2)
-    -- local col = math.floor((vim.o.columns - width) / 2)
-    --
-    -- local win = vim.api.nvim_open_win(buf, true, {
-    --   relative = "editor",
-    --   width = width,
-    --   height = height,
-    --   row = row,
-    --   col = col,
-    --   border = "rounded",
-    --   style = "minimal",
-    --
-    --   title = "All marks taken, replace?",
-    --   title_pos = "center",
-    -- })
-    --
-    -- vim.keymap.set("n", "1", function()
-    --   vim.api.nvim_win_close(win, true)
-    --   vim.cmd("mark " .. markings[1])
-    -- end, {buffer = buf})
-    --
-    -- vim.keymap.set("n", "2", function()
-    --   vim.api.nvim_win_close(win, true)
-    --   vim.cmd("mark " .. markings[2])
-    -- end, {buffer = buf})
-    --
-    -- vim.keymap.set("n", "3", function()
-    --   vim.api.nvim_win_close(win, true)
-    --   vim.cmd("mark " .. markings[3])
-    -- end, {buffer = buf})
-    --
-    -- vim.keymap.set("n", "4", function()
-    --   vim.api.nvim_win_close(win, true)
-    --   vim.cmd("mark " .. markings[4])
-    -- end, {buffer = buf})
-    --
-    -- vim.keymap.set("n", "q", function()
-    --   vim.api.nvim_win_close(win, true)
-    -- end, {buffer = buf})
-    --
-    -- vim.keymap.set("n", "<CR>", function()
-    --   local cursor = vim.api.nvim_win_get_cursor(win)
-    --   local line_num = cursor[1]
-    --   vim.api.nvim_win_close(win, true)
-    --   vim.cmd("mark " .. markings[line_num])
-    -- end, {buffer = buf})
-
     -- WARN: old version using a search bar, cleaner but to big 
     vim.ui.select(marks, {
       prompt = "All marks taken, replace?",
       format_item = function(item)
-        return "" .. item.file
+        return "" .. item.fileName
       end,
     }, function(choice)
       if choice then
-        vim.cmd("mark " .. choice.name)
+        vim.cmd("mark " .. choice.markName)
       end
     end)
 
@@ -152,6 +98,14 @@ end
 -- clearMarks BCD
 function M.clearMarks()
   vim.cmd("delmarks BCD")
+end
+
+function M.testFunc()
+  ---@type TeleportMark[]
+  local mapper = get_file_marks()
+  for _, m in ipairs(mapper) do
+    print(m.markName, m.fileName)
+  end
 end
 
 -- addMarkBypass overrides the addMark function in order to have custom mark setting rather than auto
@@ -177,27 +131,26 @@ end
 -- list_mark_files shows a pop up window of avalible teleport marks and there names 
 -- user is able to delete and pick marks eithor using the numbers or <CR> for said mark
 function M.list_mark_files()
-  local lines = {}
-  local found = false
+  local existing = {}
 
   for _, mark in ipairs(vim.fn.getmarklist()) do
     if mark.mark:match("^'[A-D]$") then
-      found = true
-      table.insert(
-        lines,
-        string.format(
-          "%s %s",
-          markersList[mark.mark:sub(2)],
-          vim.fn.fnamemodify(mark.file, ":t")
-        )
+      existing[mark.mark:sub(2)] = mark
+    end
+  end
+
+  local lines = {}
+
+  for _, letter in ipairs({ "A", "B", "C", "D" }) do
+    local mark = existing[letter]
+
+    if mark then
+      table.insert(lines,
+        string.format("%s %s", markersList[letter], vim.fn.fnamemodify(mark.file, ":t"))
       )
+    else
+      table.insert(lines, string.format("%s *EMPTY", markersList[letter]))
     end
-
-    if not found then
-      vim.notify("No marks set!", vim.log.levels.ERROR)
-      return
-    end
-
   end
 
   local width = 30
@@ -222,6 +175,7 @@ function M.list_mark_files()
     title_pos = "center",
   })
 
+  --TODO: NEED to make these all moduler functions not doing this, this is bad and can be way better
   vim.keymap.set("n", "1", function()
     vim.api.nvim_win_close(win, true)
     vim.cmd("'" .. markings[1])
@@ -246,7 +200,6 @@ function M.list_mark_files()
     vim.api.nvim_win_close(win, true)
   end, {buffer = buf})
 
-  --TODO: the issue with this is that is uses line count rather than table count so if something like 1 is removed 2 is now in the possitoin of 1
   vim.keymap.set("n", "d", function()
     local cursor = vim.api.nvim_win_get_cursor(win)
     local line_num = cursor[1]
@@ -258,8 +211,18 @@ function M.list_mark_files()
   vim.keymap.set("n", "<CR>", function()
     local cursor = vim.api.nvim_win_get_cursor(win)
     local line_num = cursor[1]
+    local marks = get_file_marks()
+
+    for _, mark in ipairs(marks) do
+      if mark.markName == markings[line_num] then
+        vim.api.nvim_win_close(win, true)
+        vim.cmd("'" .. markings[line_num])
+        return
+      end
+    end
+
     vim.api.nvim_win_close(win, true)
-    vim.cmd("'" .. markings[line_num])
+    vim.notify("Teleport Mark " .. line_num .. " is not set", vim.log.levels.ERROR)
   end, {buffer = buf})
 end
 
