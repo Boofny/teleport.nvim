@@ -5,7 +5,7 @@ end, {})
 -- so commands do work but also in a key binding can do function() require("teleport").greet()
 
 vim.api.nvim_create_user_command("ClearMarks", function()
-  require("teleport").clearMarks()
+  require("teleport.markings").clearMarks()
 end, {})
 
 
