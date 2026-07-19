@@ -43,9 +43,8 @@ function M.addMark()
   -- when map of marks gets full prompt user to replace one
   if mapFull(lookup) then
 
-    local marks = markers.get_file_marks()
+    local marks = markers.get_teleport_marks()
 
-    -- WARN: old version using a search bar, cleaner but to big 
     vim.ui.select(marks, {
       prompt = "All marks taken, replace?",
       format_item = function(item)
@@ -64,10 +63,34 @@ end
 -- not being used just testing things
 function M.testFunc()
   ---@type TeleportMark[]
-  local mapper = markers.get_file_marks()
+  local mapper = markers.get_teleport_marks()
   for _, m in ipairs(mapper) do
     print(m.markName, m.fileName)
   end
+
+  ---@class Wanted
+  ---@field filename string
+  ---@type Wanted[]
+  local wanted = {}
+
+  local marks = vim.fn.getmarklist()
+
+  for _, m in ipairs(marks) do
+    if m.mark:match("^'[A-D]$") then
+      table.insert(wanted, {filename = vim.fn.fnamemodify(m.file, ":.")})
+    end
+  end
+
+  for _, w in pairs(wanted) do
+    print("Here: ", w.filename)
+  end
+
+  for _, m in ipairs(marks) do
+    print(m.file)
+    print(m.mark)
+    print(m.pos[2])
+  end
+
 end
 
 return M

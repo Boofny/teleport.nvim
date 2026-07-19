@@ -10,17 +10,18 @@ function M.navMark(markNum)
   for _, m in ipairs(vim.fn.getmarklist()) do
     if m.mark == "'" .. mark then
       vim.cmd("'" .. mark)
+      vim.notify("Teleported to Mark: " .. markers.markersList[mark], vim.log.levels.INFO)
       return
     end
   end
 
-  vim.notify("Teleport Mark " .. markers.markersList[mark] .. " is not set", vim.log.levels.ERROR)
+  vim.notify("Teleport Mark: " .. markers.markersList[mark] .. " is not set", vim.log.levels.ERROR)
 end
 
 -- addMarkBypass overrides the addMark function in order to have custom mark setting rather than auto
 ---@param markNum integer
 function M.addMarkBypass(markNum)
   vim.cmd("mark " .. markers.markings[markNum])
-  print("Teleport marked: " .. markNum)
+  vim.notify("Teleport marked: " .. markNum, vim.log.levels.INFO)
 end
 return M

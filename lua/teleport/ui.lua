@@ -21,14 +21,14 @@ function M.list_mark_files()
 
     if mark then
       table.insert(lines,
-        string.format("%s %s", markers.markersList[letter], vim.fn.fnamemodify(mark.file, ":t"))
+        string.format("%s %s", markers.markersList[letter], vim.fn.fnamemodify(mark.file, ":."))
       )
     else
       table.insert(lines, string.format("%s *EMPTY", markers.markersList[letter]))
     end
   end
 
-  local width = 30
+  local width = math.floor((vim.o.columns) / 3) -- dynamic width for different screens
   local height = #lines
   local row = math.floor((vim.o.lines - height) / 6)
   local col = math.floor((vim.o.columns - width) / 2)
@@ -75,7 +75,7 @@ function M.list_mark_files()
     vim.api.nvim_win_close(win, true)
   end, {buffer = buf})
 
-  vim.keymap.set("n", "d", function()
+  vim.keymap.set("n", "dd", function()
     local cursor = vim.api.nvim_win_get_cursor(win)
     local line_num = cursor[1]
     vim.api.nvim_win_close(win, true)
@@ -86,7 +86,7 @@ function M.list_mark_files()
   vim.keymap.set("n", "<CR>", function()
     local cursor = vim.api.nvim_win_get_cursor(win)
     local line_num = cursor[1]
-    local marks = markers.get_file_marks()
+    local marks = markers.get_teleport_marks()
 
     for _, mark in ipairs(marks) do
       if mark.markName == markers.markings[line_num] then

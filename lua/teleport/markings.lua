@@ -22,21 +22,21 @@ end
 
 M.ORDEREDMARKS = "ABCD"
 
--- Gets the neovim set file marks so anything that is in the list_mark_files files
+-- function get_teleport_marks only gets the marks from the ranges of A-D or to be change later NOTE: it does return a custom table that will be subject to change later
 ---@class TeleportMark
 ---@field markName string
 ---@field fileName string
 ---@field filePath string
 
 ---@return TeleportMark[]
-function M.get_file_marks()
+function M.get_teleport_marks()
   local marks = {}
 
   for _, mark in ipairs(vim.fn.getmarklist()) do
     if mark.mark:match("^'[A-D]$") then
       table.insert(marks, {
         markName = mark.mark:sub(2),
-        fileName = vim.fn.fnamemodify(mark.file, ":t"),
+        fileName = vim.fn.fnamemodify(mark.file, ":."),
         filePath = mark.file,
       })
     end
