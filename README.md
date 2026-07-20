@@ -4,7 +4,7 @@
 ##### Straightforward file marking and buffer navigation plugin 
 
 
-<img alt="Teleport logo" height="280" src="TeleportIconPT2Trans.png" />
+<img alt="Teleport logo" height="280" src="TeleportIconPT3Trans.png" />
 
 [![Lua](https://img.shields.io/badge/Lua-blue.svg?style=for-the-badge&logo=lua)](http://www.lua.org)
 [![Neovim](https://img.shields.io/badge/Neovim%200.8+-green.svg?style=for-the-badge&logo=neovim)](https://neovim.io)
