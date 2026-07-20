@@ -13,3 +13,4 @@
 3. need to be more consistent with what tables the marks use by that i mean i use vim.fn.getmarklist and the get_teleport_marks use one and keep it that way
 4. need to be able to find the root of the project first before file paths are able to be displayed
 5. need to have a setup function for each project just once in order to find the per project markings
+6. a good idea might be to have a sort of telescope type of searching for the marks
