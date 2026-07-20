@@ -1,6 +1,7 @@
 local M = {}
 
 local markers = require("teleport.markings")
+local setup = require("teleport.setup")
 
 -- NOTE: also harpoon uses the full file path from the root of the project not root of the system
 -- TODO: have to use more anotation for any function that returns things 
@@ -85,11 +86,9 @@ function M.testFunc()
     print("Here: ", w.filename)
   end
 
-  for _, m in ipairs(marks) do
-    print(m.file)
-    print(m.mark)
-    print(m.pos[2])
-  end
+  local jsonsting = vim.json.encode(wanted)
+  print(jsonsting)
+  setup:DirExist()
 
 end
 

@@ -1,5 +1,6 @@
 # Teleport.nvim
 
+![Teleport logo](TeleportIcon.png)
 Straightforward file marking and buffer navigation plugin 
 
 ### Install (don't know how to make this thing public yet :P)
