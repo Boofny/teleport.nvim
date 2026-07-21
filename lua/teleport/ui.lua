@@ -4,10 +4,21 @@ local navs = require("teleport.navigate")
 local markers = require("teleport.markings")
 
 local function HelpBuffer()
-  local lines = { "helper keymaps 1-4 q dd <CR> and ?", }
-  local width = math.floor((vim.o.columns) / 2) -- dynamic width for different screens
-  local height = math.floor(vim.o.lines / 2)
-  local row = math.floor((vim.o.lines - height) / 2)
+  local lines = {
+    " Keys   Command/Description",
+    "---------------------------",
+    " 1-4 => Select buffer number to move",
+    "<CR> => Select buffer that cursor is on",
+    "  dd => Delete mark but not the file buffer",
+    "   ? => Show help menu",
+    "   q => Exit Teleport menu",
+    "   f => Find marks"
+  }
+
+  local width = math.floor((vim.o.columns) / 3) -- dynamic width for different screens
+  -- local height = math.floor(vim.o.lines / 2)
+  local height = math.floor(vim.o.lines / 5)
+  local row = math.floor((vim.o.lines - height) / 3)
   local col = math.floor((vim.o.columns - width) / 2)
 
   local buf = vim.api.nvim_create_buf(false, true)
@@ -23,14 +34,37 @@ local function HelpBuffer()
     border = "rounded",
     style = "minimal",
 
-    title = "Keybinds",
+    title = "Teleport Help",
     title_pos = "center",
   })
+
+  local ns = vim.api.nvim_create_namespace("teleport")
+  vim.api.nvim_buf_set_extmark(buf, ns, 0, 0, {
+    end_col = 27,
+    hl_group = "Keyword",
+  })
+  vim.api.nvim_buf_set_extmark(buf, ns, 1, 0, {
+    end_col = 27,
+    hl_group = "Comment",
+  })
+
+  for line = 2, 7 do
+    vim.api.nvim_buf_set_extmark(buf, ns, line, 0, {
+      end_col = 6,
+      hl_group = "String",
+    })
+  end
+
+  for line = 2, 7 do
+    vim.api.nvim_buf_set_extmark(buf, ns, line, 4, {
+      end_col = 7,
+      hl_group = "Comment",
+    })
+  end
 
   vim.keymap.set("n", "q", function()
     vim.api.nvim_win_close(win, true)
   end, {buffer = buf})
-
 end
 
 -- list_mark_files shows a pop up window of avalible teleport marks and there names 
@@ -59,8 +93,8 @@ function M.list_mark_files()
   end
 
   local width = math.floor((vim.o.columns) / 2) -- dynamic width for different screens
-  local height = #lines + 2
-  local row = math.floor((vim.o.lines - height) / 2)
+  local height = #lines
+  local row = math.floor((vim.o.lines - height) / 3)
   local col = math.floor((vim.o.columns - width) / 2)
 
   local buf = vim.api.nvim_create_buf(false, true)
