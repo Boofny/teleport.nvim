@@ -61,6 +61,13 @@ function M.addMark()
 
 end
 
+-- addMarkBypass overrides the addMark function in order to have custom mark setting rather than auto
+---@param markNum integer
+function M.addMarkBypass(markNum)
+  vim.cmd("mark " .. markers.markings[markNum])
+  vim.notify("Teleport marked: " .. markNum, vim.log.levels.INFO)
+end
+
 -- not being used just testing things
 function M.testFunc()
   ---@type TeleportMark[]

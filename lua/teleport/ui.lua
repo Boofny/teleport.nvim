@@ -3,6 +3,36 @@ local M = {}
 local navs = require("teleport.navigate")
 local markers = require("teleport.markings")
 
+local function HelpBuffer()
+  local lines = { "helper keymaps 1-4 q dd <CR> and ?", }
+  local width = math.floor((vim.o.columns) / 2) -- dynamic width for different screens
+  local height = math.floor(vim.o.lines / 2)
+  local row = math.floor((vim.o.lines - height) / 2)
+  local col = math.floor((vim.o.columns - width) / 2)
+
+  local buf = vim.api.nvim_create_buf(false, true)
+
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+
+  local win = vim.api.nvim_open_win(buf, true, {
+    relative = "editor",
+    width = width,
+    height = height,
+    row = row,
+    col = col,
+    border = "rounded",
+    style = "minimal",
+
+    title = "Keybinds",
+    title_pos = "center",
+  })
+
+  vim.keymap.set("n", "q", function()
+    vim.api.nvim_win_close(win, true)
+  end, {buffer = buf})
+
+end
+
 -- list_mark_files shows a pop up window of avalible teleport marks and there names 
 -- user is able to delete and pick marks eithor using the numbers or <CR> for said mark
 function M.list_mark_files()
@@ -28,9 +58,9 @@ function M.list_mark_files()
     end
   end
 
-  local width = math.floor((vim.o.columns) / 3) -- dynamic width for different screens
-  local height = #lines
-  local row = math.floor((vim.o.lines - height) / 6)
+  local width = math.floor((vim.o.columns) / 2) -- dynamic width for different screens
+  local height = #lines + 2
+  local row = math.floor((vim.o.lines - height) / 2)
   local col = math.floor((vim.o.columns - width) / 2)
 
   local buf = vim.api.nvim_create_buf(false, true)
@@ -98,6 +128,10 @@ function M.list_mark_files()
 
     vim.api.nvim_win_close(win, true)
     vim.notify("Teleport Mark " .. line_num .. " is not set", vim.log.levels.ERROR)
+  end, {buffer = buf})
+
+  vim.keymap.set("n", "?", function()
+    HelpBuffer()
   end, {buffer = buf})
 end
 

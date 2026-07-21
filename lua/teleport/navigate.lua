@@ -18,10 +18,4 @@ function M.navMark(markNum)
   vim.notify("Teleport Mark: " .. markers.markersList[mark] .. " is not set", vim.log.levels.ERROR)
 end
 
--- addMarkBypass overrides the addMark function in order to have custom mark setting rather than auto
----@param markNum integer
-function M.addMarkBypass(markNum)
-  vim.cmd("mark " .. markers.markings[markNum])
-  vim.notify("Teleport marked: " .. markNum, vim.log.levels.INFO)
-end
 return M
