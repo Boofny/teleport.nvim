@@ -30,10 +30,10 @@ vim.keymap.set("n", "<leader>2", function() nav.navMark(2) end)
 vim.keymap.set("n", "<leader>3", function() nav.navMark(3) end)
 vim.keymap.set("n", "<leader>4", function() nav.navMark(4) end)
 
-vim.keymap.set("n", "<leader>k1", function() nav.addMarkBypass(1) end)
-vim.keymap.set("n", "<leader>k2", function() nav.addMarkBypass(2) end)
-vim.keymap.set("n", "<leader>k3", function() nav.addMarkBypass(3) end)
-vim.keymap.set("n", "<leader>k4", function() nav.addMarkBypass(4) end)
+vim.keymap.set("n", "<leader>k1", function() tele.addMarkBypass(1) end)
+vim.keymap.set("n", "<leader>k2", function() tele.addMarkBypass(2) end)
+vim.keymap.set("n", "<leader>k3", function() tele.addMarkBypass(3) end)
+vim.keymap.set("n", "<leader>k4", function() tele.addMarkBypass(4) end)
 ```
 
 ### Customization
