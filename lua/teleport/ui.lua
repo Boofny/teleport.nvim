@@ -5,14 +5,14 @@ local markers = require("teleport.markings")
 
 local function HelpBuffer()
   local lines = {
-    " Keys   Command/Description",
-    "---------------------------",
-    " 1-4 => Select buffer number to move",
-    "<CR> => Select buffer that cursor is on",
-    "  dd => Delete mark but not the file buffer",
-    "   ? => Show help menu",
-    "   q => Exit Teleport menu",
-    "   f => Find marks"
+    "   Keys   Command/Description",
+    "  ---------------------------",
+    "   1-4 => Select buffer number to move",
+    "  <CR> => Select buffer that cursor is on",
+    "    dd => Delete mark but not the file buffer",
+    "     ? => Show help menu",
+    "     q => Exit Teleport menu",
+    "     f => Find marks"
   }
 
   local width = math.floor((vim.o.columns) / 3) -- dynamic width for different screens
@@ -40,24 +40,22 @@ local function HelpBuffer()
 
   local ns = vim.api.nvim_create_namespace("teleport")
   vim.api.nvim_buf_set_extmark(buf, ns, 0, 0, {
-    end_col = 27,
+    end_col = 29,
     hl_group = "Keyword",
   })
   vim.api.nvim_buf_set_extmark(buf, ns, 1, 0, {
-    end_col = 27,
+    end_col = 29,
     hl_group = "Comment",
   })
 
   for line = 2, 7 do
-    vim.api.nvim_buf_set_extmark(buf, ns, line, 0, {
+    vim.api.nvim_buf_set_extmark(buf, ns, line, 2, {
       end_col = 6,
       hl_group = "String",
     })
-  end
 
-  for line = 2, 7 do
-    vim.api.nvim_buf_set_extmark(buf, ns, line, 4, {
-      end_col = 7,
+    vim.api.nvim_buf_set_extmark(buf, ns, line, 7, {
+      end_col = 9,
       hl_group = "Comment",
     })
   end
