@@ -17,7 +17,7 @@ local function HelpBuffer()
 
   local width = math.floor((vim.o.columns) / 4) -- dynamic width for different screens
   -- local height = math.floor(vim.o.lines / 2)
-  local height = math.floor(vim.o.lines / 5)
+  local height = #lines
   local row = math.floor((vim.o.lines - height) / 3)
   local col = math.floor((vim.o.columns - width) / 2)
 
@@ -111,6 +111,8 @@ function M.list_mark_files()
     title = "Teleport",
     title_pos = "center",
   })
+
+  -- vim.api.nvim_win_set_cursor(win, {1, 1})
 
   -- all functions of nav have a built in check
   vim.keymap.set("n", "1", function()

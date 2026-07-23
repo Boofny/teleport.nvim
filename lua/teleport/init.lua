@@ -7,7 +7,6 @@ local setup = require("teleport.setup")
 -- TODO: have to use more anotation for any function that returns things 
 -- where functions will be created to be used in commands inside of teleport.lua
 
-
 -- mapFull checks if the map that neovim has for marks A-D is all filled 
 ---@return boolean
 local function mapFull(lookupTable)
@@ -95,7 +94,7 @@ function M.testFunc()
 
   local jsonsting = vim.json.encode(wanted)
   print(jsonsting)
-  setup:DirExist()
+  -- setup:DirExist()
 
 end
 
