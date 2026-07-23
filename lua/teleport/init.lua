@@ -62,7 +62,7 @@ end
 
 -- addMarkBypass overrides the addMark function in order to have custom mark setting rather than auto
 ---@param markNum integer
-function M.addMarkBypass(markNum)
+function M.addMarkOverride(markNum)
   vim.cmd("mark " .. markers.markings[markNum])
   vim.notify("Teleport marked: " .. markNum, vim.log.levels.INFO)
 end
@@ -94,7 +94,23 @@ function M.testFunc()
 
   local jsonsting = vim.json.encode(wanted)
   print(jsonsting)
-  -- setup:DirExist()
+
+end
+
+-- Will have to be ran before anything else first
+function M.Setup()
+  -- first things first if the user is NOT in a git repo dont save the mappings 
+  if not setup.inRepo() then
+    print("Stop here dont save the config or anything")
+    return -- stop here and dont do any more set up
+  end
+  print("continue to the rest of the config")
+
+  if not setup.DirExist() then
+    print("create it")
+  else
+    print( "read it to find the file config" )
+  end
 
 end
 

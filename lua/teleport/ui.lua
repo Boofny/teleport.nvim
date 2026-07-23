@@ -15,7 +15,7 @@ local function HelpBuffer()
     "     f => Find marks"
   }
 
-  local width = math.floor((vim.o.columns) / 4) -- dynamic width for different screens
+  local width = math.floor((vim.o.columns) / 3) -- dynamic width for different screens
   -- local height = math.floor(vim.o.lines / 2)
   local height = #lines
   local row = math.floor((vim.o.lines - height) / 3)

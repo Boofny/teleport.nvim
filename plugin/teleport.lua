@@ -12,3 +12,7 @@ end, {})
 vim.api.nvim_create_user_command("TestTele", function()
   require("teleport").testFunc()
 end, {})
+
+vim.api.nvim_create_user_command("Setup", function()
+  require("teleport").Setup()
+end, {})
