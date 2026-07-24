@@ -69,8 +69,19 @@ end
 
 
 -- just for listing and chosing the files not to be stored elsewhere
----@param mark TeleportMark
-local function find_marks(mark)
+---@param marks TeleportMark[]
+function M.find_marks(marks)
+  vim.ui.select(marks, {
+    prompt = "Find marks",
+    format_item = function(item)
+      return "" .. item.fileName
+    end,
+  }, function(choice)
+    if choice then
+      navs.nav_mark(markers.markersList[choice.markName])
+      -- vim.cmd("'" .. choice.markName)
+    end
+  end)
 end
 
 -- list_mark_files shows a pop up window of avalible teleport marks and there names 
@@ -127,22 +138,22 @@ function M.list_mark_files()
   -- all functions of nav have a built in check
   vim.keymap.set("n", "1", function()
     vim.api.nvim_win_close(win, true)
-    navs.navMark(1)
+    navs.nav_mark(1)
   end, {buffer = buf})
 
   vim.keymap.set("n", "2", function()
     vim.api.nvim_win_close(win, true)
-    navs.navMark(2)
+    navs.nav_mark(2)
   end, {buffer = buf})
 
   vim.keymap.set("n", "3", function()
     vim.api.nvim_win_close(win, true)
-    navs.navMark(3)
+    navs.nav_mark(3)
   end, {buffer = buf})
 
   vim.keymap.set("n", "4", function()
     vim.api.nvim_win_close(win, true)
-    navs.navMark(4)
+    navs.nav_mark(4)
   end, {buffer = buf})
 
   vim.keymap.set("n", "q", function()
@@ -165,7 +176,8 @@ function M.list_mark_files()
     for _, mark in ipairs(marks) do
       if mark.markName == markers.markings[line_num] then
         vim.api.nvim_win_close(win, true)
-        vim.cmd("'" .. markers.markings[line_num])
+        navs.nav_mark(line_num)
+        -- vim.cmd("'" .. markers.markings[line_num])
         return
       end
     end
@@ -174,9 +186,15 @@ function M.list_mark_files()
     vim.notify("Teleport Mark " .. line_num .. " is not set", vim.log.levels.ERROR)
   end, {buffer = buf})
 
+  vim.keymap.set("n", "f", function()
+    vim.api.nvim_win_close(win, true)
+    M.find_marks(markers.get_teleport_marks())
+  end, {buffer = buf})
+
   vim.keymap.set("n", "?", function()
     HelpBuffer()
   end, {buffer = buf})
+
 end
 
 

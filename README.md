@@ -23,17 +23,17 @@ local nav = require("teleport.navigate")
 local ui = require("teleport.ui")
 
 vim.keymap.set("n", "<leader>t", ui.list_mark_files)
-vim.keymap.set("n", "<leader>a", tele.addMark)
+vim.keymap.set("n", "<leader>a", tele.add_mark)
 
-vim.keymap.set("n", "<leader>1", function() nav.navMark(1) end)
-vim.keymap.set("n", "<leader>2", function() nav.navMark(2) end)
-vim.keymap.set("n", "<leader>3", function() nav.navMark(3) end)
-vim.keymap.set("n", "<leader>4", function() nav.navMark(4) end)
+vim.keymap.set("n", "<leader>1", function() nav.nav_mark(1) end)
+vim.keymap.set("n", "<leader>2", function() nav.nav_mark(2) end)
+vim.keymap.set("n", "<leader>3", function() nav.nav_mark(3) end)
+vim.keymap.set("n", "<leader>4", function() nav.nav_mark(4) end)
 
-vim.keymap.set("n", "<leader>k1", function() tele.addMarkBypass(1) end)
-vim.keymap.set("n", "<leader>k2", function() tele.addMarkBypass(2) end)
-vim.keymap.set("n", "<leader>k3", function() tele.addMarkBypass(3) end)
-vim.keymap.set("n", "<leader>k4", function() tele.addMarkBypass(4) end)
+vim.keymap.set("n", "<leader>k1", function() tele.add_mark_override(1) end)
+vim.keymap.set("n", "<leader>k2", function() tele.add_mark_override(2) end)
+vim.keymap.set("n", "<leader>k3", function() tele.add_mark_override(3) end)
+vim.keymap.set("n", "<leader>k4", function() tele.add_mark_override(4) end)
 ```
 
 ### Customization

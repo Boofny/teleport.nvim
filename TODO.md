@@ -2,7 +2,7 @@
 #### one rule for this checklist is for each time one is completed explain bellow how
 
 - [x] 1. make list_mark_files keybindings moduler so all of them run checks 
-- did not have to use a new function but using the navMark func that has a built in check to make sure the mark is set before teleporting
+- did not have to use a new function but using the nav_mark func that has a built in check to make sure the mark is set before teleporting
 
 > [!IMPORTANT]
 > for alot of the things that use the perproject marks use something like vim.json.encode or decode 

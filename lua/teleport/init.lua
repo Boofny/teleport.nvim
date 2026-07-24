@@ -19,7 +19,7 @@ end
 
 -- addMark checks the order of the marks first then if there is an avalible spot ex: B then take the next spot for the mark
 -- this also uses the logic for the mapFull in order to prompt user for the file they want to replace
-function M.addMark()
+function M.add_mark()
   local lookup = {}
 
   -- make the look up table based on the marks in the map of marks in neovim
@@ -60,7 +60,7 @@ end
 
 -- addMarkBypass overrides the addMark function in order to have custom mark setting rather than auto
 ---@param markNum integer
-function M.addMarkOverride(markNum)
+function M.add_mark_override(markNum)
   vim.cmd("mark " .. markers.markings[markNum])
   vim.notify("Teleport marked: " .. markNum, vim.log.levels.INFO)
 end
