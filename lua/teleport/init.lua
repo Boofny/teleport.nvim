@@ -3,8 +3,6 @@ local M = {}
 local markers = require("teleport.markings")
 local setup = require("teleport.setup")
 
--- NOTE: also harpoon uses the full file path from the root of the project not root of the system
--- TODO: have to use more anotation for any function that returns things 
 -- where functions will be created to be used in commands inside of teleport.lua
 
 -- mapFull checks if the map that neovim has for marks A-D is all filled 

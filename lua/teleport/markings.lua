@@ -35,9 +35,9 @@ function M.get_teleport_marks()
   for _, mark in ipairs(vim.fn.getmarklist()) do
     if mark.mark:match("^'[A-D]$") then
       table.insert(marks, {
-        markName = mark.mark:sub(2),
-        fileName = vim.fn.fnamemodify(mark.file, ":."),
-        filePath = mark.file,
+        markName = mark.mark:sub(2), -- mark name like A or Bk
+        fileName = vim.fn.fnamemodify(mark.file, ":."), -- file path from the cwd like lua/teleport/init.lua
+        filePath = mark.file, -- full file path
       })
     end
   end

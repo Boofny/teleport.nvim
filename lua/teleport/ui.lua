@@ -38,11 +38,13 @@ local function HelpBuffer()
     title_pos = "center",
   })
 
+
   local ns = vim.api.nvim_create_namespace("teleport")
   vim.api.nvim_buf_set_extmark(buf, ns, 0, 0, {
     end_col = 29,
     hl_group = "Keyword",
   })
+
   vim.api.nvim_buf_set_extmark(buf, ns, 1, 0, {
     end_col = 29,
     hl_group = "Comment",
@@ -63,6 +65,12 @@ local function HelpBuffer()
   vim.keymap.set("n", "q", function()
     vim.api.nvim_win_close(win, true)
   end, {buffer = buf})
+end
+
+
+-- just for listing and chosing the files not to be stored elsewhere
+---@param mark TeleportMark
+local function find_marks(mark)
 end
 
 -- list_mark_files shows a pop up window of avalible teleport marks and there names 
@@ -86,7 +94,7 @@ function M.list_mark_files()
         string.format("%s %s", markers.markersList[letter], vim.fn.fnamemodify(mark.file, ":."))
       )
     else
-      table.insert(lines, string.format("%s *EMPTY", markers.markersList[letter]))
+      table.insert(lines, string.format("%s [ EMPTY ]", markers.markersList[letter]))
     end
   end
 
@@ -111,6 +119,8 @@ function M.list_mark_files()
     title = "Teleport",
     title_pos = "center",
   })
+
+  vim.wo[win].cursorline = true
 
   -- vim.api.nvim_win_set_cursor(win, {1, 1})
 
