@@ -92,8 +92,12 @@ function M.testFunc()
     print("Here: ", w.filename)
   end
 
+  local list = markers.get_teleport_marks()
+  local json_string = vim.json.encode(list)
+  print(json_string)
+
   local jsonsting = vim.json.encode(wanted)
-  print(jsonsting)
+  print("This is just getting the ones i want", jsonsting)
 
 end
 
