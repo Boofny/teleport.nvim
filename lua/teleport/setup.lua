@@ -1,13 +1,13 @@
 local M = {}
 
 ---@return boolean
-function M.inRepo()
+function M.in_git_repo()
   local resp = vim.fn.system("git rev-parse --is-inside-work-tree")
   return resp == "true\n" -- <- had to add this stupid new line
 end
 
 ---@return boolean 
-function M.DirExist() -- purley just checks if the teleport dir is 
+function M.data_conf_exist() -- purely just checks if the teleport dir is 
   local data_path = vim.fn.stdpath("data")
   local plugin_dir = vim.fs.joinpath(data_path, "teleport")
 

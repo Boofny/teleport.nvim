@@ -100,19 +100,36 @@ function M.testFunc()
 end
 
 -- Will have to be ran before anything else first
-function M.Setup()
+function M.Setup() --TODO:
   -- first things first if the user is NOT in a git repo dont save the mappings 
-  if not setup.inRepo() then
+  if not setup.in_git_repo() then
     print("Stop here dont save the config or anything")
     return -- stop here and dont do any more set up
   end
+
   print("continue to the rest of the config")
 
-  if not setup.DirExist() then
+  if not setup.data_conf_exist() then
     print("create it")
+    local saved = {}
+
+    local mar = vim.fn.getmarklist()
+    for _, m in ipairs(mar) do
+      if m.mark:match("^'[A-D]$") then
+        table.insert(saved, m)
+      end
+    end
+
+    -- will be used upon exiting the project in order to save the bindings
+    local json_stringer = vim.json.encode(saved)
+    local hashed = vim.fn.sha256(json_stringer) -- how the hash is made for the file name maybe use the git head
+    print(hashed)
+
   else
-    print( "read it to find the file config" )
+    print("found it read it to find the file config")
   end
+
+  -- on exit save think it uses async function
 
 end
 
