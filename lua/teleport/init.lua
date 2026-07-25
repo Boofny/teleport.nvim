@@ -100,7 +100,7 @@ function M.testFunc()
 end
 
 -- Will have to be ran before anything else first
-function M.Setup() --TODO:
+function M.Setup()
   -- first things first if the user is NOT in a git repo dont save the mappings 
   if not setup.in_git_repo() then
     print("Stop here dont save the config or anything")
@@ -110,7 +110,41 @@ function M.Setup() --TODO:
   print("continue to the rest of the config")
 
   if not setup.data_conf_exist() then
-    print("create it")
+    print("create it the /teleport dir")
+    vim.fn.mkdir(setup.plugin_dir, "p")
+  end
+
+  -- after both checks then we are able to search for the file that owns the marks here
+  local head_hash = setup.get_repo_head()
+  local file_name = vim.fn.sha256(head_hash) -- <- file name will be the one that is search for so if we cant find it on exit create it and write to it
+  local path = vim.fs.joinpath(setup.plugin_dir, file_name .. ".json")
+
+  local open_file = io.open(path)
+
+  if open_file then
+    local content = open_file:read("*all")
+    open_file:close()
+
+    ---@type vim.fn.getmarklist.ret.item
+    local json_marks = vim.fn.json_decode(content)
+
+    for _, mark in ipairs(json_marks) do
+      vim.cmd.edit(mark.file)
+      local bufnr = vim.fn.bufnr(mark.file) -- get current buffer
+
+      vim.fn.setpos(mark.mark, {
+        bufnr,
+        mark.pos[2], -- line
+        mark.pos[3], -- column
+        0,
+      })
+    end
+
+  end
+
+  vim.api.nvim_create_autocmd("VimLeavePre", {
+    callback = function()
+
     local saved = {}
 
     local mar = vim.fn.getmarklist()
@@ -122,15 +156,15 @@ function M.Setup() --TODO:
 
     -- will be used upon exiting the project in order to save the bindings
     local json_stringer = vim.json.encode(saved)
-    local hashed = vim.fn.sha256(json_stringer) -- how the hash is made for the file name maybe use the git head
-    print(hashed)
+    vim.fn.writefile({ json_stringer }, path, "b")
 
-  else
-    print("found it read it to find the file config")
-  end
-
-  -- on exit save think it uses async function
+    end,
+  })
 
 end
 
 return M
+
+
+
+

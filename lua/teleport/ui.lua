@@ -69,9 +69,8 @@ end
 
 
 -- just for listing and chosing the files not to be stored elsewhere
----@param marks TeleportMark[]
-function M.find_marks(marks)
-  vim.ui.select(marks, {
+function M.find_marks()
+  vim.ui.select(markers.get_teleport_marks(), {
     prompt = "Find marks",
     format_item = function(item)
       return "" .. item.fileName
@@ -79,7 +78,6 @@ function M.find_marks(marks)
   }, function(choice)
     if choice then
       navs.nav_mark(markers.markersList[choice.markName])
-      -- vim.cmd("'" .. choice.markName)
     end
   end)
 end
@@ -188,7 +186,7 @@ function M.list_mark_files()
 
   vim.keymap.set("n", "f", function()
     vim.api.nvim_win_close(win, true)
-    M.find_marks(markers.get_teleport_marks())
+    M.find_marks()
   end, {buffer = buf})
 
   vim.keymap.set("n", "?", function()
