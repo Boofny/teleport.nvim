@@ -99,12 +99,88 @@ function M.testFunc()
 
 end
 
+--NOTE: the comment code bellow is old 
+-- -- Will have to be ran before anything else first
+-- function M.Setup()
+--   -- first things first if the user is NOT in a git repo dont save the mappings 
+--   if not setup.in_git_repo() then
+--     print("Stop here dont save the config or anything")
+--     return -- stop here and dont do any more set up
+--   end
+--
+--   print("continue to the rest of the config")
+--
+--   if not setup.data_conf_exist() then
+--     print("create it the /teleport dir")
+--     vim.fn.mkdir(setup.plugin_dir, "p")
+--   end
+--
+--   -- after both checks then we are able to search for the file that owns the marks here
+--   local origin = setup.get_repo_root()
+--   local file_name = vim.fn.sha256(origin) -- <- file name will be the one that is search for so if we cant find it on exit create it and write to it
+--   local path = vim.fs.joinpath(setup.plugin_dir, file_name .. ".json")
+--
+--   local open_file = io.open(path)
+--
+--   if open_file then
+--     local content = open_file:read("*all")
+--     open_file:close()
+--
+--     local ok, json_marks = pcall(vim.json.decode, content)
+--
+--     if not ok or type(json_marks) ~= "table" then
+--       vim.notify("Teleport: Failed to decode mark file", vim.log.levels.WARN)
+--       return
+--     end
+--
+--     for _, mark in ipairs(json_marks) do
+--       local file = vim.fn.expand(mark.file)
+--
+--       if vim.fn.filereadable(file) == 1 then
+--         local bufnr = vim.fn.bufadd(file)
+--         vim.fn.bufload(bufnr)
+--
+--         vim.fn.setpos(mark.mark, {
+--           bufnr,
+--           mark.pos[2],
+--           mark.pos[3],
+--           mark.pos[4],
+--         })
+--       end
+--     end
+--
+--   end
+--
+--   vim.api.nvim_create_autocmd("VimLeavePre", {
+--     callback = function()
+--
+--     local saved = {}
+--
+--     local marks = vim.fn.getmarklist()
+--     for _, m in ipairs(marks) do
+--       if m.mark:match("^'[A-D]$") then
+--         table.insert(saved, m)
+--       end
+--     end
+--
+--     -- will be used upon exiting the project in order to save the bindings
+--     local json_stringer = vim.json.encode(saved)
+--     vim.fn.writefile({ json_stringer }, path, "b")
+--
+--     end,
+--   })
+--
+-- end
+
+
+--TODO: look over this more 
 -- Will have to be ran before anything else first
 function M.Setup()
-  -- first things first if the user is NOT in a git repo dont save the mappings 
+
+  -- first things first if the user is NOT in a git repo dont save the mappings
   if not setup.in_git_repo() then
     print("Stop here dont save the config or anything")
-    return -- stop here and dont do any more set up
+    return
   end
 
   print("continue to the rest of the config")
@@ -114,57 +190,115 @@ function M.Setup()
     vim.fn.mkdir(setup.plugin_dir, "p")
   end
 
-  -- after both checks then we are able to search for the file that owns the marks here
-  local head_hash = setup.get_repo_head()
-  local file_name = vim.fn.sha256(head_hash) -- <- file name will be the one that is search for so if we cant find it on exit create it and write to it
+  -- find the file that owns this repo's marks
+  local origin = setup.get_repo_root()
+  local file_name = vim.fn.sha256(origin)
   local path = vim.fs.joinpath(setup.plugin_dir, file_name .. ".json")
 
-  local open_file = io.open(path)
+
+  --------------------------------------------------
+  -- LOAD MARKS
+  --------------------------------------------------
+
+  local open_file = io.open(path, "r")
 
   if open_file then
     local content = open_file:read("*all")
     open_file:close()
 
-    ---@type vim.fn.getmarklist.ret.item
-    local json_marks = vim.fn.json_decode(content)
+    local ok, json_marks = pcall(vim.json.decode, content)
+
+    if not ok or type(json_marks) ~= "table" then
+      vim.notify(
+        "Teleport: Failed to decode mark file",
+        vim.log.levels.WARN
+      )
+      return
+    end
+
 
     for _, mark in ipairs(json_marks) do
-      vim.cmd.edit(mark.file)
-      local bufnr = vim.fn.bufnr(mark.file) -- get current buffer
+      local file = vim.fn.expand(mark.file)
 
-      vim.fn.setpos(mark.mark, {
-        bufnr,
-        mark.pos[2], -- line
-        mark.pos[3], -- column
-        0,
-      })
-    end
+      if vim.fn.filereadable(file) == 1 then
 
-  end
+        -- Creates buffer without loading file contents
+        local bufnr = vim.fn.bufadd(file)
 
-  vim.api.nvim_create_autocmd("VimLeavePre", {
-    callback = function()
+        vim.fn.setpos(mark.mark, {
+          bufnr,
+          mark.pos[2],
+          mark.pos[3],
+          mark.pos[4],
+        })
 
-    local saved = {}
-
-    local mar = vim.fn.getmarklist()
-    for _, m in ipairs(mar) do
-      if m.mark:match("^'[A-D]$") then
-        table.insert(saved, m)
       end
     end
+  end
 
-    -- will be used upon exiting the project in order to save the bindings
-    local json_stringer = vim.json.encode(saved)
-    vim.fn.writefile({ json_stringer }, path, "b")
+
+  --------------------------------------------------
+  -- SAVE MARKS ON EXIT
+  --------------------------------------------------
+
+  local group = vim.api.nvim_create_augroup(
+    "Teleport",
+    { clear = true }
+  )
+
+  vim.api.nvim_create_autocmd("VimLeavePre", {
+    group = group,
+
+    callback = function()
+
+      local saved = {}
+
+      local marks = vim.fn.getmarklist()
+
+      for _, m in ipairs(marks) do
+
+        if m.mark:match("^'[A-D]$") then
+
+          -- Save only what Teleport needs
+          table.insert(saved, {
+            mark = m.mark,
+            file = m.file,
+            pos = m.pos,
+          })
+
+        end
+
+      end
+
+
+      local json_string = vim.json.encode(saved)
+
+
+      --------------------------------------------------
+      -- Atomic write
+      --------------------------------------------------
+
+      local tmp_path = path .. ".tmp"
+
+      local result = vim.fn.writefile(
+        { json_string },
+        tmp_path,
+        "b"
+      )
+
+      if result ~= 0 then
+        vim.notify(
+          "Teleport: Failed writing marks",
+          vim.log.levels.ERROR
+        )
+        return
+      end
+
+
+      vim.fn.rename(tmp_path, path)
 
     end,
   })
 
 end
-
 return M
-
-
-
-
