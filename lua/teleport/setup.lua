@@ -12,7 +12,6 @@ end
 ---@return string headHash
 function M.get_repo_root()
   local resp = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
-  print("top level", resp)
   return resp
 end
 
@@ -23,10 +22,8 @@ end
 ---@return boolean 
 function M.data_conf_exist() -- purely just checks if the teleport dir is 
   if vim.fn.isdirectory(M.plugin_dir) == 0 then
-    print("Dir does not exists")
     return false
   else
-    print("Dir exists")
     return true
   end
 end
