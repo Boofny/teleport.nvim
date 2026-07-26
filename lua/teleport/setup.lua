@@ -28,5 +28,10 @@ function M.data_conf_exist() -- purely just checks if the teleport dir is
   end
 end
 
+---@class Options
+function M.parse_opts(opts)
+  print(opts)
+end
+
 
 return M

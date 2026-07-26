@@ -65,43 +65,20 @@ function M:add_mark_override(markNum)
   vim.notify("Teleport marked: " .. markNum, vim.log.levels.INFO)
 end
 
--- not being used just testing things
-function M.testFunc()
-  ---@type TeleportMark[]
-  local mapper = markers.get_teleport_marks()
-  for _, m in ipairs(mapper) do
-    print(m.markName, m.fileName)
+---@param opts table
+function M.testFunc(opts)
+  opts = opts or "default"
+  if opts.name == nil then
+    print("Empty")
+    return
   end
-
-  ---@class Wanted
-  ---@field filename string
-  ---@type Wanted[]
-  local wanted = {}
-
-  local marks = vim.fn.getmarklist()
-
-  for _, m in ipairs(marks) do
-    if m.mark:match("^'[A-D]$") then
-      table.insert(wanted, {filename = vim.fn.fnamemodify(m.file, ":.")})
-    end
-  end
-
-  for _, w in pairs(wanted) do
-    print("Here: ", w.filename)
-  end
-
-  local list = markers.get_teleport_marks()
-  local json_string = vim.json.encode(list)
-  print(json_string)
-
-  local jsonsting = vim.json.encode(wanted)
-  print("This is just getting the ones i want", jsonsting)
-
+  print(opts.name)
+  setup.parse_opts(opts)
 end
-
 
 -- Will have to be ran before anything else first
 function M.Setup()
+
 
   -- first things first if the user is NOT in a git repo dont save the mappings
   if not setup.in_git_repo() then
