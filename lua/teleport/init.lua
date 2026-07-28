@@ -3,6 +3,13 @@ local M = {}
 local markers = require("teleport.markings")
 local setup = require("teleport.setup")
 
+local ui = require("teleport.ui")
+local nav = require("teleport.navigate")
+
+M.list_mark_files = ui.list_mark_files
+M.find_marks = ui.find_marks
+M.nav_mark = nav.nav_mark
+
 -- where functions will be created to be used in commands inside of teleport.lua
 
 -- mapFull checks if the map that neovim has for marks A-D is all filled 

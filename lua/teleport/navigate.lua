@@ -18,4 +18,12 @@ function M.nav_mark(markNum)
   vim.notify("Teleport Mark: " .. markers.markersList[mark] .. " is not set", vim.log.levels.ERROR)
 end
 
+function M.next()
+  print("next")
+end
+
+function M.prev()
+  print("prev")
+end
+
 return M

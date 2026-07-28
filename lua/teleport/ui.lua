@@ -4,6 +4,7 @@ local navs = require("teleport.navigate")
 local markers = require("teleport.markings")
 
 local function HelpBuffer()
+  -- NOTE: could add like a p for preview or P might be dumb idk
   local lines = {
     "   Keys   Command/Description",
     "  ---------------------------",
@@ -12,6 +13,7 @@ local function HelpBuffer()
     "    dd => Delete mark but not the file buffer",
     "     ? => Show help menu",
     "     q => Exit Teleport menu",
+    "     P => Preview File content",
     "     f => Find marks"
   }
 
@@ -50,7 +52,7 @@ local function HelpBuffer()
     hl_group = "Comment",
   })
 
-  for line = 2, 7 do
+  for line = 2, 8 do
     vim.api.nvim_buf_set_extmark(buf, ns, line, 2, {
       end_col = 6,
       hl_group = "String",
@@ -85,6 +87,7 @@ end
 -- list_mark_files shows a pop up window of avalible teleport marks and there names 
 -- user is able to delete and pick marks eithor using the numbers or <CR> for said mark
 function M.list_mark_files()
+  -- TODO: maybe try out somthing like if there is git changes in a mark display the changes in the menu
   local existing = {}
 
   for _, mark in ipairs(vim.fn.getmarklist()) do
