@@ -18,12 +18,23 @@ function M.nav_mark(markNum)
   vim.notify("Teleport Mark: " .. markers.markersList[mark] .. " is not set", vim.log.levels.ERROR)
 end
 
-function M.next()
-  print("next")
+---@class NvimMarks
+---@field marks vim.fn.getmarklist.ret.item[]
+
+local nvim_marks = {
+  marks = markers.get_nvim_api_marks()
+}
+
+---@param self NvimMarks
+function nvim_marks:next()
+  print("self =", vim.inspect(self))
 end
 
-function M.prev()
-  print("prev")
+---@param self NvimMarks
+function nvim_marks:prev()
+  print(self.marks[1].file)
 end
+
+M.nvim_marks = nvim_marks
 
 return M

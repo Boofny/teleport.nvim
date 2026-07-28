@@ -16,5 +16,6 @@
 - [x] 4. need to be able to find the root of the project first before file paths are able to be displayed -> to lead of from this use the :. in order to start the search for the git repo
 - [x] 5. need to have a setup function for each project just once in order to find the per project markings
 - [x] 6. a good idea might be to have a sort of telescope type of searching for the marks
-- 7. rewrite the module system to use more lua style oop and have just one require module for simple use
-- 8. Add more things to the set up function like optional features like file display or something 
+- [x] 7. rewrite the module system to use more lua style oop and have just one require module for simple use
+- 8. next and prev apis for going through marks
+- 9. preview maybe for the file marks

@@ -72,15 +72,14 @@ function M:add_mark_override(markNum)
   vim.notify("Teleport marked: " .. markNum, vim.log.levels.INFO)
 end
 
----@param opts table
-function M.testFunc(opts)
-  opts = opts or "default"
-  if opts.name == nil then
-    print("Empty")
-    return
+function M.testFunc()
+  local m = nav.nvim_marks
+
+
+  for _, l  in ipairs(m.marks) do
+    print(l.file, "\n")
   end
-  print(opts.name)
-  setup.parse_opts(opts)
+  m:next()
 end
 
 -- Will have to be ran before anything else first

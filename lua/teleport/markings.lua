@@ -29,7 +29,7 @@ M.ORDEREDMARKS = "ABCD"
 ---@field filePath string
 
 ---@return TeleportMark[]
-function M.get_teleport_marks()
+function M.get_teleport_marks() -- just to be used for ui and visual things does not return full file paths
   local marks = {}
 
   for _, mark in ipairs(vim.fn.getmarklist()) do
@@ -44,4 +44,22 @@ function M.get_teleport_marks()
 
   return marks
 end
+
+function M.get_nvim_api_marks()
+  ---@type vim.fn.getmarklist.ret.item[]
+  local marks = {}
+
+  for _, mark in ipairs(vim.fn.getmarklist()) do
+    if mark.mark:match("^'[A-D]$") and mark.file then
+      table.insert(marks, {
+        mark = mark.mark, -- mark name like A or Bk
+        file = mark.file, -- file path from the cwd like lua/teleport/init.lua
+        pos = mark.pos, -- full file path
+      })
+    end
+  end
+
+  return marks
+end
+
 return M
