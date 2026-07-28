@@ -200,4 +200,8 @@ function M.Setup()
   })
 
 end
+
+function M.clear_cache()
+end
+
 return M
