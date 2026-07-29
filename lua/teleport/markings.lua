@@ -62,4 +62,18 @@ function M.get_nvim_api_marks()
   return marks
 end
 
+---@return string
+function M.current_mark()
+  local nvim_marks = M.get_nvim_api_marks()
+  local current_file_name = vim.fn.expand('%')
+
+  for _, m in ipairs(nvim_marks) do
+    if vim.fn.fnamemodify(m.file, ":.") == current_file_name then
+      return tostring(M.markersList[m.mark:sub(2)])
+    end
+  end
+
+  return "" -- indicating an error or non mark
+end
+
 return M

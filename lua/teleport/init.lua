@@ -9,6 +9,7 @@ local nav = require("teleport.navigate")
 M.list_mark_files = ui.list_mark_files
 M.find_marks = ui.find_marks
 M.nav_mark = nav.nav_mark
+M.current_mark = markers.current_mark
 
 -- where functions will be created to be used in commands inside of teleport.lua
 
@@ -198,7 +199,6 @@ function M.Setup()
 
     end,
   })
-
 end
 
 function M.clear_cache()

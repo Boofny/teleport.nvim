@@ -13,6 +13,7 @@ local function HelpBuffer()
     "    dd => Delete mark but not the file buffer",
     "     ? => Show help menu",
     "     q => Exit Teleport menu",
+    "     t => Open in tab",
     "     P => Preview File content",
     "     f => Find marks"
   }
@@ -52,7 +53,7 @@ local function HelpBuffer()
     hl_group = "Comment",
   })
 
-  for line = 2, 8 do
+  for line = 2, 9 do
     vim.api.nvim_buf_set_extmark(buf, ns, line, 2, {
       end_col = 6,
       hl_group = "String",
