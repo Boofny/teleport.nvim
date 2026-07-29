@@ -3,8 +3,12 @@ local M = {}
 local navs = require("teleport.navigate")
 local markers = require("teleport.markings")
 
-local function HelpBuffer()
-  -- NOTE: could add like a p for preview or P might be dumb idk
+local function preview_buffer()
+  vim.notify("Buffer here")
+end
+
+local function help_buffer()
+  -- NOTE: could add like a p for preview or P might be dumb idk and t for tabbing using the line for <CR> as a start
   local lines = {
     "   Keys   Command/Description",
     "  ---------------------------",
@@ -13,7 +17,7 @@ local function HelpBuffer()
     "    dd => Delete mark but not the file buffer",
     "     ? => Show help menu",
     "     q => Exit Teleport menu",
-    "     t => Open in tab",
+    "     T => Open in tab",
     "     P => Preview File content",
     "     f => Find marks"
   }
@@ -173,13 +177,12 @@ function M.list_mark_files()
   vim.keymap.set("n", "<CR>", function()
     local cursor = vim.api.nvim_win_get_cursor(win)
     local line_num = cursor[1]
-    local marks = markers.get_teleport_marks()
+    local marks = markers.get_nvim_api_marks()
 
     for _, mark in ipairs(marks) do
-      if mark.markName == markers.markings[line_num] then
+      if mark.mark:sub(2) == markers.markings[line_num] then
         vim.api.nvim_win_close(win, true)
         navs.nav_mark(line_num)
-        -- vim.cmd("'" .. markers.markings[line_num])
         return
       end
     end
@@ -193,8 +196,31 @@ function M.list_mark_files()
     M.find_marks()
   end, {buffer = buf})
 
+  vim.keymap.set("n", "T", function() -- tabbing 
+    local cursor = vim.api.nvim_win_get_cursor(win)
+    local line_num = cursor[1]
+    local marks = markers.get_nvim_api_marks()
+
+    for _, mark in ipairs(marks) do
+      if mark.mark:sub(2) == markers.markings[line_num] then
+        vim.api.nvim_win_close(win, true)
+        vim.cmd("tabnew " .. mark.file)
+        return
+      end
+    end
+
+    vim.api.nvim_win_close(win, true)
+    vim.notify("Teleport Mark " .. line_num .. " is not set", vim.log.levels.ERROR)
+  end, {buffer = buf})
+
+  vim.keymap.set("n", "P", function() -- Preview
+    preview_buffer()
+    vim.api.nvim_win_close(win, true)
+  end, {buffer = buf})
+
+
   vim.keymap.set("n", "?", function()
-    HelpBuffer()
+    help_buffer()
   end, {buffer = buf})
 
 end
