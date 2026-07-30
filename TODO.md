@@ -20,3 +20,5 @@
 - 8. next and prev apis for going through marks
 - 9. preview maybe for the file marks and tab opening 
 > tabs now done still need a preview buffer maybe like the head of the file
+
+- 10. add save/change status for files and if they are affected by gut diffs kinda like neotree
