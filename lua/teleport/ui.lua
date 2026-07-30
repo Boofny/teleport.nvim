@@ -5,16 +5,20 @@ local markers = require("teleport.markings")
 
 ---@param file vim.fn.getmarklist.ret.item
 local function preview_buffer(file)
-  local content = vim.fn.fnamemodify(file.file, ":.")
+  local path = vim.fn.expand(file.file) -- from /home/
 
   local width = math.floor((vim.o.columns) / 2) -- dynamic width for different screens
-  local height = 20
+  local height = math.floor((vim.o.lines) / 2)
   local row = math.floor((vim.o.lines - height) / 3)
   local col = math.floor((vim.o.columns - width) / 2)
 
   local buf = vim.api.nvim_create_buf(false, true)
 
-  local lines = vim.fn.readfile(content, "", 50)
+  local ok, lines = pcall(vim.fn.readfile, path, "", 50) -- could make this with opts later
+  if not ok then
+    lines = { "[Could not read file: " .. file.file .. "]" }
+  end
+
   vim.api.nvim_buf_set_lines(buf , 0, -1, false, lines)
 
   local win = vim.api.nvim_open_win(buf, true, {
@@ -31,7 +35,7 @@ local function preview_buffer(file)
     focusable = false,
   })
 
-  vim.bo[buf].filetype = vim.filetype.match({ filename = content}) or ""
+  vim.bo[buf].filetype = vim.filetype.match({ filename = file.file}) or ""
   vim.wo[win].number = true
 
   vim.bo[buf].bufhidden = "wipe"
