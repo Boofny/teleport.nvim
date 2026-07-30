@@ -22,3 +22,8 @@
 > tabs now done still need a preview buffer maybe like the head of the file
 
 - 10. add save/change status for files and if they are affected by gut diffs kinda like neotree
+- 11. list of things needed for opts 
+  - preselect for the cursor 
+  - border overrides for windows 
+  - position on the screen topleft center topright etc...
+  - preview size length if at all so 50 is default but can go larger or * for like entire file

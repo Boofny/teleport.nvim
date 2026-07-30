@@ -178,6 +178,8 @@ function M.list_mark_files()
 
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
 
+  -- local pos = markers.current_mark()
+
   local win = vim.api.nvim_open_win(buf, true, {
     relative = "editor",
     width = width,
@@ -191,10 +193,8 @@ function M.list_mark_files()
     title_pos = "center",
   })
 
-  -- FIX: close but not yet
-  -- local pos = markers.current_mark()
-  --
-  -- vim.api.nvim_win_set_cursor(0, {pos, 0})
+  -- vim.api.nvim_win_set_cursor(win, {pos, 0}) -- just a nice thing to keep the cursor inline with what mark is on
+
   vim.wo[win].cursorline = true
 
   vim.bo[buf].bufhidden = "wipe"
@@ -290,7 +290,6 @@ function M.list_mark_files()
   vim.keymap.set("n", "?", function()
     help_buffer()
   end, {buffer = buf})
-
 end
 
 
