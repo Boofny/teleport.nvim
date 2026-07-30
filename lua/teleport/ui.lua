@@ -3,8 +3,53 @@ local M = {}
 local navs = require("teleport.navigate")
 local markers = require("teleport.markings")
 
-local function preview_buffer()
-  vim.notify("Buffer here")
+---@param file vim.fn.getmarklist.ret.item
+local function preview_buffer(file)
+  local content = vim.fn.fnamemodify(file.file, ":.")
+
+  local width = math.floor((vim.o.columns) / 2) -- dynamic width for different screens
+  local height = 20
+  local row = math.floor((vim.o.lines - height) / 3)
+  local col = math.floor((vim.o.columns - width) / 2)
+
+  local buf = vim.api.nvim_create_buf(false, true)
+
+  local lines = vim.fn.readfile(content, "", 50)
+  vim.api.nvim_buf_set_lines(buf , 0, -1, false, lines)
+
+  local win = vim.api.nvim_open_win(buf, true, {
+    relative = "editor",
+    width = width,
+    height = height,
+    row = row,
+    col = col,
+    border = "rounded",
+    style = "minimal",
+
+    title = "Preview",
+    title_pos = "center",
+    focusable = false,
+  })
+
+  vim.bo[buf].filetype = vim.filetype.match({ filename = content}) or ""
+  vim.wo[win].number = true
+
+  vim.bo[buf].bufhidden = "wipe"
+  vim.bo[buf].swapfile = false
+
+  vim.bo[buf].modifiable = false
+  vim.bo[buf].readonly = true
+
+  vim.keymap.set("n", "q", function()
+    if vim.api.nvim_win_is_valid(win) then
+      vim.api.nvim_win_close(win, true)
+    end
+
+    if vim.api.nvim_buf_is_valid(buf) then
+      vim.api.nvim_buf_delete(buf, { force = true })
+    end
+  end, {buffer = buf})
+
 end
 
 local function help_buffer()
@@ -45,6 +90,11 @@ local function help_buffer()
     title_pos = "center",
   })
 
+  vim.bo[buf].bufhidden = "wipe"
+  vim.bo[buf].swapfile = false
+
+  vim.bo[buf].modifiable = false
+  vim.bo[buf].readonly = true
 
   local ns = vim.api.nvim_create_namespace("teleport")
   vim.api.nvim_buf_set_extmark(buf, ns, 0, 0, {
@@ -139,9 +189,12 @@ function M.list_mark_files()
 
   vim.wo[win].cursorline = true
 
-  -- vim.api.nvim_win_set_cursor(win, {1, 1})
+  vim.bo[buf].bufhidden = "wipe"
+  vim.bo[buf].swapfile = false
 
-  -- all functions of nav have a built in check
+  vim.bo[buf].modifiable = false
+  vim.bo[buf].readonly = true
+
   vim.keymap.set("n", "1", function()
     vim.api.nvim_win_close(win, true)
     navs.nav_mark(1)
@@ -214,8 +267,15 @@ function M.list_mark_files()
   end, {buffer = buf})
 
   vim.keymap.set("n", "P", function() -- Preview
-    preview_buffer()
-    vim.api.nvim_win_close(win, true)
+    local cursor = vim.api.nvim_win_get_cursor(win)
+    local line_num = cursor[1]
+    local marks = markers.get_nvim_api_marks()
+    if line_num > #marks then
+      vim.api.nvim_win_close(win, true)
+      vim.notify("Teleport Mark " .. line_num .. " is not set", vim.log.levels.ERROR)
+      return
+    end
+    preview_buffer(marks[line_num])
   end, {buffer = buf})
 
 
