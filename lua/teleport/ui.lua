@@ -30,7 +30,7 @@ local function preview_buffer(file)
     border = "rounded",
     style = "minimal",
 
-    title = "Preview",
+    title = "Preview " .. vim.fn.fnamemodify(file.file, ":t"),
     title_pos = "center",
     focusable = false,
   })
@@ -191,6 +191,10 @@ function M.list_mark_files()
     title_pos = "center",
   })
 
+  -- FIX: close but not yet
+  -- local pos = markers.current_mark()
+  --
+  -- vim.api.nvim_win_set_cursor(0, {pos, 0})
   vim.wo[win].cursorline = true
 
   vim.bo[buf].bufhidden = "wipe"

@@ -18,7 +18,7 @@
 - [x] 6. a good idea might be to have a sort of telescope type of searching for the marks
 - [x] 7. rewrite the module system to use more lua style oop and have just one require module for simple use
 - 8. next and prev apis for going through marks
-- 9. preview maybe for the file marks and tab opening 
+- [x] 9. preview maybe for the file marks and tab opening 
 > tabs now done still need a preview buffer maybe like the head of the file
 
 - 10. add save/change status for files and if they are affected by gut diffs kinda like neotree
