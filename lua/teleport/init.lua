@@ -2,6 +2,7 @@ local M = {}
 
 local markers = require("teleport.markings")
 local setup = require("teleport.setup")
+local config = require("teleport.config")
 
 local ui = require("teleport.ui")
 local nav = require("teleport.navigate")
@@ -82,8 +83,18 @@ function M.testFunc()
   m:next()
 end
 
--- Will have to be ran before anything else first
-function M.Setup()
+---@param opts? Config
+function M.Setup(opts)
+  opts = opts or {}
+
+  local user_opts = vim.tbl_deep_extend(
+    "force",
+    config.default,
+    opts
+  )
+
+  config.options = user_opts
+  -- config.config_setup(user_opts)
 
   -- first things first if the user is NOT in a git repo dont save the mappings
   if not setup.in_git_repo() then

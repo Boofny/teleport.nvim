@@ -2,6 +2,7 @@ local M = {}
 
 local navs = require("teleport.navigate")
 local markers = require("teleport.markings")
+local config = require("teleport.config")
 
 ---@param file vim.fn.getmarklist.ret.item
 local function preview_buffer(file)
@@ -14,7 +15,7 @@ local function preview_buffer(file)
 
   local buf = vim.api.nvim_create_buf(false, true)
 
-  local ok, lines = pcall(vim.fn.readfile, path, "", 50) -- could make this with opts later
+  local ok, lines = pcall(vim.fn.readfile, path, "", config.options.preview_length)
   if not ok then
     lines = { "[Could not read file: " .. file.file .. "]" }
   end
@@ -178,7 +179,7 @@ function M.list_mark_files()
 
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
 
-  -- local pos = markers.current_mark()
+  local pos = markers.current_mark()
 
   local win = vim.api.nvim_open_win(buf, true, {
     relative = "editor",
@@ -186,14 +187,16 @@ function M.list_mark_files()
     height = height,
     row = row,
     col = col,
-    border = "rounded",
+    border = config.options.border,
     style = "minimal",
 
     title = "Teleport",
     title_pos = "center",
   })
 
-  -- vim.api.nvim_win_set_cursor(win, {pos, 0}) -- just a nice thing to keep the cursor inline with what mark is on
+  if pos ~= -1 then
+    vim.api.nvim_win_set_cursor(win, {pos, 0}) -- just a nice thing to keep the cursor inline with what mark is on
+  end
 
   vim.wo[win].cursorline = true
 

@@ -24,6 +24,6 @@
 - 10. add save/change status for files and if they are affected by gut diffs kinda like neotree
 - 11. list of things needed for opts -> to add on to this the way to think of this is to make a table in config.lua and pass the needed options to other things
   - preselect for the cursor 
-  - border overrides for windows 
+  - [x] border overrides for windows 
   - position on the screen topleft center topright etc...
-  - preview size length if at all so 50 is default but can go larger or * for like entire file
+  - [x] preview size length if at all so 50 is default but can go larger or * for like entire file
