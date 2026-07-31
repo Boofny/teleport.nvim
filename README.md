@@ -23,10 +23,10 @@ local tele = require("teleport")
 vim.keymap.set("n", "<leader>a", tele.add_mark)
 vim.keymap.set("n", "<leader>t", tele.list_mark_files)
 
-vim.keymap.set("n", "<leader>1", function() tele.nav_mark(1) end)
-vim.keymap.set("n", "<leader>2", function() tele.nav_mark(2) end)
-vim.keymap.set("n", "<leader>3", function() tele.nav_mark(3) end)
-vim.keymap.set("n", "<leader>4", function() tele.nav_mark(4) end)
+vim.keymap.set("n", "<leader>1", function() tele.nav:nav_mark(1) end)
+vim.keymap.set("n", "<leader>2", function() tele.nav:nav_mark(2) end)
+vim.keymap.set("n", "<leader>3", function() tele.nav:nav_mark(3) end)
+vim.keymap.set("n", "<leader>4", function() tele.nav:nav_mark(4) end)
 
 -- optional select picker
 vim.keymap.set("n", "<leader>gt", tele.find_marks) 
