@@ -270,7 +270,6 @@ function M.list_mark_files()
       end
     end
 
-    vim.api.nvim_win_close(win, true)
     vim.notify("Teleport Mark " .. line_num .. " is not set", vim.log.levels.ERROR)
   end, {buffer = buf})
 
@@ -278,12 +277,15 @@ function M.list_mark_files()
     local cursor = vim.api.nvim_win_get_cursor(win)
     local line_num = cursor[1]
     local marks = markers.get_nvim_api_marks()
-    if line_num > #marks then
-      vim.api.nvim_win_close(win, true)
-      vim.notify("Teleport Mark " .. line_num .. " is not set", vim.log.levels.ERROR)
-      return
+
+    for _, mark in ipairs(marks) do
+      if mark.mark:sub(2) == markers.markings[line_num] then
+        preview_buffer(mark)
+        return
+      end
     end
-    preview_buffer(marks[line_num])
+
+    vim.notify("Teleport Mark " .. line_num .. " is not set", vim.log.levels.ERROR)
   end, {buffer = buf})
 
 

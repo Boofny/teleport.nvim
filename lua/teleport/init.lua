@@ -76,7 +76,6 @@ end
 function M.testFunc()
   local m = nav.nvim_marks
 
-
   for _, l  in ipairs(m.marks) do
     print(l.file, "\n")
   end
@@ -85,7 +84,6 @@ end
 
 -- Will have to be ran before anything else first
 function M.Setup()
-
 
   -- first things first if the user is NOT in a git repo dont save the mappings
   if not setup.in_git_repo() then
