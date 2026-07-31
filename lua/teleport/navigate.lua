@@ -1,10 +1,12 @@
-local M = {}
-
 local markers = require("teleport.markings")
+
+local nvim_marks = {
+  name = "test",
+}
 
 -- nav_mark is a function that what ever paramitor is passed to it will be moved to that mark 
 ---@param markNum integer
-function M.nav_mark(markNum)
+function nvim_marks:nav_mark(markNum)
   local mark = markers.markings[markNum]
 
   for _, m in ipairs(vim.fn.getmarklist()) do
@@ -18,23 +20,12 @@ function M.nav_mark(markNum)
   vim.notify("Teleport Mark: " .. markers.markersList[mark] .. " is not set", vim.log.levels.ERROR)
 end
 
----@class NvimMarks
----@field marks vim.fn.getmarklist.ret.item[]
-
-local nvim_marks = {
-  marks = markers.get_nvim_api_marks()
-}
-
----@param self NvimMarks
 function nvim_marks:next()
-  print("self =", vim.inspect(self))
+  print("next =", vim.inspect(self.name))
 end
 
----@param self NvimMarks
 function nvim_marks:prev()
-  print(self.marks[1].file)
+  print("prev =", vim.inspect(self.name))
 end
 
-M.nvim_marks = nvim_marks
-
-return M
+return nvim_marks

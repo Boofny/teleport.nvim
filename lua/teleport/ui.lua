@@ -138,7 +138,7 @@ function M.find_marks()
     end,
   }, function(choice)
     if choice then
-      navs.nav_mark(markers.markersList[choice.markName])
+      navs:nav_mark(markers.markersList[choice.markName])
     end
   end)
 end
@@ -205,22 +205,22 @@ function M.list_mark_files()
 
   vim.keymap.set("n", "1", function()
     vim.api.nvim_win_close(win, true)
-    navs.nav_mark(1)
+    navs:nav_mark(1)
   end, {buffer = buf})
 
   vim.keymap.set("n", "2", function()
     vim.api.nvim_win_close(win, true)
-    navs.nav_mark(2)
+    navs:nav_mark(2)
   end, {buffer = buf})
 
   vim.keymap.set("n", "3", function()
     vim.api.nvim_win_close(win, true)
-    navs.nav_mark(3)
+    navs:nav_mark(3)
   end, {buffer = buf})
 
   vim.keymap.set("n", "4", function()
     vim.api.nvim_win_close(win, true)
-    navs.nav_mark(4)
+    navs:nav_mark(4)
   end, {buffer = buf})
 
   vim.keymap.set("n", "q", function()
@@ -243,7 +243,7 @@ function M.list_mark_files()
     for _, mark in ipairs(marks) do
       if mark.mark:sub(2) == markers.markings[line_num] then
         vim.api.nvim_win_close(win, true)
-        navs.nav_mark(line_num)
+        navs:nav_mark(line_num)
         return
       end
     end
