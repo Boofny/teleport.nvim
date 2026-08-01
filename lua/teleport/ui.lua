@@ -172,14 +172,20 @@ function M.list_mark_files()
 
   local width = math.floor((vim.o.columns) / 2) -- dynamic width for different screens
   local height = #lines
-  local row = math.floor((vim.o.lines - height) / 3)
+
+  -- position bellow
+  local row = math.floor((vim.o.lines - height) / config.position_cases[config.options.position])
   local col = math.floor((vim.o.columns - width) / 2)
 
   local buf = vim.api.nvim_create_buf(false, true)
 
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
 
-  local pos = markers.current_mark()
+  local pos = -1
+
+  if config.options.preselect then
+    pos = markers.current_mark()
+  end
 
   local win = vim.api.nvim_open_win(buf, true, {
     relative = "editor",
