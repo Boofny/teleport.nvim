@@ -21,7 +21,20 @@ function nvim_marks:nav_mark(markNum)
 end
 
 function nvim_marks:next()
-  print("next =", vim.inspect(self.name))
+  local marks = markers.get_nvim_api_marks()
+
+  for _, m in ipairs(marks) do
+    print(markers.markersList[m.mark:sub(2)], m.file)
+  end
+
+  local current_mark = markers.current_mark()
+
+  if current_mark ~= -1 then
+    print(current_mark)
+  else
+    vim.notify("not in a marked file", vim.log.levels.ERROR)
+    return
+  end
 end
 
 function nvim_marks:prev()
