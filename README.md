@@ -39,6 +39,17 @@ vim.keymap.set("n", "<leader>k4", function() tele.add_mark_override(4) end)
 ```
 
 ### Customization
-```bash
-Customization is not avalible yet
+```lua
+local tele = require("teleport")
+
+-- defaults
+tele.Setup({
+  preselect = false, -- keeping cursor on current mark when opening menu
+  border = "single", -- border for the main list 
+  position = "center", -- top, center, bottom center being default
+  preview_length = 50, -- previewing files length
+})
+
 ```
+
+
