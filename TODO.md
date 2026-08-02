@@ -17,7 +17,7 @@
 - [x] 5. need to have a setup function for each project just once in order to find the per project markings
 - [x] 6. a good idea might be to have a sort of telescope type of searching for the marks
 - [x] 7. rewrite the module system to use more lua style oop and have just one require module for simple use
-- 8. next and prev apis for going through marks
+- [x] 8. next and prev apis for going through marks
 - [x] 9. preview maybe for the file marks and tab opening 
 > tabs now done still need a preview buffer maybe like the head of the file
 
