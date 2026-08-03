@@ -61,7 +61,7 @@ local function preview_buffer(file)
 end
 
 local function help_buffer()
-  -- NOTE: could add like a p for preview or P might be dumb idk and t for tabbing using the line for <CR> as a start
+
   local lines = {
     "   Keys   Command/Description",
     "  ---------------------------",

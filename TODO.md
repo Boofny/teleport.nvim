@@ -31,5 +31,7 @@
   - [x] position on the screen topleft center topright etc...
   - [x] preview size length if at all so 50 is default but can go larger or * for like entire file
 
-- 12. small bug with buffer iteration using next and prev 
+- [x] 12. small bug with buffer iteration using next and prev 
 > Problem if a file is added to the list then its not counted in the next and prev listing option
+
+- 13. split vert or hor for files

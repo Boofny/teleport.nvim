@@ -22,7 +22,7 @@ end
 
 M.ORDEREDMARKS = "ABCD"
 
--- function get_teleport_marks only gets the marks from the ranges of A-D or to be change later NOTE: it does return a custom table that will be subject to change later
+-- function get_teleport_marks only gets the marks from the ranges of A-D or to be change later NOTE: it does return a custom table
 ---@class TeleportMark
 ---@field markName string
 ---@field fileName string
@@ -68,7 +68,7 @@ function M.current_mark()
   local current_file_name = vim.fn.expand('%')
 
   for _, m in ipairs(nvim_marks) do
-    if vim.fn.fnamemodify(m.file, ":.") == current_file_name then
+    if vim.fn.fnamemodify(m.file, ":.") == vim.fn.fnamemodify(current_file_name, ":.") then
       return M.markersList[m.mark:sub(2)]
     end
   end

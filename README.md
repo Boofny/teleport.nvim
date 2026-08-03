@@ -56,4 +56,10 @@ tele.Setup({
 
 ```
 
+### Important
+
+```bash
+Explain the use of clear cache for when moving project and how marks are not tracked in non git repo projects
+```
+
 
