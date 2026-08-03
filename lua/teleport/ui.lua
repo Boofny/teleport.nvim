@@ -144,6 +144,16 @@ function M.find_marks()
   end)
 end
 
+local function is_modified(file)
+  local bufnr = vim.fn.bufnr(file)
+
+  if bufnr == -1 then
+    return false
+  end
+
+  return vim.bo[bufnr].modified
+end
+
 -- list_mark_files shows a pop up window of avalible teleport marks and there names 
 -- user is able to delete and pick marks eithor using the numbers or <CR> for said mark
 function M.list_mark_files()
@@ -162,8 +172,9 @@ function M.list_mark_files()
     local mark = existing[letter]
 
     if mark then
+      local status = is_modified(mark.file) and "[+]" or ""
       table.insert(lines,
-        string.format("%s %s", markers.markersList[letter], vim.fn.fnamemodify(mark.file, ":."))
+        string.format("%s %s %s", markers.markersList[letter], vim.fn.fnamemodify(mark.file, ":."), status)
       )
     else
       table.insert(lines, string.format("%s [ EMPTY ]", markers.markersList[letter]))

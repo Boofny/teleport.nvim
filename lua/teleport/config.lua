@@ -10,6 +10,7 @@ config_opts.default = {
   border = "single", -- border and position are just for the main list_marks func
   position = "center", -- top, center, bottom these three options with center being default
   preview_length = 50, -- how long and how much memory is used for previewing files
+  -- show_file_status = true,
 }
 
 config_opts.position_cases = {
