@@ -18,6 +18,7 @@ function nvim_marks:nav_mark(markNum)
   vim.notify("Teleport Mark: " .. markers.markersList[mark] .. " is not set", vim.log.levels.ERROR)
 end
 
+-- BUG: if a file is added to the list then its not counted in the next and prev listing option
 ---@return boolean
 ---@param mark_num integer
 local function is_file_marked(mark_num)
