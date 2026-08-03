@@ -37,8 +37,9 @@ vim.keymap.set("n", "<leader>k2", function() tele.add_mark_override(2) end)
 vim.keymap.set("n", "<leader>k3", function() tele.add_mark_override(3) end)
 vim.keymap.set("n", "<leader>k4", function() tele.add_mark_override(4) end)
 
-vim.keymap.set("n", "<M-n>", function() tele.nav:next() end)
-vim.keymap.set("n", "<M-p>", function() tele.nav:prev() end)
+-- optional tab iteration
+vim.keymap.set("n", "<A-n>", function() tele.nav:next() end)
+vim.keymap.set("n", "<A-p>", function() tele.nav:prev() end)
 ```
 
 ### Customization

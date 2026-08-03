@@ -75,7 +75,7 @@ function M:add_mark_override(markNum)
 end
 
 function M.testFunc()
-  setup.git_status()
+  -- setup.git_status()
 end
 
 ---@param opts? Config

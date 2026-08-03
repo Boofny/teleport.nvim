@@ -20,6 +20,6 @@ vim.api.nvim_create_user_command("ListMarkFiles", function()
   require("teleport").list_mark_files()
 end, {})
 
-vim.api.nvim_create_user_command("ListMarkFiles", function()
-  require("teleport").list_mark_files()
+vim.api.nvim_create_user_command("FindMarks", function()
+  require("teleport.ui").find_marks()
 end, {})
