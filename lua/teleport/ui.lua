@@ -11,7 +11,9 @@ local function preview_buffer(file)
 
   local width = math.floor((vim.o.columns) / 2) -- dynamic width for different screens
   local height = math.floor((vim.o.lines) / 2)
-  local row = math.floor((vim.o.lines - height) / 3)
+  -- local row = math.floor((vim.o.lines - height) / 3)
+
+  local row = math.floor((vim.o.lines - height) / config.position_cases[config.options.position])
   local col = math.floor((vim.o.columns - width) / 2)
 
   local buf = vim.api.nvim_create_buf(false, true)
@@ -76,7 +78,9 @@ local function help_buffer()
   local width = math.floor((vim.o.columns) / 3) -- dynamic width for different screens
   -- local height = math.floor(vim.o.lines / 2)
   local height = #lines
-  local row = math.floor((vim.o.lines - height) / 3)
+  -- local row = math.floor((vim.o.lines - height) / 3)
+
+  local row = math.floor((vim.o.lines - height) / config.position_cases[config.options.position])
   local col = math.floor((vim.o.columns - width) / 2)
 
   local buf = vim.api.nvim_create_buf(false, true)
