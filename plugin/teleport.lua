@@ -8,14 +8,6 @@ vim.api.nvim_create_user_command("ClearMarks", function()
   require("teleport.markings").clearMarks()
 end, {})
 
-vim.api.nvim_create_user_command("TestTele", function()
-  require("teleport").testFunc()
-end, {})
-
-vim.api.nvim_create_user_command("Setup", function()
-  require("teleport").Setup()
-end, {})
-
 vim.api.nvim_create_user_command("ListMarkFiles", function()
   require("teleport").list_mark_files()
 end, {})
