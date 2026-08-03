@@ -34,11 +34,20 @@ function M.parse_opts(opts)
 end
 
 ---@param file_name string
----@return string
+---@return table
 function M.git_status(file_name)
+  ---@class Status_table
+  ---@field X string
+  ---@field Y string
+  local status_table = {}
+
   local command = string.format("git status --porcelain %s", file_name)
   local resp = vim.fn.system(command)
-  return resp:sub(2, 2)
+
+  status_table["X"] = resp:sub(1,1)
+  status_table["Y"] = resp:sub(2,2)
+
+  return status_table
 end
 
 return M

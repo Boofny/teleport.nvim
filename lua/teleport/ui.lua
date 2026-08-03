@@ -176,7 +176,7 @@ function M.list_mark_files()
       local modified_status = is_modified(mark.file) and "[+]" or ""
       local git_status = setup.git_status(mark.file)
       table.insert(lines,
-        string.format("%s %s %s %s", markers.markersList[letter], vim.fn.fnamemodify(mark.file, ":."), modified_status, git_status)
+        string.format("%s %s %s %s%s", markers.markersList[letter], vim.fn.fnamemodify(mark.file, ":."), modified_status, git_status["X"], git_status["Y"])
       )
     else
       table.insert(lines, string.format("%s [ EMPTY ]", markers.markersList[letter]))
