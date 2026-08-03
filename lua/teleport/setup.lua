@@ -33,5 +33,12 @@ function M.parse_opts(opts)
   print(opts)
 end
 
+---@param file_name string
+---@return string
+function M.git_status(file_name)
+  local command = string.format("git status --porcelain %s", file_name)
+  local resp = vim.fn.system(command)
+  return resp:sub(2, 2)
+end
 
 return M

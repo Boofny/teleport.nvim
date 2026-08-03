@@ -75,12 +75,7 @@ function M:add_mark_override(markNum)
 end
 
 function M.testFunc()
-  local m = nav.nvim_marks
-
-  for _, l  in ipairs(m.marks) do
-    print(l.file, "\n")
-  end
-  m:next()
+  setup.git_status()
 end
 
 ---@param opts? Config

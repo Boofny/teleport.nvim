@@ -3,6 +3,7 @@ local M = {}
 local navs = require("teleport.navigate")
 local markers = require("teleport.markings")
 local config = require("teleport.config")
+local setup = require("teleport.setup")
 
 ---@param file vim.fn.getmarklist.ret.item
 local function preview_buffer(file)
@@ -172,9 +173,10 @@ function M.list_mark_files()
     local mark = existing[letter]
 
     if mark then
-      local status = is_modified(mark.file) and "[+]" or ""
+      local modified_status = is_modified(mark.file) and "[+]" or ""
+      local git_status = setup.git_status(mark.file)
       table.insert(lines,
-        string.format("%s %s %s", markers.markersList[letter], vim.fn.fnamemodify(mark.file, ":."), status)
+        string.format("%s %s %s %s", markers.markersList[letter], vim.fn.fnamemodify(mark.file, ":."), modified_status, git_status)
       )
     else
       table.insert(lines, string.format("%s [ EMPTY ]", markers.markersList[letter]))
