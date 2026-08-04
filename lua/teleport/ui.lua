@@ -70,8 +70,10 @@ local function help_buffer()
     "    dd => Delete mark but not the file buffer",
     "     ? => Show help menu",
     "     q => Exit Teleport menu",
-    "     T => Open in tab",
+    "     t => Open in tab",
     "     P => Preview File content",
+    "     h => Open horizontal split",
+    "     v => Open vertical split",
     "     f => Find marks"
   }
 
@@ -117,7 +119,7 @@ local function help_buffer()
     hl_group = "Comment",
   })
 
-  for line = 2, 9 do
+  for line = 2, 11 do
     vim.api.nvim_buf_set_extmark(buf, ns, line, 2, {
       end_col = 6,
       hl_group = "String",
@@ -162,7 +164,6 @@ end
 -- list_mark_files shows a pop up window of avalible teleport marks and there names 
 -- user is able to delete and pick marks eithor using the numbers or <CR> for said mark
 function M.list_mark_files()
-  -- TODO: maybe try out somthing like if there is git changes in a mark display the changes in the menu
   local existing = {}
 
   for _, mark in ipairs(vim.fn.getmarklist()) do
@@ -283,7 +284,7 @@ function M.list_mark_files()
     M.find_marks()
   end, {buffer = buf})
 
-  vim.keymap.set("n", "T", function() -- tabbing 
+  vim.keymap.set("n", "t", function() -- tabbing 
     local cursor = vim.api.nvim_win_get_cursor(win)
     local line_num = cursor[1]
     local marks = markers.get_nvim_api_marks()
@@ -314,6 +315,37 @@ function M.list_mark_files()
     vim.notify("Teleport Mark " .. line_num .. " is not set", vim.log.levels.ERROR)
   end, {buffer = buf})
 
+  vim.keymap.set("n", "v", function()
+    local cursor = vim.api.nvim_win_get_cursor(win)
+    local line_num = cursor[1]
+    local marks = markers.get_nvim_api_marks()
+
+    for _, mark in ipairs(marks) do
+      if mark.mark:sub(2) == markers.markings[line_num] then
+        vim.api.nvim_win_close(win, true)
+        vim.cmd("rightbelow vsplit " .. vim.fn.fnamemodify(mark.file, ":."))
+        return
+      end
+    end
+
+    vim.notify("Teleport Mark " .. line_num .. " is not set", vim.log.levels.ERROR)
+  end, {buffer = buf})
+
+  vim.keymap.set("n", "h", function()
+    local cursor = vim.api.nvim_win_get_cursor(win)
+    local line_num = cursor[1]
+    local marks = markers.get_nvim_api_marks()
+
+    for _, mark in ipairs(marks) do
+      if mark.mark:sub(2) == markers.markings[line_num] then
+        vim.api.nvim_win_close(win, true)
+        vim.cmd("rightbelow split " .. vim.fn.fnamemodify(mark.file, ":."))
+        return
+      end
+    end
+
+    vim.notify("Teleport Mark " .. line_num .. " is not set", vim.log.levels.ERROR)
+  end, {buffer = buf})
 
   vim.keymap.set("n", "?", function()
     help_buffer()

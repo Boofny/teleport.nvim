@@ -1,6 +1,5 @@
 ### to many things need to be done at once so use this to keep track of tasks
 #### one rule for this checklist is for each time one is completed explain bellow how
-
 - [x] 1. make list_mark_files keybindings moduler so all of them run checks 
 - did not have to use a new function but using the nav_mark func that has a built in check to make sure the mark is set before teleporting
 
@@ -34,4 +33,4 @@
 - [x] 12. small bug with buffer iteration using next and prev 
 > Problem if a file is added to the list then its not counted in the next and prev listing option
 
-- 13. split vert or hor for files
+- [x] 13. split vert or hor for files
