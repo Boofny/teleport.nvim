@@ -11,9 +11,11 @@
 
 </div>
 
-### Install (don't know how to make this thing public yet :P)
-```bash
-Install is not avalible yet
+### Install
+
+##### Lazy
+```lua
+{"Boofny/teleport.nvim"},
 ```
 
 ### Some caveats
