@@ -16,6 +16,9 @@
 Install is not avalible yet
 ```
 
+> [!IMPORTANT]
+> vim.cmd("delmark ABCD") should be placed in your configs init.lua in order to get this plugins working correctly
+
 ### Here is the setup and keybindings i use
 ```lua
 local tele = require("teleport")
@@ -58,8 +61,7 @@ tele.Setup({
 
 ### Important
 
-```bash
-Explain the use of clear cache for when moving project and how marks are not tracked in non git repo projects
-```
+1. File marks can be used on non git repo projects BUT will not be saved for later use
+2. If a git project is moved to a different directory the saved marks will reset and can be altered in ~/.local/share/nvim/teleport/
 
 

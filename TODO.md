@@ -34,3 +34,4 @@
 > Problem if a file is added to the list then its not counted in the next and prev listing option
 
 - [x] 13. split vert or hor for files
+- [x] 14. cache clearing
