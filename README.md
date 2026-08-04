@@ -22,9 +22,9 @@ Install is not avalible yet
   2. If a git project is moved to a different directory the saved marks will reset and can be altered in ~/.local/share/nvim/teleport/
 
 > [!IMPORTANT]
-```bash
-vim.cmd("delmark ABCD") should be placed in your configs init.lua in order to get this plugins working correctly
-```
+> ```lua
+> vim.cmd("delmark ABCD") -- should be placed in your configs init.lua in order to get this plugins working correctly
+> ```
 
 ### Here is the setup and keybindings i use
 ```lua
