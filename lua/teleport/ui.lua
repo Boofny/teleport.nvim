@@ -222,13 +222,15 @@ function M.list_mark_files()
     vim.api.nvim_win_set_cursor(win, {pos, 0}) -- just a nice thing to keep the cursor inline with what mark is on
   end
 
+
   vim.wo[win].cursorline = true
 
   vim.bo[buf].bufhidden = "wipe"
   vim.bo[buf].swapfile = false
 
-  vim.bo[buf].modifiable = false
-  vim.bo[buf].readonly = true
+  -- allowing this for the movment of the buffer 
+  vim.bo[buf].modifiable = true
+  vim.bo[buf].readonly = false
 
   vim.keymap.set("n", "1", function()
     vim.api.nvim_win_close(win, true)
@@ -251,9 +253,21 @@ function M.list_mark_files()
   end, {buffer = buf})
 
   vim.keymap.set("n", "q", function()
+    local buffer_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+
+    -- NOTE: here is the checking of the order of the marks when leaving the ui menu
+    for _, m in ipairs(buffer_lines) do
+      if tonumber(m:sub(1,1)) then
+        print(m:sub(1,1))
+      else
+        print("Not a num cause an error here")
+      end
+    end
+
     vim.api.nvim_win_close(win, true)
   end, {buffer = buf})
 
+  -- version that just closes the buffer 
   vim.keymap.set("n", "dd", function()
     local cursor = vim.api.nvim_win_get_cursor(win)
     local line_num = cursor[1]
@@ -261,6 +275,21 @@ function M.list_mark_files()
     vim.cmd("delmark " .. markers.markings[line_num])
     print("Teleport mark removed:", line_num)
   end, {buffer = buf, nowait = true})
+
+  -- version of the dd that allows for buffer delete lines
+  -- vim.keymap.set("n", "dd", function()
+  --   local cursor = vim.api.nvim_win_get_cursor(win)
+  --   local line_num = cursor[1]
+  --   local mark_char = markers.markings[line_num]
+  --
+  --   vim.cmd("delmark " .. mark_char)
+  --
+  --   vim.bo[buf].modifiable = true
+  --   vim.api.nvim_buf_set_lines(buf, line_num - 1, line_num, false, {})
+  --   vim.bo[buf].modifiable = false
+  --
+  --   print("Teleport mark removed:", mark_char)
+  -- end, {buffer = buf, nowait = true})
 
   vim.keymap.set("n", "<CR>", function()
     local cursor = vim.api.nvim_win_get_cursor(win)
