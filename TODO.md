@@ -35,4 +35,4 @@
 
 - [x] 13. split vert or hor for files
 - [ ] 14. cache clearing
-- [ ] 15, in buffer order manipulation with custom bindings for the menu
+- [ ] 15, in buffer order manipulation with custom bindings for the menu -> NOTE: keep in mind everything that has to close the menu will have to read the menu order incase it is changed and change it to the new one

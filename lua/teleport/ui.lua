@@ -69,6 +69,8 @@ local function help_buffer()
     "  <CR> => Select buffer that cursor is on",
     "    dd => Delete mark but not the file buffer",
     "     ? => Show help menu",
+    "     J => Move mark down",
+    "     K => Move mark up",
     "     q => Exit Teleport menu",
     "     t => Open in tab",
     "     P => Preview File content",
@@ -119,7 +121,7 @@ local function help_buffer()
     hl_group = "Comment",
   })
 
-  for line = 2, 11 do
+  for line = 2, 13 do
     vim.api.nvim_buf_set_extmark(buf, ns, line, 2, {
       end_col = 6,
       hl_group = "String",
@@ -254,16 +256,16 @@ function M.list_mark_files()
   end, {buffer = buf})
 
   vim.keymap.set("n", "q", function()
-    -- local buffer_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+    local buffer_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
 
     -- NOTE: here is the checking of the order of the marks when leaving the ui menu
-    -- for _, m in ipairs(buffer_lines) do
-    --   if tonumber(m:sub(1,1)) then
-    --     print(m:sub(1,1))
-    --   else
-    --     print("Not a num cause an error here")
-    --   end
-    -- end
+    for _, m in ipairs(buffer_lines) do
+      if tonumber(m:sub(1,1)) then
+        print(tonumber(m:sub(1,1)))
+      else
+        print("Not a num cause an error here")
+      end
+    end
 
     vim.api.nvim_win_close(win, true)
   end, {buffer = buf})
@@ -299,9 +301,6 @@ function M.list_mark_files()
     M.find_marks()
   end, {buffer = buf})
 
-  -- vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-  -- vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
-
   vim.keymap.set("n", "J", function()
     local cursor = vim.api.nvim_win_get_cursor(win)
     local line = cursor[1]
@@ -321,7 +320,22 @@ function M.list_mark_files()
   end, { buffer = buf })
 
   vim.keymap.set("n", "K", function()
-    vim.api.nvim_win_close(win, true)
+    local cursor = vim.api.nvim_win_get_cursor(win)
+    local line = cursor[1]
+    -- Don't move the last line down
+    if line <= 1 then -- correct
+      return
+    end
+
+    -- Read the current line and the one below it
+    local buf_lines = vim.api.nvim_buf_get_lines(buf, line - 2, line, false)
+    -- Write them back in reverse order
+    vim.api.nvim_buf_set_lines(buf, line - 2, line, false, {
+      buf_lines[2],
+      buf_lines[1],
+    })
+    -- Keep the cursor on the moved item
+    vim.api.nvim_win_set_cursor(win, { line - 1, cursor[2] })
   end, {buffer = buf})
 
   vim.keymap.set("n", "t", function() -- tabbing 
