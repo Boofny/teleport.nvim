@@ -165,6 +165,7 @@ end
 -- user is able to delete and pick marks eithor using the numbers or <CR> for said mark
 function M.list_mark_files()
   local existing = {}
+  -- TODO: add keymappings specific to the buffer like J and K will move the windows and open the window on visual mode 
 
   for _, mark in ipairs(vim.fn.getmarklist()) do
     if mark.mark:match("^'[A-D]$") then
@@ -253,16 +254,16 @@ function M.list_mark_files()
   end, {buffer = buf})
 
   vim.keymap.set("n", "q", function()
-    local buffer_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+    -- local buffer_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
 
     -- NOTE: here is the checking of the order of the marks when leaving the ui menu
-    for _, m in ipairs(buffer_lines) do
-      if tonumber(m:sub(1,1)) then
-        print(m:sub(1,1))
-      else
-        print("Not a num cause an error here")
-      end
-    end
+    -- for _, m in ipairs(buffer_lines) do
+    --   if tonumber(m:sub(1,1)) then
+    --     print(m:sub(1,1))
+    --   else
+    --     print("Not a num cause an error here")
+    --   end
+    -- end
 
     vim.api.nvim_win_close(win, true)
   end, {buffer = buf})
@@ -275,21 +276,6 @@ function M.list_mark_files()
     vim.cmd("delmark " .. markers.markings[line_num])
     print("Teleport mark removed:", line_num)
   end, {buffer = buf, nowait = true})
-
-  -- version of the dd that allows for buffer delete lines
-  -- vim.keymap.set("n", "dd", function()
-  --   local cursor = vim.api.nvim_win_get_cursor(win)
-  --   local line_num = cursor[1]
-  --   local mark_char = markers.markings[line_num]
-  --
-  --   vim.cmd("delmark " .. mark_char)
-  --
-  --   vim.bo[buf].modifiable = true
-  --   vim.api.nvim_buf_set_lines(buf, line_num - 1, line_num, false, {})
-  --   vim.bo[buf].modifiable = false
-  --
-  --   print("Teleport mark removed:", mark_char)
-  -- end, {buffer = buf, nowait = true})
 
   vim.keymap.set("n", "<CR>", function()
     local cursor = vim.api.nvim_win_get_cursor(win)
@@ -311,6 +297,31 @@ function M.list_mark_files()
   vim.keymap.set("n", "f", function()
     vim.api.nvim_win_close(win, true)
     M.find_marks()
+  end, {buffer = buf})
+
+  -- vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+  -- vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
+  vim.keymap.set("n", "J", function()
+    local cursor = vim.api.nvim_win_get_cursor(win)
+    local line = cursor[1]
+    -- Don't move the last line down
+    if line >= vim.api.nvim_buf_line_count(buf) then
+      return
+    end
+    -- Read the current line and the one below it
+    local buf_lines = vim.api.nvim_buf_get_lines(buf, line - 1, line + 1, false)
+    -- Write them back in reverse order
+    vim.api.nvim_buf_set_lines(buf, line - 1, line + 1, false, {
+      buf_lines[2],
+      buf_lines[1],
+    })
+    -- Keep the cursor on the moved item
+    vim.api.nvim_win_set_cursor(win, { line + 1, cursor[2] })
+  end, { buffer = buf })
+
+  vim.keymap.set("n", "K", function()
+    vim.api.nvim_win_close(win, true)
   end, {buffer = buf})
 
   vim.keymap.set("n", "t", function() -- tabbing 
