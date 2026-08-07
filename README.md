@@ -22,7 +22,7 @@
 ---
   1. File marks can be used on non git repo projects BUT will not be saved for later use
   2. If a git project is moved to a different directory the saved marks will reset and can be altered in ~/.local/share/nvim/teleport/
-  3. the following code should be placed in your configs init.lua in order to get this plugins working correctly
+  3. the following code should be placed in your configs init.lua BEFORE the plugins require module in order to get this plugin working correctly
 ```lua
 vim.cmd("delmark ABCD") 
 ```

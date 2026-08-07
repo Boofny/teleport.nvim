@@ -255,17 +255,36 @@ function M.list_mark_files()
   end, {buffer = buf})
 
   vim.keymap.set("n", "q", function()
-    local buffer_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-
-    -- NOTE: here is the checking of the order of the marks when leaving the ui menu
-    print("-------")
-    for _, m in ipairs(buffer_lines) do
-      if tonumber(m:sub(1,1)) then
-        print(tonumber(m:sub(1,1)))
-      else
-        print("Not a num cause an error here")
-      end
-    end
+    -- NOTE: dont know how much i like the method bellow
+    -- local buffer_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+    -- local new_order = {}
+    -- local test_marks = {}
+    --
+    -- print("-------")
+    --
+    -- for _, m in ipairs(buffer_lines) do
+    --   if tonumber(m:sub(1,1)) then
+    --     new_order[#new_order+1] = tonumber(m:sub(1,1))
+    --   else
+    --     print("Not a num cause an error here")
+    --     return
+    --   end
+    -- end
+    --
+    -- local nvim_marks = markers.get_nvim_api_marks()
+    --
+    -- local count = 1
+    -- for _, num in pairs(new_order) do
+    --   test_marks[count] = {
+    --     mark_name = nvim_marks[num].mark:sub(2),
+    --     file_name = nvim_marks[num].file
+    --   }
+    --   count = count + 1
+    -- end
+    --
+    -- for _, ma in ipairs(test_marks) do
+    --   print(ma.mark_name, ma.file_name)
+    -- end
 
     vim.api.nvim_win_close(win, true)
   end, {buffer = buf})
