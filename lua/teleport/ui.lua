@@ -167,7 +167,6 @@ end
 -- user is able to delete and pick marks eithor using the numbers or <CR> for said mark
 function M.list_mark_files()
   local existing = {}
-  -- TODO: add keymappings specific to the buffer like J and K will move the windows and open the window on visual mode 
 
   for _, mark in ipairs(vim.fn.getmarklist()) do
     if mark.mark:match("^'[A-D]$") then
@@ -259,6 +258,7 @@ function M.list_mark_files()
     local buffer_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
 
     -- NOTE: here is the checking of the order of the marks when leaving the ui menu
+    print("-------")
     for _, m in ipairs(buffer_lines) do
       if tonumber(m:sub(1,1)) then
         print(tonumber(m:sub(1,1)))
