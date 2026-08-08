@@ -287,12 +287,15 @@ function M.list_mark_files()
         --   mark_name = nvim_marks[num].mark:sub(2),
         --   file_name = nvim_marks[num].file
         -- }
+
+        -- this here would be the adding of the marks but dont feel like doing it rn lol
         print("add mark")
       else
         -- test_marks[count] = { -- issue here if a mark is emty
         --   mark_name = markers.markings[num],
         --   file_name = "[EMPTY]",
         -- }
+
         print("ignore")
       end
       count = count + 1
