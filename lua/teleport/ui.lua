@@ -254,37 +254,53 @@ function M.list_mark_files()
     navs:nav_mark(4)
   end, {buffer = buf})
 
+  -- TODO: the entire goal here is to have a way to move the marks in order to not need the k1...k4 bindings
   vim.keymap.set("n", "q", function()
-    -- NOTE: dont know how much i like the method bellow
-    -- local buffer_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-    -- local new_order = {}
-    -- local test_marks = {}
-    --
-    -- print("-------")
-    --
-    -- for _, m in ipairs(buffer_lines) do
-    --   if tonumber(m:sub(1,1)) then
-    --     new_order[#new_order+1] = tonumber(m:sub(1,1))
-    --   else
-    --     print("Not a num cause an error here")
-    --     return
-    --   end
-    -- end
-    --
-    -- local nvim_marks = markers.get_nvim_api_marks()
-    --
-    -- local count = 1
-    -- for _, num in pairs(new_order) do
-    --   test_marks[count] = {
-    --     mark_name = nvim_marks[num].mark:sub(2),
-    --     file_name = nvim_marks[num].file
-    --   }
-    --   count = count + 1
-    -- end
-    --
-    -- for _, ma in ipairs(test_marks) do
-    --   print(ma.mark_name, ma.file_name)
-    -- end
+    local buffer_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+    local nvim_marks = markers.get_nvim_api_marks()
+    local new_order = {}
+    local test_marks = {}
+
+    print("-------")
+
+    -- run checks to make sure buffer win is not changed
+    for _, m in ipairs(buffer_lines) do
+      if tonumber(m:sub(1,1)) then
+        new_order[#new_order+1] = tonumber(m:sub(1,1))
+      else
+        print("Not a num, cause an error here")
+        return
+      end
+    end
+
+    -- NOTE: golang loop that works with 4 marks 
+    -- count := 0
+    -- for _, val := range newOrder{
+    -- 	newMap[count+1] = currentUserMarks[val]
+    -- 	count++
+    -- }
+
+    local count = 1
+    for _, num in pairs(new_order) do
+      if nvim_marks[num] then
+        -- test_marks[count] = { -- issue here if a mark is emty
+        --   mark_name = nvim_marks[num].mark:sub(2),
+        --   file_name = nvim_marks[num].file
+        -- }
+        print("add mark")
+      else
+        -- test_marks[count] = { -- issue here if a mark is emty
+        --   mark_name = markers.markings[num],
+        --   file_name = "[EMPTY]",
+        -- }
+        print("ignore")
+      end
+      count = count + 1
+    end
+
+    for _, ma in ipairs(test_marks) do
+      print(ma.mark_name, ma.file_name)
+    end
 
     vim.api.nvim_win_close(win, true)
   end, {buffer = buf})

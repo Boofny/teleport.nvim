@@ -7,10 +7,11 @@ local config = require("teleport.config")
 local ui = require("teleport.ui")
 local nav = require("teleport.navigate")
 
+-- NOTE: for add_mark and add_mark_override 
 M.list_mark_files = ui.list_mark_files
 M.find_marks = ui.find_marks
-M.nav = nav
 M.current_mark = markers.current_mark
+M.nav = nav -- passing the nav object not just an func
 
 -- where functions will be created to be used in commands inside of teleport.lua
 
@@ -26,7 +27,7 @@ local function mapFull(lookupTable)
   return true -- all four are taken
 end
 
--- addMark checks the order of the marks first then if there is an avalible spot ex: B then take the next spot for the mark
+-- add_mark checks the order of the marks first then if there is an avalible spot ex: B then take the next spot for the mark
 -- this also uses the logic for the mapFull in order to prompt user for the file they want to replace
 function M:add_mark()
   local lookup = {}
@@ -67,7 +68,7 @@ function M:add_mark()
 
 end
 
--- addMarkBypass overrides the addMark function in order to have custom mark setting rather than auto
+-- add_mark_override overrides the addMark function in order to have custom mark setting rather than auto
 ---@param markNum integer
 function M:add_mark_override(markNum)
   vim.cmd("mark " .. markers.markings[markNum])
