@@ -254,14 +254,10 @@ function M.list_mark_files()
     navs:nav_mark(4)
   end, {buffer = buf})
 
-  -- TODO: the entire goal here is to have a way to move the marks in order to not need the k1...k4 bindings
   vim.keymap.set("n", "q", function()
     local buffer_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-    local nvim_marks = markers.get_nvim_api_marks()
+    local nvim_marks = markers.get_nvim_api_marks_by_slot()
     local new_order = {}
-    local test_marks = {}
-
-    print("-------")
 
     -- run checks to make sure buffer win is not changed
     for _, m in ipairs(buffer_lines) do
@@ -273,36 +269,45 @@ function M.list_mark_files()
       end
     end
 
-    -- NOTE: golang loop that works with 4 marks 
-    -- count := 0
-    -- for _, val := range newOrder{
-    -- 	newMap[count+1] = currentUserMarks[val]
-    -- 	count++
-    -- }
-
-    local count = 1
-    for _, num in pairs(new_order) do
-      if nvim_marks[num] then
-        -- test_marks[count] = { -- issue here if a mark is emty
-        --   mark_name = nvim_marks[num].mark:sub(2),
-        --   file_name = nvim_marks[num].file
-        -- }
-
-        -- this here would be the adding of the marks but dont feel like doing it rn lol
-        print("add mark")
-      else
-        -- test_marks[count] = { -- issue here if a mark is emty
-        --   mark_name = markers.markings[num],
-        --   file_name = "[EMPTY]",
-        -- }
-
-        print("ignore")
+    -- checking mark order
+    for index, num in ipairs(new_order) do
+      if index ~= num then
+        break -- end the loop and go to the next part of the func since its out of order
       end
-      count = count + 1
+
+      if index == #new_order then
+        vim.api.nvim_win_close(win, true)
+        return -- stop here if the order is not changed no need to do any more work
+      end
+
     end
 
-    for _, ma in ipairs(test_marks) do
-      print(ma.mark_name, ma.file_name)
+    local count = 1
+    for _, num in ipairs(new_order) do
+      local target_mark = markers.markings[count]
+      if nvim_marks[num] then
+
+        local file = vim.fn.expand(nvim_marks[num].file)
+
+        if vim.fn.filereadable(file) == 1 then
+
+          -- Creates buffer without loading file contents
+          local bufnr = vim.fn.bufadd(file)
+
+          vim.fn.setpos("'" .. target_mark, {
+            bufnr,
+            nvim_marks[num].pos[2],
+            nvim_marks[num].pos[3],
+            nvim_marks[num].pos[4],
+          })
+        end
+
+        -- print("add mark", nvim_marks[num].mark:sub(2))
+      else
+        pcall(vim.api.nvim_del_mark, target_mark)
+        -- print("ignore" .. count .. "num=" .. num)
+      end
+      count = count + 1
     end
 
     vim.api.nvim_win_close(win, true)

@@ -34,5 +34,6 @@
 > Problem if a file is added to the list then its not counted in the next and prev listing option
 
 - [x] 13. split vert or hor for files
-- [ ] 14. cache clearing
-- [ ] 15, in buffer order manipulation with custom bindings for the menu -> NOTE: keep in mind everything that has to close the menu will have to read the menu order incase it is changed and change it to the new one
+- [ ] 14. cache clearing for when projects move to different dirs
+- [x] 15, in buffer order manipulation with custom bindings for the menu
+- completed the buffer movment for better moving of the marks getting order of the current marks -> compare with old marks and move them 

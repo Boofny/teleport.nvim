@@ -62,6 +62,23 @@ function M.get_nvim_api_marks()
   return marks
 end
 
+function M.get_nvim_api_marks_by_slot()
+  ---@type table<integer, vim.fn.getmarklist.ret.item>
+  local marks = {}
+  for _, mark in ipairs(vim.fn.getmarklist()) do
+    if mark.mark:match("^'[A-D]$") and mark.file then
+      local letter = mark.mark:sub(2) -- "A", "B", "C", or "D"
+      local index = string.byte(letter) - string.byte("A") + 1 -- A=1, B=2, C=3, D=4
+      marks[index] = {
+        mark = mark.mark,
+        file = mark.file,
+        pos = mark.pos,
+      }
+    end
+  end
+  return marks
+end
+
 ---@return integer
 function M.current_mark()
   local nvim_marks = M.get_nvim_api_marks()
