@@ -34,6 +34,6 @@
 > Problem if a file is added to the list then its not counted in the next and prev listing option
 
 - [x] 13. split vert or hor for files
-- [ ] 14. cache clearing for when projects move to different dirs
+- [ ] 14. cache clearing for when projects move to different dirs NOTE: might have to be a full clearing of the teleport cache rather than the top level but idk
 - [x] 15, in buffer order manipulation with custom bindings for the menu
 - completed the buffer movment for better moving of the marks getting order of the current marks -> compare with old marks and move them 
