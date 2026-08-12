@@ -34,6 +34,13 @@
 > Problem if a file is added to the list then its not counted in the next and prev listing option
 
 - [x] 13. split vert or hor for files
-- [ ] 14. cache clearing for when projects move to different dirs NOTE: might have to be a full clearing of the teleport cache rather than the top level but idk
+- [ ] 14. cache clearing for when projects move to different dirs NOTE: the fix for this might be to use the url for the git repo not the pwd
 - [x] 15, in buffer order manipulation with custom bindings for the menu
 - completed the buffer movment for better moving of the marks getting order of the current marks -> compare with old marks and move them 
+- [ ] 16. migrate from using toplevel to using the git url since I atleast dont use git unless it's an online repo -> ( git config --get remote.origin.url )
+          but when doing this there is a case where a user is not inside of a git url repo so this is the format 
+          1. check first if inside a git repo at all if not then stop
+          2. if yes in a git repo then check if the url is avalible and use that as the hash
+          3. if the config --get remote.origin.url == "" then fall back on top level
+          4. NOTE: could also use 1. Git remote URL -> 2. Git common directory -> 3. Absolute project root dont know how much i like the non git repo project parts 
+

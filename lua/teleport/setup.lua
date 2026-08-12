@@ -10,8 +10,9 @@ function M.in_git_repo()
 end
 
 ---@return string headHash
-function M.get_repo_root()
+function M.get_repo_root() -- TODO: could start the whole check from here actually 
   local resp = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
+  -- local resp = vim.fn.system("git config --get remote.origin.url"):gsub("\n", "")
   return resp
 end
 
