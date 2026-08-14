@@ -34,8 +34,8 @@
 > Problem if a file is added to the list then its not counted in the next and prev listing option
 
 - [x] 13. split vert or hor for files
-- [ ] 14. cache clearing for when projects move to different dirs NOTE: the fix for this might be to use the url for the git repo not the pwd
-- [x] 15, in buffer order manipulation with custom bindings for the menu
+- [x] 14, in buffer order manipulation with custom bindings for the menu
+- [ ] 15. cache clearing for when projects move to different dirs NOTE: the fix for this might be to use the url for the git repo not the pwd
 - completed the buffer movment for better moving of the marks getting order of the current marks -> compare with old marks and move them 
 - [ ] 16. migrate from using toplevel to using the git url since I atleast dont use git unless it's an online repo -> ( git config --get remote.origin.url )
           but when doing this there is a case where a user is not inside of a git url repo so this is the format 
