@@ -23,7 +23,7 @@
 - 10. add save/change status for files and if they are affected by gut diffs kinda like neotree
   - [x] altered files
   - [x] git status on files just bland color letters but may want to add color later
-  - [ ] color status on git status
+  - [ ] color status on git status TODO: this twin
 - [x] 11. list of things needed for opts -> to add on to this the way to think of this is to make a table in config.lua and pass the needed options to other things
   - [x] preselect for the cursor 
   - [x] border overrides for windows 

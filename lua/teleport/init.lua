@@ -94,7 +94,7 @@ function M.Setup(opts)
 
   -- first things first if the user is NOT in a git repo dont save the mappings
   if not setup.in_git_repo() then
-    vim.notify("Teleport plugin can not save marks on non git repo projects!", vim.log.levels.INFO)
+    vim.notify("Teleport plugin can not save marks on non git repo projects!", vim.log.levels.WARN)
     return
   end
 
@@ -105,16 +105,6 @@ function M.Setup(opts)
 
   -- find the file that owns this repo's marks
   local origin = setup.get_repo_root()
-
-  -- TODO: start the pipline for the git repo url saving here
-  -- if origin == "" then
-  --   print("IN a git repo with no url")
-  --   return
-  -- else
-  --   print(origin)
-  --   return
-  -- end
-
   local file_name = vim.fn.sha256(origin)
   local path = vim.fs.joinpath(setup.plugin_dir, file_name .. ".json")
 
