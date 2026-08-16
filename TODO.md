@@ -35,12 +35,14 @@
 
 - [x] 13. split vert or hor for files
 - [x] 14, in buffer order manipulation with custom bindings for the menu
-- [ ] 15. cache clearing for when projects move to different dirs NOTE: the fix for this might be to use the url for the git repo not the pwd
-- completed the buffer movment for better moving of the marks getting order of the current marks -> compare with old marks and move them 
-- [ ] 16. migrate from using toplevel to using the git url since I atleast dont use git unless it's an online repo -> ( git config --get remote.origin.url )
+- [x] 15. migrate from using toplevel to using the git url since I atleast dont use git unless it's an online repo -> ( git config --get remote.origin.url )
           but when doing this there is a case where a user is not inside of a git url repo so this is the format 
           1. check first if inside a git repo at all if not then stop
           2. if yes in a git repo then check if the url is avalible and use that as the hash
           3. if the config --get remote.origin.url == "" then fall back on top level
-          4. NOTE: could also use 1. Git remote URL -> 2. Git common directory -> 3. Absolute project root dont know how much i like the non git repo project parts 
+SOLUTION for 15: ok so this one was a bit complex but in short the problem was that the marks where being stored in the absolute path of the file 
+this is an issues since if its moved then the path to the og file no longer exist not allowing the marks to load
+
+so the solution for this was to use the toplevel pwd for the current project in order to track where it is then store the path to relative insted of 
+
 

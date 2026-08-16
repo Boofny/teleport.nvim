@@ -92,8 +92,9 @@ function M.Setup(opts)
   config.options = user_opts
   -- config.config_setup(user_opts)
 
+  local origin = setup.get_repo_origin()
   -- first things first if the user is NOT in a git repo dont save the mappings
-  if not setup.in_git_repo() then
+  if not origin then
     vim.notify("Teleport plugin can not save marks on non git repo projects!", vim.log.levels.WARN)
     return
   end
@@ -104,11 +105,13 @@ function M.Setup(opts)
   end
 
   -- find the file that owns this repo's marks
-  local origin = setup.get_repo_root()
+  -- local origin = setup.get_repo_url()
   local file_name = vim.fn.sha256(origin)
   local path = vim.fs.joinpath(setup.plugin_dir, file_name .. ".json")
 
   -- LOAD MARKS ---
+
+  local session_root = vim.fn.getcwd()
 
   local open_file = io.open(path, "r")
 
@@ -118,17 +121,14 @@ function M.Setup(opts)
 
     local ok, json_marks = pcall(vim.json.decode, content)
 
-    if not ok or type(json_marks) ~= "table" then
-      vim.notify(
-        "Teleport: Failed to decode mark file",
-        vim.log.levels.WARN
-      )
-      return
+    if not ok or type(json_marks) ~= "table" then -- if some fail to decode just have no marks
+      vim.notify( "Teleport: Failed to decode mark file", vim.log.levels.WARN)
+      json_marks = {}
     end
 
-
     for _, mark in ipairs(json_marks) do
-      local file = vim.fn.expand(mark.file)
+
+      local file = vim.fn.expand(vim.fs.joinpath(session_root, mark.file)) -- FIX: also one of the changes 
 
       if vim.fn.filereadable(file) == 1 then
 
@@ -164,18 +164,13 @@ function M.Setup(opts)
       local marks = vim.fn.getmarklist()
 
       for _, m in ipairs(marks) do
-
         if m.mark:match("^'[A-D]$") then
 
+          local rel_file = vim.fn.fnamemodify(m.file, ":.") -- FIX: just save the relative path not the full one like m.file does
           -- Save only what Teleport needs
-          table.insert(saved, {
-            mark = m.mark,
-            file = m.file,
-            pos = m.pos,
+          table.insert(saved, { mark = m.mark, file = rel_file, pos = m.pos,
           })
-
         end
-
       end
 
 

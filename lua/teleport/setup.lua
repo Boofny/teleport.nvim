@@ -10,8 +10,7 @@ function M.in_git_repo()
 end
 
 ---@return string headHash
-function M.get_repo_root()
-  -- BUG: despite using the url for the git repo when moved the marks are still reset in the same file
+function M.get_repo_url()
   local resp = vim.fn.system("git config --get remote.origin.url"):gsub("\n", "") -- try to find url first
 
   if resp == "" then -- if for some reason a url is not avalible for the repo then try top level aka the pwd of the repo the old way
@@ -21,8 +20,23 @@ function M.get_repo_root()
   return resp
 end
 
-function M.save_marks()
+---@return string resp
+function M.get_top_level()
+  local resp = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
+  return resp
+end
 
+function M.get_repo_origin()
+  local url = vim.fn.system("git config --get remote.origin.url"):gsub("\n", "")
+  if vim.v.shell_error == 0 and url ~= "" then
+    return url
+  end
+  -- either no remote configured, or not in a repo at all — check toplevel
+  local toplevel = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
+  if vim.v.shell_error == 0 and toplevel ~= "" then
+    return toplevel  -- valid repo, just no remote (e.g. local-only project)
+  end
+  return nil  -- not in a git repo at all
 end
 
 ---@return boolean 
