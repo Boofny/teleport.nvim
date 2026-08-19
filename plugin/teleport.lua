@@ -15,3 +15,7 @@ end, {})
 vim.api.nvim_create_user_command("FindMarks", function()
   require("teleport.ui").find_marks()
 end, {})
+
+vim.api.nvim_create_user_command("TestTele", function()
+  require("teleport").testFunc()
+end, {})

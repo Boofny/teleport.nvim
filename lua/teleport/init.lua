@@ -76,7 +76,22 @@ function M:add_mark_override(markNum)
 end
 
 function M.testFunc()
-  -- setup.git_status()
+  local command_string = ""
+  local marks = markers.get_nvim_api_marks()
+
+  for _, val in pairs(marks) do
+    print(val.file)
+    command_string = command_string .. " " .. vim.fn.fnamemodify(val.file, ":.")
+  end
+
+  -- local resp = vim.fn.system(string.format("git status %s --porcelain", command_string)):gsub("\n", "")
+  local resp = vim.fn.system(string.format("git status %s --porcelain", command_string))
+
+  -- NOTE: getting close to what i want 
+  print(resp)
+  print(resp:sub(1,1))
+  print(resp:sub(2,2))
+
 end
 
 ---@param opts? Config
