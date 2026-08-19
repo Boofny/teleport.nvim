@@ -54,7 +54,7 @@ function M.parse_opts(opts)
 end
 
 ---@param file_name string
----@return table
+---@return table <string, {X: string, Y: string}>
 function M.git_status(file_name)
   ---@class Status_table
   ---@field X string
@@ -70,4 +70,22 @@ function M.git_status(file_name)
   return status_table
 end
 
+---@param repo_root string
+---@return table<string, {X: string, Y: string}>
+function M.git_status_batch(repo_root)
+  local status_map = {}
+  local resp = vim.fn.system(
+    string.format("git -C %s status --porcelain", vim.fn.shellescape(repo_root))
+  )
+  for line in resp:gmatch("[^\r\n]+") do
+    local x, y, path = line:sub(1,1), line:sub(2,2), line:sub(4)
+    status_map[path] = { X = x, Y = y }
+  end
+  return status_map
+end
+
 return M
+
+
+
+

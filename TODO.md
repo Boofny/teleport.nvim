@@ -24,7 +24,7 @@
   - [x] altered files
   - [x] git status on files just bland color letters but may want to add color later
   - [ ] color status on git status TODO: this twin
-- [x] 11. list of things needed for opts -> to add on to this the way to think of this is to make a table in config.lua and pass the needed options to other things
+  - [x] 11. list of things needed for opts -> to add on to this the way to think of this is to make a table in config.lua and pass the needed options to other things
   - [x] preselect for the cursor 
   - [x] border overrides for windows 
   - [x] position on the screen topleft center topright etc...
@@ -44,5 +44,11 @@ SOLUTION for 15: ok so this one was a bit complex but in short the problem was t
 this is an issues since if its moved then the path to the og file no longer exist not allowing the marks to load
 
 so the solution for this was to use the toplevel pwd for the current project in order to track where it is then store the path to relative insted of 
+
+- [ ] 16. TODO: cut down on the amount of system commands that are used in the code like the amount of times an external command like git is used
+          EX: for example git status is being called a total of four times at max mark usage when we can cut it down to one time batch call
+
+
+
 
 
