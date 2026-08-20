@@ -181,7 +181,7 @@ function M.list_mark_files()
 
     if mark then
       local modified_status = is_modified(mark.file) and "[+]" or ""
-      local git_status = setup.git_status(mark.file) -- FIX: for right now this makes four calls to the git command lets make it one
+      local git_status = setup.git_status(mark.file) -- FIX: the amount of times this runs
       table.insert(lines,
         string.format("%s %s %s %s%s", markers.markersList[letter], vim.fn.fnamemodify(mark.file, ":."), modified_status, git_status["X"], git_status["Y"])
       )

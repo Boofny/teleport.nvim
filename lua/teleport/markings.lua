@@ -53,7 +53,7 @@ function M.get_nvim_api_marks()
     if mark.mark:match("^'[A-D]$") and mark.file then
       table.insert(marks, {
         mark = mark.mark, -- mark name like A or Bk
-        file = mark.file, -- file path from the cwd like lua/teleport/init.lua
+        file = mark.file, -- file path from ~/
         pos = mark.pos, -- full file path
       })
     end

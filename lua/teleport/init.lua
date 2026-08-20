@@ -75,23 +75,34 @@ function M:add_mark_override(markNum)
   vim.notify("Teleport marked: " .. markNum, vim.log.levels.INFO)
 end
 
+---@param input string
+local function split_by_line(input)
+  local paths = {}
+
+  for val in input:gmatch("[^\n]+") do
+    table.insert(paths, val)
+  end
+  return paths
+end
+
+-- have some small working of just printing my marks that have changes
 function M.testFunc()
   local command_string = ""
-  local marks = markers.get_nvim_api_marks()
+  local marks = markers.get_teleport_marks()
 
   for _, val in pairs(marks) do
-    print(val.file)
-    command_string = command_string .. " " .. vim.fn.fnamemodify(val.file, ":.")
+    -- print(val.file)
+    command_string = command_string .. " " .. val.fileName
   end
 
   -- local resp = vim.fn.system(string.format("git status %s --porcelain", command_string)):gsub("\n", "")
   local resp = vim.fn.system(string.format("git status %s --porcelain", command_string))
 
-  -- NOTE: getting close to what i want 
-  print(resp)
-  print(resp:sub(1,1))
-  print(resp:sub(2,2))
+  local printers = split_by_line(resp)
 
+  for _, i in pairs(printers) do
+    print(i)
+  end
 end
 
 ---@param opts? Config
