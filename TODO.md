@@ -48,7 +48,10 @@ so the solution for this was to use the toplevel pwd for the current project in 
 - [ ] 16. TODO: cut down on the amount of system commands that are used in the code like the amount of times an external command like git is used
           EX: for example git status is being called a total of four times at max mark usage when we can cut it down to one time batch call
 
-- [ ] 17. implement the new options for the user to for displaying file modify or git status
+- [x] 17. implement the new options for the user to for displaying file modify or git status
+  - [x] save warning
+  - [x] modify status or not
+  - [x] git status or not
 
 
 

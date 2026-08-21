@@ -182,12 +182,22 @@ function M.list_mark_files()
     if mark then
       local modified_status = is_modified(mark.file) and "[+]" or ""
       local git_status = setup.git_status(mark.file) -- FIX: the amount of times this runs
-      table.insert(lines,
-        string.format("%s %s %s %s%s", markers.markersList[letter], vim.fn.fnamemodify(mark.file, ":."), modified_status, git_status["X"], git_status["Y"])
-      )
+
+      local line = string.format("%s %s", markers.markersList[letter], vim.fn.fnamemodify(mark.file, ":."))
+
+      if config.options.file_modify_status then
+        line = line .. " " .. modified_status
+      end
+
+      if config.options.file_git_status then
+        line = line .. " " .. git_status["X"] .. git_status["Y"]
+      end
+
+      table.insert(lines, line)
     else
       table.insert(lines, string.format("%s [ EMPTY ]", markers.markersList[letter]))
     end
+
   end
 
   local width = math.floor((vim.o.columns) / 2) -- dynamic width for different screens

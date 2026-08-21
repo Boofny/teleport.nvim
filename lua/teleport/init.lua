@@ -85,6 +85,7 @@ local function split_by_line(input)
   return paths
 end
 
+-- NOTE: could use table.concat in order to get rid of the need for a split_by_line function
 -- have some small working of just printing my marks that have changes
 function M.testFunc()
   local command_string = ""
