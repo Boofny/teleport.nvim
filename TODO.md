@@ -52,6 +52,7 @@ so the solution for this was to use the toplevel pwd for the current project in 
   - [x] save warning
   - [x] modify status or not
   - [x] git status or not
+- [ ] 18. make the overrides for marks like k1..k4 be one command so if you want to over ride something like 1's pos then just use the list
 
 
 
