@@ -10,7 +10,9 @@ config_opts.default = {
   border = "single", -- border and position are just for the main list_marks func
   position = "center", -- top, center, bottom these three options with center being default
   preview_length = 50, -- how long and how much memory is used for previewing files
-  -- show_file_status = true,
+  save_warning = true, -- get a reminder that marks are not saved in non git repos
+  file_modify_status = true, -- show [+] modify status inline the list_mark_files menu
+  file_git_status = true -- showing XY of git status inline the the list menu
 }
 
 config_opts.position_cases = {

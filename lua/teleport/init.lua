@@ -121,7 +121,9 @@ function M.Setup(opts)
   local origin = setup.get_repo_origin()
   -- first things first if the user is NOT in a git repo dont save the mappings
   if not origin then
-    vim.notify("Teleport plugin can not save marks on non git repo projects!", vim.log.levels.WARN)
+    if user_opts.save_warning then
+      vim.notify("Teleport plugin can not save marks on non git repo projects!", vim.log.levels.WARN)
+    end
     return
   end
 
