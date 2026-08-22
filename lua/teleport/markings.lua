@@ -93,4 +93,56 @@ function M.current_mark()
   return -1 -- indicating an error or non mark
 end
 
+---@param input_string string
+---@return table<string>
+local function split_by_line(input_string)
+  local paths = {}
+
+  for val in input_string:gmatch("[^\n]+") do
+    table.insert(paths, val)
+  end
+  return paths
+end
+
+---@param marks_table string[]
+local function extract_file_status(marks_table)
+
+  ---@type table<string, Status_table>
+  local git_status_table = {}
+
+  for _, i in pairs(marks_table) do
+    git_status_table[i:sub(4)] = {
+      X = i:sub(1,1), ---@type string
+      Y = i:sub(2,2), ---@type string
+    }
+  end
+
+  return git_status_table
+end
+
+function M.dont_use_yet()
+  local command_string = ""
+  local marks = M.get_teleport_marks()
+
+  for _, val in pairs(marks) do
+    command_string = command_string .. " " .. val.fileName
+  end
+
+  local resp = vim.fn.system(string.format("git status %s --porcelain", command_string))
+
+  local printers = split_by_line(resp)
+
+  if #printers == 0 then
+    print("no marks have git changes")
+    return
+  end
+
+  local extraction = extract_file_status(printers)
+
+  for filename, e in pairs(extraction) do
+    print(filename, e["X"], e["Y"])
+  end
+
+end
+
 return M

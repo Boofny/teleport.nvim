@@ -75,67 +75,7 @@ function M:add_mark_override(markNum)
   vim.notify("Teleport marked: " .. markNum, vim.log.levels.INFO)
 end
 
----@param input_string string
----@return table<string>
-local function split_by_line(input_string)
-  local paths = {}
-
-  for val in input_string:gmatch("[^\n]+") do
-    table.insert(paths, val)
-  end
-  return paths
-end
-
----@param marks_table table<string>
-local function extract_file_status(marks_table)
-  -- the return type for this will be a nested table
-
-  local git_status_table = {}
-
-  ---@class Status_table
-  local status_table = {}
-
-  for _, i in pairs(marks_table) do
-    print(i)
-    print(i:sub(4)) -- file name / relative path
-    print(i:sub(1,1)) -- x
-    print(i:sub(2,2)) -- y
-
-    -- status_table["X"] = i:sub(1,1)
-    -- status_table["Y"] = i:sub(2,2)
-  end
-  return status_table
-end
-
--- have some small working of just printing my marks that have changes
 function M.testFunc()
-  -- should be like key: file_name, val: file_git_status git_status_table[file_name] = {X:, Y:}
-  local command_string = ""
-  local marks = markers.get_teleport_marks()
-
-  for _, val in pairs(marks) do
-    -- print(val.fileName)
-    command_string = command_string .. " " .. val.fileName
-  end
-
-  -- local resp = vim.fn.system(string.format("git status %s --porcelain", command_string)):gsub("\n", "")
-  local resp = vim.fn.system(string.format("git status %s --porcelain", command_string))
-
-  local printers = split_by_line(resp)
-
-  if #printers == 0 then
-    print("marks empty")
-    return
-  end
-
-  local extraction = extract_file_status(printers)
-  -- print("Ignore this ->", extraction[1])
-
-  -- print(printers[1])
-
-  -- for _, i in pairs(printers) do
-  --   print(i)
-  -- end
 end
 
 ---@param opts? Config

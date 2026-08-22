@@ -166,6 +166,7 @@ end
 -- list_mark_files shows a pop up window of avalible teleport marks and there names 
 -- user is able to delete and pick marks eithor using the numbers or <CR> for said mark
 function M.list_mark_files()
+  -- markers.dont_use_yet() this will be used for the printing debuging but still not being used as it does not return anything
   local existing = {}
 
   for _, mark in ipairs(vim.fn.getmarklist()) do
