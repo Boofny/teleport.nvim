@@ -55,7 +55,7 @@ end
 
 ---@param file_name string
 ---@return table <string, {X: string, Y: string}>
-function M.git_status(file_name)
+function M.git_status(file_name) -- no longer being used but not deleted for docs
   ---@class Status_table
   ---@field X string
   ---@field Y string

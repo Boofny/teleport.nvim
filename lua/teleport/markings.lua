@@ -94,7 +94,7 @@ function M.current_mark()
 end
 
 ---@param input_string string
----@return table<string>
+---@return string[]
 local function split_by_line(input_string)
   local paths = {}
 
@@ -120,7 +120,7 @@ local function extract_file_status(marks_table)
   return git_status_table
 end
 
-function M.dont_use_yet()
+function M.marks_git_status()
   local command_string = ""
   local marks = M.get_teleport_marks()
 
@@ -139,10 +139,7 @@ function M.dont_use_yet()
 
   local extraction = extract_file_status(printers)
 
-  for filename, e in pairs(extraction) do
-    print(filename, e["X"], e["Y"])
-  end
-
+  return extraction
 end
 
 return M

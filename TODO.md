@@ -23,7 +23,7 @@
 - 10. add save/change status for files and if they are affected by gut diffs kinda like neotree
   - [x] altered files
   - [x] git status on files just bland color letters but may want to add color later
-  - [ ] color status on git status TODO: this twin
+  - [ ] color status on git status
   - [x] 11. list of things needed for opts -> to add on to this the way to think of this is to make a table in config.lua and pass the needed options to other things
   - [x] preselect for the cursor 
   - [x] border overrides for windows 
@@ -45,7 +45,7 @@ this is an issues since if its moved then the path to the og file no longer exis
 
 so the solution for this was to use the toplevel pwd for the current project in order to track where it is then store the path to relative insted of 
 
-- [ ] 16. TODO: cut down on the amount of system commands that are used in the code like the amount of times an external command like git is used
+- [X] 16. cut down on the amount of system commands that are used in the code like the amount of times an external command like git is used
           EX: for example git status is being called a total of four times at max mark usage when we can cut it down to one time batch call
 
 - [x] 17. implement the new options for the user to for displaying file modify or git status

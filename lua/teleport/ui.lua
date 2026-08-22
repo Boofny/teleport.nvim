@@ -3,7 +3,7 @@ local M = {}
 local navs = require("teleport.navigate")
 local markers = require("teleport.markings")
 local config = require("teleport.config")
-local setup = require("teleport.setup")
+-- local setup = require("teleport.setup")
 
 ---@param file vim.fn.getmarklist.ret.item
 local function preview_buffer(file)
@@ -166,7 +166,6 @@ end
 -- list_mark_files shows a pop up window of avalible teleport marks and there names 
 -- user is able to delete and pick marks eithor using the numbers or <CR> for said mark
 function M.list_mark_files()
-  -- markers.dont_use_yet() this will be used for the printing debuging but still not being used as it does not return anything
   local existing = {}
 
   for _, mark in ipairs(vim.fn.getmarklist()) do
@@ -176,22 +175,29 @@ function M.list_mark_files()
   end
 
   local lines = {}
+  local status_marks = markers.marks_git_status()
+
+  if not status_marks then
+    status_marks = {}
+  end
 
   for _, letter in ipairs({ "A", "B", "C", "D" }) do
     local mark = existing[letter]
 
     if mark then
-      local modified_status = is_modified(mark.file) and "[+]" or ""
-      local git_status = setup.git_status(mark.file) -- FIX: the amount of times this runs
+      local formated_file_name = vim.fn.fnamemodify(mark.file, ":.")
+      local entry = status_marks[formated_file_name]
 
-      local line = string.format("%s %s", markers.markersList[letter], vim.fn.fnamemodify(mark.file, ":."))
+      local modified_status = is_modified(mark.file) and "[+]" or ""
+
+      local line = string.format("%s %s", markers.markersList[letter], formated_file_name)
 
       if config.options.file_modify_status then
         line = line .. " " .. modified_status
       end
 
-      if config.options.file_git_status then
-        line = line .. " " .. git_status["X"] .. git_status["Y"]
+      if config.options.file_git_status and entry then
+        line = line .. " " .. entry["X"] .. entry["Y"]
       end
 
       table.insert(lines, line)
