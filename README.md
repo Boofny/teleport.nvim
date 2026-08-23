@@ -39,25 +39,26 @@ vim.keymap.set("n", "<leader>2", function() tele.nav:nav_mark(2) end)
 vim.keymap.set("n", "<leader>3", function() tele.nav:nav_mark(3) end)
 vim.keymap.set("n", "<leader>4", function() tele.nav:nav_mark(4) end)
 
--- optional select picker
+-- tab iteration
+vim.keymap.set("n", "<A-n>", function() tele.nav:next() end)
+vim.keymap.set("n", "<A-p>", function() tele.nav:prev() end)
+
+-- select picker
 vim.keymap.set("n", "<leader>gt", tele.find_marks) 
 
--- optional mark override
+-- optional mark override for file pos
 vim.keymap.set("n", "<leader>k1", function() tele.add_mark_override(1) end)
 vim.keymap.set("n", "<leader>k2", function() tele.add_mark_override(2) end)
 vim.keymap.set("n", "<leader>k3", function() tele.add_mark_override(3) end)
 vim.keymap.set("n", "<leader>k4", function() tele.add_mark_override(4) end)
 
--- optional tab iteration
-vim.keymap.set("n", "<A-n>", function() tele.nav:next() end)
-vim.keymap.set("n", "<A-p>", function() tele.nav:prev() end)
 ```
 
 ### Customization
 ```lua
 local tele = require("teleport")
 
--- defaults
+-- default opts
 tele.Setup({
   preselect = false, -- keeping cursor on current mark when opening menu
   border = "single", -- border for the main list 

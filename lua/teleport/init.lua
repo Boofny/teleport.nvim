@@ -7,7 +7,7 @@ local config = require("teleport.config")
 local ui = require("teleport.ui")
 local nav = require("teleport.navigate")
 
--- NOTE: for add_mark and add_mark_override 
+-- for add_mark and add_mark_override 
 M.list_mark_files = ui.list_mark_files
 M.find_marks = ui.find_marks
 M.current_mark = markers.current_mark
@@ -58,7 +58,7 @@ function M:add_mark() -- NOTE: logic is a work in progress
       -- return
       for _, mark in ipairs(marks) do
         if markers.markersList[mark.markName] == current_file_mark then
-          vim.notify("File is already marked at mark: " .. markers.markersList[mark.markName])
+          vim.notify("File is already marked at mark: " .. markers.markersList[mark.markName], vim.log.levels.WARN)
           return -- dont run the rest of the func
         end
       end
@@ -142,7 +142,7 @@ function M.Setup(opts)
 
     for _, mark in ipairs(json_marks) do
 
-      local file = vim.fn.expand(vim.fs.joinpath(session_root, mark.file)) -- FIX: also one of the changes 
+      local file = vim.fn.expand(vim.fs.joinpath(session_root, mark.file)) -- also one of the changes 
 
       if vim.fn.filereadable(file) == 1 then
 
@@ -180,7 +180,7 @@ function M.Setup(opts)
       for _, m in ipairs(marks) do
         if m.mark:match("^'[A-D]$") then
 
-          local rel_file = vim.fn.fnamemodify(m.file, ":.") -- FIX: just save the relative path not the full one like m.file does
+          local rel_file = vim.fn.fnamemodify(m.file, ":.") -- just save the relative path not the full one like m.file does
           -- Save only what Teleport needs
           table.insert(saved, { mark = m.mark, file = rel_file, pos = m.pos,
           })

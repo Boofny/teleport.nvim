@@ -22,7 +22,7 @@ end
 
 M.ORDEREDMARKS = "ABCD"
 
--- function get_teleport_marks only gets the marks from the ranges of A-D or to be change later NOTE: it does return a custom table
+-- function get_teleport_marks only gets the marks from the ranges of A-D or to be change later -> it does return a custom table
 ---@class TeleportMark
 ---@field markName string
 ---@field fileName string
@@ -106,6 +106,9 @@ end
 
 ---@param marks_table string[]
 local function extract_file_status(marks_table)
+  ---@class Status_table
+  ---@field X string
+  ---@field Y string
 
   ---@type table<string, Status_table>
   local git_status_table = {}
@@ -130,14 +133,14 @@ function M.marks_git_status()
 
   local resp = vim.fn.system(string.format("git status %s --porcelain", command_string))
 
-  local printers = split_by_line(resp)
+  local split_git_command = split_by_line(resp)
 
-  if #printers == 0 then
-    print("no marks have git changes")
+  if #split_git_command == 0 then
+    -- print("no marks have git changes")
     return
   end
 
-  local extraction = extract_file_status(printers)
+  local extraction = extract_file_status(split_git_command)
 
   return extraction
 end
