@@ -29,7 +29,7 @@ end
 
 -- add_mark checks the order of the marks first then if there is an avalible spot ex: B then take the next spot for the mark
 -- this also uses the logic for the mapFull in order to prompt user for the file they want to replace
-function M:add_mark()
+function M:add_mark() -- NOTE: logic is a work in progress
   local lookup = {}
 
   -- make the look up table based on the marks in the map of marks in neovim
@@ -50,8 +50,20 @@ function M:add_mark()
 
   -- when map of marks gets full prompt user to replace one
   if mapFull(lookup) then
-
+    local current_file_mark = markers.current_mark()
     local marks = markers.get_teleport_marks()
+
+    if current_file_mark ~= -1 then
+      -- vim.notify("Some error overloading marks", vim.log.levels.ERROR)
+      -- return
+      for _, mark in ipairs(marks) do
+        if markers.markersList[mark.markName] == current_file_mark then
+          vim.notify("File is already marked at mark: " .. markers.markersList[mark.markName])
+          return -- dont run the rest of the func
+        end
+      end
+
+    end
 
     vim.ui.select(marks, {
       prompt = "All marks taken, replace?",
@@ -65,6 +77,7 @@ function M:add_mark()
     end)
 
   end
+
 
 end
 
