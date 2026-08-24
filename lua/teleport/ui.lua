@@ -197,7 +197,8 @@ function M.list_mark_files()
       end
 
       if config.options.file_git_status and entry then
-        line = line .. " " .. entry["X"] .. entry["Y"]
+        -- line = line .. " " .. entry["X"] .. entry["Y"]
+        line = line .. entry["X"] .. entry["Y"] -- FIX: no need for spacing but now will make the spacing dynamic
       end
 
       table.insert(lines, line)

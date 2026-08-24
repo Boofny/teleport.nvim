@@ -1,0 +1,2 @@
+local Health = {}
+return Health
