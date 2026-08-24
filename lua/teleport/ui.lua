@@ -74,7 +74,7 @@ local function help_buffer()
     "     q => Exit Teleport menu",
     "     t => Open in tab",
     "     P => Preview File content",
-    "     h => Open horizontal split",
+    "     H => Open horizontal split",
     "     v => Open vertical split",
     "     f => Find marks"
   }
@@ -198,7 +198,7 @@ function M.list_mark_files()
 
       if config.options.file_git_status and entry then
         -- line = line .. " " .. entry["X"] .. entry["Y"]
-        line = line .. entry["X"] .. entry["Y"] -- FIX: no need for spacing but now will make the spacing dynamic
+        line = line .. "(" .. entry["X"] .. entry["Y"] ")" -- FIX: no need for spacing but now will make the spacing dynamic
       end
 
       table.insert(lines, line)
@@ -446,7 +446,7 @@ function M.list_mark_files()
     vim.notify("Teleport Mark " .. line_num .. " is not set", vim.log.levels.ERROR)
   end, {buffer = buf})
 
-  vim.keymap.set("n", "h", function()
+  vim.keymap.set("n", "H", function()
     local cursor = vim.api.nvim_win_get_cursor(win)
     local line_num = cursor[1]
     local marks = markers.get_nvim_api_marks()
