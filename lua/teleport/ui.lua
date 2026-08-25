@@ -60,8 +60,16 @@ local function preview_buffer(file)
 
 end
 
+-- local function set_git_highlights()
+--   vim.api.nvim_set_hl(0, 'TeleportMark', { fg = '#e0af68', bold = true })
+--   vim.api.nvim_set_hl(0, 'TeleportMarkInactive', { fg = '#565f89' })
+-- end
+--
+-- ---@param line string
+-- local function color_git_status(line)
+-- end
+--
 local function help_buffer()
-
   local lines = {
     "   Keys   Command/Description",
     "  ---------------------------",
@@ -193,25 +201,12 @@ function M.list_mark_files()
       local line = string.format("%s %s", markers.markersList[letter], formated_file_name)
 
       if config.options.file_modify_status then
-        if modified_status == "[+]" then
-          line = line .. " " .. modified_status .. " "
-        else
-          line = line .. " " .. modified_status
-        end
+        line = line .. " " .. modified_status .. (modified_status ~= "" and " " or "")
       end
 
       if config.options.file_git_status and entry then
-        local x = entry["X"]
-        local y = entry["Y"]
-
-        if entry["X"] == " " then
-          x = ""
-        end
-
-        if entry["Y"] == " " then
-          y = ""
-        end
-
+        local x = entry.X ~= " " and entry.X or ""
+        local y = entry.Y ~= " " and entry.Y or ""
         line = line .. x .. y
       end
 
@@ -256,6 +251,13 @@ function M.list_mark_files()
     vim.api.nvim_win_set_cursor(win, {pos, 0}) -- just a nice thing to keep the cursor inline with what mark is on
   end
 
+  -- local ns = vim.api.nvim_create_namespace('teleport_marks')
+  -- local last_line = vim.api.nvim_buf_line_count(buf) - 1  -- 0-indexed
+  --
+  -- vim.api.nvim_buf_set_extmark(buf, ns, last_line, 0, {
+  --   virt_text = { { 'M', 'TeleportMarkInactive' } },
+  --   virt_text_pos = 'eol', -- always renders at end of line, whatever its length is
+  -- })
 
   vim.wo[win].cursorline = true
 
