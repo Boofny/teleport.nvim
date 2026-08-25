@@ -193,12 +193,26 @@ function M.list_mark_files()
       local line = string.format("%s %s", markers.markersList[letter], formated_file_name)
 
       if config.options.file_modify_status then
-        line = line .. " " .. modified_status
+        if modified_status == "[+]" then
+          line = line .. " " .. modified_status .. " "
+        else
+          line = line .. " " .. modified_status
+        end
       end
 
       if config.options.file_git_status and entry then
-        -- line = line .. " " .. entry["X"] .. entry["Y"]
-        line = line .. "(" .. entry["X"] .. entry["Y"] ")" -- FIX: no need for spacing but now will make the spacing dynamic
+        local x = entry["X"]
+        local y = entry["Y"]
+
+        if entry["X"] == " " then
+          x = ""
+        end
+
+        if entry["Y"] == " " then
+          y = ""
+        end
+
+        line = line .. x .. y
       end
 
       table.insert(lines, line)

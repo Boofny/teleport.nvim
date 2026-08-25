@@ -52,7 +52,7 @@ so the solution for this was to use the toplevel pwd for the current project in 
   - [x] save warning
   - [x] modify status or not
   - [x] git status or not
-- [ ] 18. make dynamic spacing for git status x and y symbols in the list_mark_files ui
+- [x] 18. make dynamic spacing for git status x and y symbols in the list_mark_files ui
 
 
 

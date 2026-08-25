@@ -12,7 +12,8 @@ config_opts.default = {
   preview_length = 50, -- how long and how much memory is used for previewing files
   save_warning = true, -- get a reminder that marks are not saved in non git repos
   file_modify_status = true, -- show [+] modify status inline the list_mark_files menu
-  file_git_status = true -- showing XY of git status inline the the list menu
+  file_git_status = true, -- showing XY of git status inline the the list menu
+  file_git_status_color = true -- XY git status symbols being colored in
 }
 
 config_opts.position_cases = {
