@@ -79,7 +79,7 @@ function M.get_nvim_api_marks_by_slot()
   return marks
 end
 
----@return integer?
+---@return integer
 function M.current_mark()
   local nvim_marks = M.get_nvim_api_marks()
   local current_file_name = vim.fn.expand('%')

@@ -60,11 +60,11 @@ local function preview_buffer(file)
 
 end
 
--- local function set_git_highlights()
---   vim.api.nvim_set_hl(0, 'TeleportMark', { fg = '#e0af68', bold = true })
---   vim.api.nvim_set_hl(0, 'TeleportMarkInactive', { fg = '#565f89' })
--- end
---
+local function set_git_highlights()
+  vim.api.nvim_set_hl(0, 'TeleportMark', { fg = '#e0af68', bold = true, bg='NONE'})
+  vim.api.nvim_set_hl(0, 'TeleportMarkInactive', { fg = '#565f89' })
+end
+
 -- ---@param line string
 -- local function color_git_status(line)
 -- end
@@ -174,6 +174,7 @@ end
 -- list_mark_files shows a pop up window of avalible teleport marks and there names 
 -- user is able to delete and pick marks eithor using the numbers or <CR> for said mark
 function M.list_mark_files()
+  set_git_highlights()
   local existing = {}
 
   for _, mark in ipairs(vim.fn.getmarklist()) do
@@ -250,14 +251,6 @@ function M.list_mark_files()
   if pos ~= -1 then
     vim.api.nvim_win_set_cursor(win, {pos, 0}) -- just a nice thing to keep the cursor inline with what mark is on
   end
-
-  -- local ns = vim.api.nvim_create_namespace('teleport_marks')
-  -- local last_line = vim.api.nvim_buf_line_count(buf) - 1  -- 0-indexed
-  --
-  -- vim.api.nvim_buf_set_extmark(buf, ns, last_line, 0, {
-  --   virt_text = { { 'M', 'TeleportMarkInactive' } },
-  --   virt_text_pos = 'eol', -- always renders at end of line, whatever its length is
-  -- })
 
   vim.wo[win].cursorline = true
 
