@@ -54,6 +54,7 @@ so the solution for this was to use the toplevel pwd for the current project in 
   - [x] git status or not
 - [x] 18. make dynamic spacing for git status x and y symbols in the list_mark_files ui
 - [ ] 19. need to find a better way to handle in file possision overrides like the commands k1..k4 but have something like an indicators for lua line to know where you at
+- [X] 20. status function for lua line and status line
 
 
 

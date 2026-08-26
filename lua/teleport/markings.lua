@@ -79,7 +79,7 @@ function M.get_nvim_api_marks_by_slot()
   return marks
 end
 
----@return integer
+---@return integer?
 function M.current_mark()
   local nvim_marks = M.get_nvim_api_marks()
   local current_file_name = vim.fn.expand('%')
@@ -91,6 +91,20 @@ function M.current_mark()
   end
 
   return -1 -- indicating an error or non mark
+end
+
+---@return integer
+function M.status_line_current_mark() -- used for external api
+  local nvim_marks = M.get_nvim_api_marks()
+  local current_file_name = vim.fn.expand('%')
+
+  for _, m in ipairs(nvim_marks) do
+    if vim.fn.fnamemodify(m.file, ":.") == vim.fn.fnamemodify(current_file_name, ":.") then
+      return M.markersList[m.mark:sub(2)]
+    end
+  end
+
+  return -1
 end
 
 ---@param input_string string

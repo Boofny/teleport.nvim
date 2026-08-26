@@ -72,3 +72,23 @@ tele.Setup({
 
 ```
 
+### Lualine status example
+
+```lua
+{
+function ()
+    local ok, teleport = pcall(require, 'teleport.markings')
+    if not ok then return '' end
+
+    local current = teleport.status_line_current_mark() -- just returns mark 1..4 or -1 for a non mark
+
+    if current == -1 then
+      return ''
+    end
+
+    return "T: " .. current
+end
+},
+```
+
+
