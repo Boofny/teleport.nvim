@@ -186,6 +186,14 @@ function M.list_mark_files()
   local lines = {}
   local status_marks = markers.marks_git_status()
 
+  ---@class Git_status
+  ---@field mark integer
+  ---@field mark_line string
+  ---@field git_status string
+
+  ---@type Git_status[]
+  local git_status_line = {} -- NOTE: could add like a pos for the XY of git to get the location of the status
+
   if not status_marks then
     status_marks = {}
   end
@@ -209,6 +217,13 @@ function M.list_mark_files()
         local x = entry.X ~= " " and entry.X or ""
         local y = entry.Y ~= " " and entry.Y or ""
         line = line .. x .. y
+
+        table.insert(git_status_line, {
+          mark = markers.markersList[letter],
+          mark_line = line,
+          git_status = entry.X .. entry.Y
+        })
+
       end
 
       table.insert(lines, line)
@@ -216,6 +231,15 @@ function M.list_mark_files()
       table.insert(lines, string.format("%s [ EMPTY ]", markers.markersList[letter]))
     end
 
+  end
+
+  -- nil check to make sure there is files in the table
+  if git_status_line then
+    for _, v in ipairs(git_status_line) do
+      print(v.mark)
+      print(v.mark_line)
+      print("("..v.git_status..")")
+    end
   end
 
   local width = math.floor((vim.o.columns) / 2) -- dynamic width for different screens
