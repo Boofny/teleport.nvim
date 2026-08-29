@@ -234,7 +234,7 @@ function M.list_mark_files()
   end
 
   -- nil check to make sure there is files in the table
-  if git_status_line then
+  if git_status_line[1] ~= nil then -- TODO: get rid of this later just for debuging
     for _, v in ipairs(git_status_line) do
       print(v.mark)
       print(v.mark_line)
@@ -274,6 +274,21 @@ function M.list_mark_files()
 
   if pos ~= -1 then
     vim.api.nvim_win_set_cursor(win, {pos, 0}) -- just a nice thing to keep the cursor inline with what mark is on
+  end
+
+  if git_status_line[1] ~= nil then -- check that atleast the first mark does exist
+
+    for _, val in pairs(git_status_line) do
+      local line_len = #val.mark_line
+      local git_status_len = (#val.git_status == 2) and 2 or 1
+
+      local ns = vim.api.nvim_create_namespace("teleport")
+      vim.api.nvim_buf_set_extmark(buf, ns, val.mark - 1, line_len - git_status_len, {
+        end_col = #val.mark_line,
+        hl_group = "Error",
+      })
+    end
+
   end
 
   vim.wo[win].cursorline = true
