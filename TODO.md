@@ -23,7 +23,7 @@
 - 10. add save/change status for files and if they are affected by gut diffs kinda like neotree
   - [x] altered files
   - [x] git status on files just bland color letters but may want to add color later
-  - [ ] color status on git status
+  - [x] color status on git status
   - [x] 11. list of things needed for opts -> to add on to this the way to think of this is to make a table in config.lua and pass the needed options to other things
   - [x] preselect for the cursor 
   - [x] border overrides for windows 
@@ -53,8 +53,8 @@ so the solution for this was to use the toplevel pwd for the current project in 
   - [x] modify status or not
   - [x] git status or not
 - [x] 18. make dynamic spacing for git status x and y symbols in the list_mark_files ui
-- [ ] 19. need to find a better way to handle in file possision overrides like the commands k1..k4 but have something like an indicators for lua line to know where you at
-- [X] 20. status function for lua line and status line
+- [X] 19. status function for lua line and status line
+- [ ] 20. need to make a clear cache command for the user with inputs for Y/N
 
 
 

@@ -60,15 +60,6 @@ local function preview_buffer(file)
 
 end
 
--- local function set_git_highlights()
---   vim.api.nvim_set_hl(0, 'TeleportMark', { fg = '#e0af68', bold = true, bg='NONE'})
---   vim.api.nvim_set_hl(0, 'TeleportMarkInactive', { fg = '#565f89' })
--- end
-
--- ---@param line string
--- local function color_git_status(line)
--- end
-
 local function help_buffer()
   local lines = {
     "   Keys   Command/Description",
@@ -174,6 +165,9 @@ end
 ---@param git_sign string
 ---@return string
 local function get_hl_group(git_sign)
+  -- if git_sign:sub(1, 1) == " " or git_sign:sub(2, 2) == " " then
+  -- end
+
   if git_sign == "??" then return "Keyword" end
   if git_sign == "!!" then return "Function" end
 
@@ -188,7 +182,6 @@ end
 -- list_mark_files shows a pop up window of avalible teleport marks and there names 
 -- user is able to delete and pick marks eithor using the numbers or <CR> for said mark
 function M.list_mark_files()
-  -- set_git_highlights()
   local existing = {}
 
   for _, mark in ipairs(vim.fn.getmarklist()) do
@@ -285,9 +278,16 @@ function M.list_mark_files()
 
     for _, val in pairs(git_status_line) do
       local line_len = #val.mark_line
-      local git_status_len = (#val.git_status == 2) and 2 or 1
+      local git_status_len
 
-      local ns = vim.api.nvim_create_namespace("teleport")
+      if val.git_status:sub(1,1) == " " or val.git_status:sub(1, 2) == " " then
+        git_status_len = 1
+      else
+        git_status_len = 2
+      end
+
+      local ns = vim.api.nvim_create_namespace("teleportGitStatus")
+
       vim.api.nvim_buf_set_extmark(buf, ns, val.mark - 1, line_len - git_status_len, {
         end_col = #val.mark_line,
         hl_group = get_hl_group(val.git_status),

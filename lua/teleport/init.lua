@@ -215,7 +215,8 @@ function M.Setup(opts)
   })
 end
 
-function M.clear_cache()
+-- This is the complete last resort do NOT use without reading docs
+function M.clear_cache() -- TODO:
 end
 
 return M
