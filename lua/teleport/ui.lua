@@ -60,15 +60,15 @@ local function preview_buffer(file)
 
 end
 
-local function set_git_highlights()
-  vim.api.nvim_set_hl(0, 'TeleportMark', { fg = '#e0af68', bold = true, bg='NONE'})
-  vim.api.nvim_set_hl(0, 'TeleportMarkInactive', { fg = '#565f89' })
-end
+-- local function set_git_highlights()
+--   vim.api.nvim_set_hl(0, 'TeleportMark', { fg = '#e0af68', bold = true, bg='NONE'})
+--   vim.api.nvim_set_hl(0, 'TeleportMarkInactive', { fg = '#565f89' })
+-- end
 
 -- ---@param line string
 -- local function color_git_status(line)
 -- end
---
+
 local function help_buffer()
   local lines = {
     "   Keys   Command/Description",
@@ -171,10 +171,24 @@ local function is_modified(file)
   return vim.bo[bufnr].modified
 end
 
+---@param git_sign string
+---@return string
+local function get_hl_group(git_sign)
+  if git_sign == "??" then return "Keyword" end
+  if git_sign == "!!" then return "Function" end
+
+  local find_m = string.find(git_sign, "M", 1, true)
+  if find_m then
+    return "Error"
+  end
+
+  return "String" -- dont know what to add as the default in case there is a case that is not handled
+end
+
 -- list_mark_files shows a pop up window of avalible teleport marks and there names 
 -- user is able to delete and pick marks eithor using the numbers or <CR> for said mark
 function M.list_mark_files()
-  set_git_highlights()
+  -- set_git_highlights()
   local existing = {}
 
   for _, mark in ipairs(vim.fn.getmarklist()) do
@@ -192,7 +206,7 @@ function M.list_mark_files()
   ---@field git_status string
 
   ---@type Git_status[]
-  local git_status_line = {} -- NOTE: could add like a pos for the XY of git to get the location of the status
+  local git_status_line = {}
 
   if not status_marks then
     status_marks = {}
@@ -233,15 +247,6 @@ function M.list_mark_files()
 
   end
 
-  -- nil check to make sure there is files in the table
-  if git_status_line[1] ~= nil then -- TODO: get rid of this later just for debuging
-    for _, v in ipairs(git_status_line) do
-      print(v.mark)
-      print(v.mark_line)
-      print("("..v.git_status..")")
-    end
-  end
-
   local width = math.floor((vim.o.columns) / 2) -- dynamic width for different screens
   local height = #lines
 
@@ -276,7 +281,7 @@ function M.list_mark_files()
     vim.api.nvim_win_set_cursor(win, {pos, 0}) -- just a nice thing to keep the cursor inline with what mark is on
   end
 
-  if git_status_line[1] ~= nil then -- check that atleast the first mark does exist
+  if git_status_line[1] ~= nil and config.options.file_git_status_color then -- check that atleast the first mark does exist
 
     for _, val in pairs(git_status_line) do
       local line_len = #val.mark_line
@@ -285,7 +290,7 @@ function M.list_mark_files()
       local ns = vim.api.nvim_create_namespace("teleport")
       vim.api.nvim_buf_set_extmark(buf, ns, val.mark - 1, line_len - git_status_len, {
         end_col = #val.mark_line,
-        hl_group = "Error",
+        hl_group = get_hl_group(val.git_status),
       })
     end
 
