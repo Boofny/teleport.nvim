@@ -8,7 +8,6 @@
 
 [![Lua](https://img.shields.io/badge/Lua-blue.svg?style=for-the-badge&logo=lua)](http://www.lua.org)
 [![Neovim](https://img.shields.io/badge/Neovim%200.8+-green.svg?style=for-the-badge&logo=neovim)](https://neovim.io)
-[![Git](https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white)](https://git-scm.com/)
 
 </div>
 
@@ -21,9 +20,10 @@
 
 ### Some caveats
 ---
-  1. File marks can be used on non git repo projects BUT will not be saved for later use
-  2. If a git project is moved to a different directory the saved marks will reset and can be altered in ~/.local/share/nvim/teleport/
-  3. the following code should be placed in your configs init.lua BEFORE the plugins require module in order to get this plugin working correctly
+  1. Need git installed
+  2. File marks can be used on non git repo projects BUT will not be saved for later use
+  3. If a git project is moved to a different directory the saved marks will reset and can be altered in ~/.local/share/nvim/teleport/
+  4. the following code should be placed in your configs init.lua BEFORE the plugins require module in order to get this plugin working correctly
 ```lua
 vim.cmd("delmark ABCD") 
 ```
