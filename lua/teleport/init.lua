@@ -119,7 +119,6 @@ function M.Setup(opts)
   end
 
   -- find the file that owns this repo's marks
-  -- local origin = setup.get_repo_url()
   local file_name = vim.fn.sha256(origin)
   local path = vim.fs.joinpath(setup.plugin_dir, file_name .. ".json")
 
@@ -134,13 +133,18 @@ function M.Setup(opts)
     open_file:close()
 
     local ok, json_marks = pcall(vim.json.decode, content)
+    -- json_marks is of type Origin_Saved but lsp wont allow me to define it but its just this
+    -- origin_name string
+    -- marks vim.fn.getmarklist.ret.item[]
+
+    -- print(json_marks.origin_name) debug print for proof
 
     if not ok or type(json_marks) ~= "table" then -- if some fail to decode just have no marks
       vim.notify( "Teleport: Failed to decode mark file", vim.log.levels.WARN)
       json_marks = {}
     end
 
-    for _, mark in ipairs(json_marks) do
+    for _, mark in ipairs(json_marks.marks) do
 
       local file = vim.fn.expand(vim.fs.joinpath(session_root, mark.file)) -- also one of the changes 
 
@@ -173,7 +177,9 @@ function M.Setup(opts)
 
     callback = function()
 
+      ---@type vim.fn.getmarklist.ret.item[]
       local saved = {}
+
 
       local marks = vim.fn.getmarklist()
 
@@ -186,8 +192,17 @@ function M.Setup(opts)
         end
       end
 
+      ---@class Origin_Saved
+      ---@field origin_name string
+      ---@field marks vim.fn.getmarklist.ret.item[]
 
-      local json_string = vim.json.encode(saved)
+      ---@type Origin_Saved
+      local origin_saved = {
+        origin_name = origin,
+        marks = saved
+      }
+
+      local json_string = vim.json.encode(origin_saved) -- this was saved before 
 
       -- Atomic write/check ---
 

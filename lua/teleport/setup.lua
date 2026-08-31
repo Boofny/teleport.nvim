@@ -9,22 +9,11 @@ function M.in_git_repo()
   return resp == "true\n" -- <- had to add this stupid new line
 end
 
----@return string headHash
-function M.get_repo_url()
-  local resp = vim.fn.system("git config --get remote.origin.url"):gsub("\n", "") -- try to find url first
-
-  if resp == "" then -- if for some reason a url is not avalible for the repo then try top level aka the pwd of the repo the old way
-    resp = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
-  end
-
-  return resp
-end
-
----@return string resp
-function M.get_top_level()
-  local resp = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
-  return resp
-end
+--@return string resp
+-- function M.get_top_level()
+--   local resp = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
+--   return resp
+-- end
 
 function M.get_repo_origin()
   local url = vim.fn.system("git config --get remote.origin.url"):gsub("\n", "")
