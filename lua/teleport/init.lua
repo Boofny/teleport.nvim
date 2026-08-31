@@ -29,7 +29,7 @@ end
 
 -- add_mark checks the order of the marks first then if there is an avalible spot ex: B then take the next spot for the mark
 -- this also uses the logic for the mapFull in order to prompt user for the file they want to replace
-function M:add_mark() -- NOTE: logic is a work in progress
+function M:add_mark()
   local lookup = {}
 
   -- make the look up table based on the marks in the map of marks in neovim
@@ -182,8 +182,7 @@ function M.Setup(opts)
 
           local rel_file = vim.fn.fnamemodify(m.file, ":.") -- just save the relative path not the full one like m.file does
           -- Save only what Teleport needs
-          table.insert(saved, { mark = m.mark, file = rel_file, pos = m.pos,
-          })
+          table.insert(saved, { mark = m.mark, file = rel_file, pos = m.pos })
         end
       end
 

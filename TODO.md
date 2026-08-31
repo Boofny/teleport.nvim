@@ -55,6 +55,7 @@ so the solution for this was to use the toplevel pwd for the current project in 
 - [x] 18. make dynamic spacing for git status x and y symbols in the list_mark_files ui
 - [X] 19. status function for lua line and status line
 - [ ] 20. need to make a clear cache command for the user with inputs for Y/N
+- [ ] 21. alter the stored tables in json to hold the dir name of the project even if it has a url for the hash 
 
 
 
