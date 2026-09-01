@@ -230,7 +230,30 @@ function M.Setup(opts)
 end
 
 -- This is the complete last resort do NOT use without reading docs
-function M.clear_cache() -- TODO:
+function M.clear_cache()
+  if not setup.data_conf_exist() then -- check if this even exists
+    vim.notify_once("Data directory for teleport does not exits can't clear any cache.", vim.log.levels.INFO)
+    return
+  end
+
+  local items = vim.fn.readdir(setup.plugin_dir)
+
+  for _, file in ipairs(items) do
+    local full_path = vim.fs.joinpath(setup.plugin_dir, file)
+
+    local open_file, err = io.open(full_path, "r")
+
+    if not open_file then
+      print("Error: " .. err)
+      return
+    end
+
+    local content = open_file:read("*all")
+    print(content)
+
+    open_file:close()
+  end
+
 end
 
 return M

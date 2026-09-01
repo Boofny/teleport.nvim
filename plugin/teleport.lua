@@ -17,5 +17,5 @@ vim.api.nvim_create_user_command("FindMarks", function()
 end, {})
 
 vim.api.nvim_create_user_command("TestTele", function()
-  require("teleport").testFunc()
+  require("teleport").clear_cache()
 end, {})
