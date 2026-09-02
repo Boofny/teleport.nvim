@@ -107,9 +107,14 @@ function M.Setup(opts)
   -- Pro of url and toplevel: can move anywhere and can update the toplevel path aswell
   -- Con of url and toplevel: have to run extra system command
 
-
   config.options = user_opts
-  -- config.config_setup(user_opts)
+
+  if config.options.exclude ~= nil and #config.options.exclude > 0 then
+    print("something is exluded")
+    return
+  else
+    print("Nothing just continue")
+  end
 
   local origin = setup.get_repo_origin()
   -- first things first if the user is NOT in a git repo dont save the mappings
