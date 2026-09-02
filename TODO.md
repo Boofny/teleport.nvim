@@ -54,8 +54,9 @@ so the solution for this was to use the toplevel pwd for the current project in 
   - [x] git status or not
 - [x] 18. make dynamic spacing for git status x and y symbols in the list_mark_files ui
 - [X] 19. status function for lua line and status line
-- [ ] 20. need to make a clear cache command for the user with inputs for Y/N can use the new tables with origins in order to get project names 
-- [x] 21. alter the stored tables in json to hold the dir name of the project even if it has a url for the hash 
+- [x] 20. alter the stored tables in json to hold the dir name of the project even if it has a url for the hash 
+- [ ] 21. need to make a clear cache command for the user with inputs for Y/N can use the new tables with origins in order to get project names 
+- [ ] 22. need to add an opts for exlude projects so add something like an array or paths to a project and if the user decides to exlude then marks wont be loaded or saved and if they are already saved then delete the mark file 
 
 
 

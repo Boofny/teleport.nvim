@@ -101,6 +101,13 @@ function M.Setup(opts)
     opts
   )
 
+  -- NOTE: in order for exclude to work i either have to store both the url and toplevel or go back to just toplevel
+  -- Pro of toplevel: able to have the path to exlude the mark file have one command to run
+  -- Con of toplevel: not being able to save when moved 
+  -- Pro of url and toplevel: can move anywhere and can update the toplevel path aswell
+  -- Con of url and toplevel: have to run extra system command
+
+
   config.options = user_opts
   -- config.config_setup(user_opts)
 
