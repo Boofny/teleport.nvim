@@ -56,7 +56,7 @@ so the solution for this was to use the toplevel pwd for the current project in 
 - [X] 19. status function for lua line and status line
 - [x] 20. alter the stored tables in json to hold the dir name of the project even if it has a url for the hash 
 - [ ] 21. need to make a clear cache command for the user with inputs for Y/N can use the new tables with origins in order to get project names 
-- [ ] 22. need to add an opts for exlude projects so add something like an array or paths to a project and if the user decides to exlude then marks wont be loaded or saved and if they are already saved then delete the mark file 
+- [X] 22. need to add an opts for exlude projects so add something like an array or paths to a project and if the user decides to exlude then marks wont be loaded or saved and if they are already saved then delete the mark file 
 - [ ] 23. gotta find a better way to handle git status each time i open the ui menu
 - [ ] 24. could do a check paths command to check what paths in the plugins data have been deleted and promt user to remove
 

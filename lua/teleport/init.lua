@@ -109,14 +109,15 @@ function M.Setup(opts)
 
   config.options = user_opts
 
-  if config.options.exclude ~= nil and #config.options.exclude > 0 then
-    print("something is exluded")
-    return
-  else
-    print("Nothing just continue")
-  end
-
   local origin = setup.get_top_level()
+
+  if config.options.exclude ~= nil and #config.options.exclude > 0 then
+    for _, project_path in ipairs(config.options.exclude) do
+      if project_path ==  origin then
+        return
+      end
+    end
+  end
 
   -- first things first if the user is NOT in a git repo dont save the mappings
 
