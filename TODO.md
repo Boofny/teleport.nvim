@@ -59,7 +59,6 @@ so the solution for this was to use the toplevel pwd for the current project in 
 - [ ] 22. need to add an opts for exlude projects so add something like an array or paths to a project and if the user decides to exlude then marks wont be loaded or saved and if they are already saved then delete the mark file 
 - [ ] 23. gotta find a better way to handle git status each time i open the ui menu
 - [ ] 24. could do a check paths command to check what paths in the plugins data have been deleted and promt user to remove
-- [ ] 25. switch from vim.fn.system to vim.system for async
 
 
 

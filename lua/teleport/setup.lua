@@ -9,10 +9,15 @@ M.plugin_dir = vim.fs.joinpath(data_path, "teleport")
 --   return resp == "true\n" -- <- had to add this stupid new line
 -- end
 
----@return string resp
 function M.get_top_level()
-  local resp = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
-  return resp
+  -- local resp = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
+  -- return resp
+
+  local toplevel = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
+  if vim.v.shell_error == 0 and toplevel ~= "" then
+    return toplevel  -- valid repo, just no remote (e.g. local-only project)
+  end
+  return nil  -- not in a git repo at all
 end
 
 function M.get_repo_origin()
