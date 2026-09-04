@@ -69,7 +69,8 @@ tele.Setup({
   file_modify_status = true, -- show [+] modify status inline the list_mark_files menu
   file_git_status = true -- showing XY of git status inline the the list menu
   file_git_status_color = true -- XY git status symbols being colored in
-  exclude = {} -- paths to programs that are excluded from marks must have no trailing slash in full path ex: /home/<ower_name>/project
+  exclude = {} -- paths to programs that are excluded from marks 
+  -- must have no trailing slash in full path ex: /home/<owner_name>/project_name
 })
 
 ```

@@ -1,7 +1,7 @@
 local M = {}
 
 local markers = require("teleport.markings")
-local setup = require("teleport.setup")
+local setup_file = require("teleport.setup")
 local config = require("teleport.config")
 
 local ui = require("teleport.ui")
@@ -92,7 +92,7 @@ function M.testFunc()
 end
 
 ---@param opts? Config
-function M.Setup(opts)
+function M.setup(opts)
   opts = opts or {}
 
   local user_opts = vim.tbl_deep_extend(
@@ -101,15 +101,9 @@ function M.Setup(opts)
     opts
   )
 
-  -- NOTE: in order for exclude to work i either have to store both the url and toplevel or go back to just toplevel
-  -- Pro of toplevel: able to have the path to exlude the mark file have one command to run
-  -- Con of toplevel: not being able to save when moved 
-  -- Pro of url and toplevel: can move anywhere and can update the toplevel path aswell
-  -- Con of url and toplevel: have to run extra system command
-
   config.options = user_opts
 
-  local origin = setup.get_top_level()
+  local origin = setup_file.get_top_level()
 
   if config.options.exclude ~= nil and #config.options.exclude > 0 then
     for _, project_path in ipairs(config.options.exclude) do
@@ -130,13 +124,13 @@ function M.Setup(opts)
   end
 
 
-  if not setup.data_conf_exist() then
-    vim.fn.mkdir(setup.plugin_dir, "p")
+  if not setup_file.data_conf_exist() then
+    vim.fn.mkdir(setup_file.plugin_dir, "p")
   end
 
   -- find the file that owns this repo's marks
   local file_name = vim.fn.sha256(origin)
-  local path = vim.fs.joinpath(setup.plugin_dir, file_name .. ".json")
+  local path = vim.fs.joinpath(setup_file.plugin_dir, file_name .. ".json")
 
   -- LOAD MARKS ---
 
@@ -247,28 +241,40 @@ end
 
 -- This is the complete last resort do NOT use without reading docs
 function M.clear_cache()
-  if not setup.data_conf_exist() then -- check if this even exists
-    vim.notify_once("Data directory for teleport does not exits can't clear any cache.", vim.log.levels.INFO)
-    return
-  end
-
-  local items = vim.fn.readdir(setup.plugin_dir)
-
-  for _, file in ipairs(items) do
-    local full_path = vim.fs.joinpath(setup.plugin_dir, file)
-
-    local open_file, err = io.open(full_path, "r")
-
-    if not open_file then
-      print("Error: " .. err)
-      return
+  local vals = {"two", "one"}
+  vim.ui.select(vals, {
+    prompt = "Promt?",
+    format_item = function(item)
+      return item
+    end,
+  }, function(choice)
+    if choice then
+      print(choice)
     end
+  end)
 
-    local content = open_file:read("*all")
-    print(content)
-
-    open_file:close()
-  end
+  -- if not setup_file.data_conf_exist() then -- check if this even exists
+  --   vim.notify_once("Data directory for teleport does not exits can't clear any cache.", vim.log.levels.INFO)
+  --   return
+  -- end
+  --
+  -- local items = vim.fn.readdir(setup_file.plugin_dir)
+  --
+  -- for _, file in ipairs(items) do
+  --   local full_path = vim.fs.joinpath(setup_file.plugin_dir, file)
+  --
+  --   local open_file, err = io.open(full_path, "r")
+  --
+  --   if not open_file then
+  --     print("Error: " .. err)
+  --     return
+  --   end
+  --
+  --   local content = open_file:read("*all")
+  --   print(content)
+  --
+  --   open_file:close()
+  -- end
 
 end
 
