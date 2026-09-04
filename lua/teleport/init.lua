@@ -114,6 +114,7 @@ function M.Setup(opts)
   if config.options.exclude ~= nil and #config.options.exclude > 0 then
     for _, project_path in ipairs(config.options.exclude) do
       if project_path ==  origin then
+        vim.notify_once("Project path excluded from teleport plugin.", vim.log.levels.WARN)
         return
       end
     end
