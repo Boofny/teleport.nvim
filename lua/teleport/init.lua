@@ -241,6 +241,15 @@ end
 
 -- This is the complete last resort do NOT use without reading docs
 function M.clear_cache()
+
+  -- NOTE: json decoding 
+  -- local ok, json_marks = pcall(vim.json.decode, content)
+  --
+  -- if not ok or type(json_marks) ~= "table" then -- if some fail to decode just have no marks
+  --   vim.notify( "Teleport: Failed to decode mark file", vim.log.levels.WARN)
+  --   json_marks = {}
+  -- end
+
   local vals = {"two", "one"}
   vim.ui.select(vals, {
     prompt = "Promt?",
