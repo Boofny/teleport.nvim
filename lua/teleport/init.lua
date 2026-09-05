@@ -239,51 +239,72 @@ function M.setup(opts)
   })
 end
 
+---@param path string
+---@return boolean
+local function file_path_exists(path)
+  return vim.uv.fs_stat(path) ~= nil
+end
+
 -- This is the complete last resort do NOT use without reading docs
 function M.clear_cache()
 
-  -- NOTE: json decoding 
-  -- local ok, json_marks = pcall(vim.json.decode, content)
-  --
-  -- if not ok or type(json_marks) ~= "table" then -- if some fail to decode just have no marks
-  --   vim.notify( "Teleport: Failed to decode mark file", vim.log.levels.WARN)
-  --   json_marks = {}
-  -- end
+  local file_count = 0 -- count used for later like if over 100 files are in here then do somthing
+  local origin_names = {}
 
-  local vals = {"two", "one"}
-  vim.ui.select(vals, {
-    prompt = "Promt?",
+  if not setup_file.data_conf_exist() then -- check if this even exists
+    vim.notify_once("Data directory for teleport does not exits can't clear any cache.", vim.log.levels.INFO)
+    return
+  end
+
+  local items = vim.fn.readdir(setup_file.plugin_dir)
+
+  for _, file in ipairs(items) do
+    file_count = file_count + 1
+
+    if file_count > 100 then
+      print("To many files have to manually clear cache or promt the nuclear option command")
+      return
+    end
+
+    local full_path = vim.fs.joinpath(setup_file.plugin_dir, file)
+
+    local open_file, err = io.open(full_path, "r")
+
+    if not open_file then
+      print("Error: " .. err)
+      return
+    end
+
+    local content = open_file:read("*all")
+
+    local ok, json_origin = pcall(vim.json.decode, content)
+
+    if not ok or type(json_origin) ~= "table" then -- if some fail to decode just have no marks
+      vim.notify( "Teleport: Failed to decode mark file", vim.log.levels.WARN)
+      json_origin = {}
+    end
+
+    local name = vim.fn.fnamemodify(json_origin.origin_name, ":~")
+
+    if file_path_exists(json_origin.origin_name) then
+      table.insert(origin_names, {origin = name, full_prod_path = full_path, file_name = file})
+    else
+      table.insert(origin_names, {origin = name .. " [path no longer exists]", full_prod_path = full_path, file_name = file})
+    end
+
+    open_file:close()
+  end
+
+  vim.ui.select(origin_names, {
+    prompt = "Projects using Teleport marks",
     format_item = function(item)
-      return item
+      return item.origin
     end,
   }, function(choice)
     if choice then
-      print(choice)
+      print(choice.full_prod_path)
     end
   end)
-
-  -- if not setup_file.data_conf_exist() then -- check if this even exists
-  --   vim.notify_once("Data directory for teleport does not exits can't clear any cache.", vim.log.levels.INFO)
-  --   return
-  -- end
-  --
-  -- local items = vim.fn.readdir(setup_file.plugin_dir)
-  --
-  -- for _, file in ipairs(items) do
-  --   local full_path = vim.fs.joinpath(setup_file.plugin_dir, file)
-  --
-  --   local open_file, err = io.open(full_path, "r")
-  --
-  --   if not open_file then
-  --     print("Error: " .. err)
-  --     return
-  --   end
-  --
-  --   local content = open_file:read("*all")
-  --   print(content)
-  --
-  --   open_file:close()
-  -- end
 
 end
 
