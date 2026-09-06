@@ -246,10 +246,15 @@ local function file_path_exists(path)
 end
 
 -- This is the complete last resort do NOT use without reading docs
-function M.clear_cache()
+function M.manage_mark_projects()
 
   local file_count = 0 -- count used for later like if over 100 files are in here then do somthing
-  local origin_names = {}
+  -- table.insert(origin_names, {origin = name, full_prod_path = full_path, file_name = file})
+  ---@class Info 
+  ---@field origin string
+  ---@field full_prod_path string
+  ---@field file_name string
+  local project_info = {}
 
   if not setup_file.data_conf_exist() then -- check if this even exists
     vim.notify_once("Data directory for teleport does not exits can't clear any cache.", vim.log.levels.INFO)
@@ -287,24 +292,38 @@ function M.clear_cache()
     local name = vim.fn.fnamemodify(json_origin.origin_name, ":~")
 
     if file_path_exists(json_origin.origin_name) then
-      table.insert(origin_names, {origin = name, full_prod_path = full_path, file_name = file})
+      table.insert(project_info, {origin = name, full_prod_path = full_path, file_name = file})
     else
-      table.insert(origin_names, {origin = name .. " [path no longer exists]", full_prod_path = full_path, file_name = file})
+      table.insert(project_info, {origin = name .. " [path no longer exists]", full_prod_path = full_path, file_name = file})
     end
 
     open_file:close()
   end
 
-  vim.ui.select(origin_names, {
-    prompt = "Projects using Teleport marks",
+  vim.ui.select(project_info, {
+    prompt = "Manage Teleport projects.",
     format_item = function(item)
       return item.origin
     end,
   }, function(choice)
     if choice then
-      print(choice.full_prod_path)
+      ui.manage_marks_buffer(choice, function(user_manage_option)
+        if user_manage_option ~= nil then
+          print(user_manage_option, choice.origin)
+        end
+      end)
     end
   end)
+
+  -- returns 1 for Yes, 2 for No, and 0 if cancelled with <Esc>
+  -- local choice = vim.fn.confirm("Do you want to save changes?", "&Yes\n&No", 2)
+  --
+  -- if choice == 1 then
+  --     print("Saving...")
+  -- else
+  --     print("Operation cancelled.")
+  -- end
+
 
 end
 

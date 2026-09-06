@@ -520,5 +520,54 @@ function M.list_mark_files()
   end, {buffer = buf})
 end
 
+function M.manage_marks_buffer(project_info, on_result)
+  local lines = {project_info.origin}
+
+  local width = math.floor((vim.o.columns) / 3) -- dynamic width for different screens
+  local height = #lines
+
+  local row = math.floor((vim.o.lines - height) / config.position_cases[config.options.position])
+  local col = math.floor((vim.o.columns - width) / 2)
+
+  local buf = vim.api.nvim_create_buf(false, true)
+
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+
+  local win = vim.api.nvim_open_win(buf, true, {
+    relative = "editor",
+    width = width,
+    height = height,
+    row = row,
+    col = col,
+    border = "rounded",
+    style = "minimal",
+
+    title = "Teleport Help",
+    title_pos = "center",
+  })
+
+  vim.bo[buf].bufhidden = "wipe"
+  vim.bo[buf].swapfile = false
+
+  vim.bo[buf].modifiable = false
+  vim.bo[buf].readonly = true
+
+  vim.keymap.set("n", "M", function()
+    vim.api.nvim_win_close(win, true)
+    if on_result then on_result("manage") end
+  end, {buffer = buf})
+
+  vim.keymap.set("n", "D", function()
+    vim.api.nvim_win_close(win, true)
+    if on_result then on_result("delete") end
+  end, {buffer = buf})
+
+  vim.keymap.set("n", "q", function()
+    vim.api.nvim_win_close(win, true)
+    if on_result then on_result(nil) end
+  end, {buffer = buf})
+
+end
+
 
 return M
