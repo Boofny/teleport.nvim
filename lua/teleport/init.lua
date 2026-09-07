@@ -245,15 +245,36 @@ local function file_path_exists(path)
   return vim.uv.fs_stat(path) ~= nil
 end
 
+---@param mark_info Info
+local function user_delete_promt(mark_info)
+
+  local choice = vim.fn.confirm("Are you sure you want to delete mark file for " .. "[" .. mark_info.origin .. "]", "&Yes\n&No", 0)
+
+  if choice ~= 1 then
+    vim.notify("Aborting action.", vim.log.levels.ERROR)
+    return
+  end
+
+  local success, err = os.remove(mark_info.full_proj_path)
+
+  if success then
+      print("File deleted successfully!")
+  else
+      print("Failed to delete file: " .. tostring(err))
+  end
+
+end
+
 -- This is the complete last resort do NOT use without reading docs
 function M.manage_mark_projects()
 
   local file_count = 0 -- count used for later like if over 100 files are in here then do somthing
-  -- table.insert(origin_names, {origin = name, full_prod_path = full_path, file_name = file})
+
   ---@class Info 
   ---@field origin string
-  ---@field full_prod_path string
+  ---@field full_proj_path string
   ---@field file_name string
+  ---@field display_origin string
   local project_info = {}
 
   if not setup_file.data_conf_exist() then -- check if this even exists
@@ -292,9 +313,9 @@ function M.manage_mark_projects()
     local name = vim.fn.fnamemodify(json_origin.origin_name, ":~")
 
     if file_path_exists(json_origin.origin_name) then
-      table.insert(project_info, {origin = name, full_prod_path = full_path, file_name = file})
+      table.insert(project_info, {display_origin = name, origin = name, full_proj_path = full_path, file_name = file})
     else
-      table.insert(project_info, {origin = name .. " [path no longer exists]", full_prod_path = full_path, file_name = file})
+      table.insert(project_info, {display_origin = name .. " [path no longer exists]", origin = name, full_proj_path = full_path, file_name = file})
     end
 
     open_file:close()
@@ -303,27 +324,19 @@ function M.manage_mark_projects()
   vim.ui.select(project_info, {
     prompt = "Manage Teleport projects.",
     format_item = function(item)
-      return item.origin
+      return item.display_origin
     end,
   }, function(choice)
-    if choice then
+    if choice then -- TODO: flatten this nesting
       ui.manage_marks_buffer(choice, function(user_manage_option)
         if user_manage_option ~= nil then
-          print(user_manage_option, choice.origin)
+          if user_manage_option == 2 then
+            user_delete_promt(choice)
+          end
         end
       end)
     end
   end)
-
-  -- returns 1 for Yes, 2 for No, and 0 if cancelled with <Esc>
-  -- local choice = vim.fn.confirm("Do you want to save changes?", "&Yes\n&No", 2)
-  --
-  -- if choice == 1 then
-  --     print("Saving...")
-  -- else
-  --     print("Operation cancelled.")
-  -- end
-
 
 end
 

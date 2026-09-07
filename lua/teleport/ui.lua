@@ -521,7 +521,11 @@ function M.list_mark_files()
 end
 
 function M.manage_marks_buffer(project_info, on_result)
-  local lines = {project_info.origin}
+  local lines = {
+    "Project: " .. project_info.display_origin,
+    "",
+    "Manage options: [E] Edit, [D] Delete, [q] Quit",
+  }
 
   local width = math.floor((vim.o.columns) / 3) -- dynamic width for different screens
   local height = #lines
@@ -533,6 +537,38 @@ function M.manage_marks_buffer(project_info, on_result)
 
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
 
+  local ns = vim.api.nvim_create_namespace("teleport")
+
+  -- Line 0: "Project: <origin>"
+  vim.api.nvim_buf_set_extmark(buf, ns, 0, 0, {
+    end_col = #"Project:",
+    hl_group = "Normal",
+  })
+  vim.api.nvim_buf_set_extmark(buf, ns, 0, #"Project: ", {
+    end_col = #lines[1],
+    hl_group = "Directory",
+  })
+
+  -- Line 2: "Manage options: [E] Edit, [X] Delete, [q] Quit"
+  local opts_line = lines[3]
+  vim.api.nvim_buf_set_extmark(buf, ns, 2, 0, {
+    end_col = #"Manage options:",
+    hl_group = "Normal",
+  })
+
+for key_start, key, label_start, label in
+  opts_line:gmatch("()%[(%a)%]%s()(%a+)")
+do
+  vim.api.nvim_buf_set_extmark(buf, ns, 2, key_start - 1, {
+    end_col = key_start - 1 + #("[" .. key .. "]"),
+    hl_group = "String", -- Special
+  })
+  vim.api.nvim_buf_set_extmark(buf, ns, 2, label_start - 1, {
+    end_col = label_start - 1 + #label,
+    hl_group = "String",
+  })
+end
+
   local win = vim.api.nvim_open_win(buf, true, {
     relative = "editor",
     width = width,
@@ -542,7 +578,7 @@ function M.manage_marks_buffer(project_info, on_result)
     border = "rounded",
     style = "minimal",
 
-    title = "Teleport Help",
+    title = "Manage Center",
     title_pos = "center",
   })
 
@@ -552,14 +588,14 @@ function M.manage_marks_buffer(project_info, on_result)
   vim.bo[buf].modifiable = false
   vim.bo[buf].readonly = true
 
-  vim.keymap.set("n", "M", function()
+  vim.keymap.set("n", "E", function()
     vim.api.nvim_win_close(win, true)
-    if on_result then on_result("manage") end
+    if on_result then on_result(1) end
   end, {buffer = buf})
 
   vim.keymap.set("n", "D", function()
     vim.api.nvim_win_close(win, true)
-    if on_result then on_result("delete") end
+    if on_result then on_result(2) end
   end, {buffer = buf})
 
   vim.keymap.set("n", "q", function()
