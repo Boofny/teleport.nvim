@@ -327,13 +327,22 @@ function M.manage_mark_projects()
       return item.display_origin
     end,
   }, function(choice)
-    if choice then -- TODO: flatten this nesting
+    if choice then
       ui.manage_marks_buffer(choice, function(user_manage_option)
-        if user_manage_option ~= nil then
-          if user_manage_option == 2 then
-            user_delete_promt(choice)
-          end
+
+        if user_manage_option == nil then
+          print("Quit")
+          return
         end
+
+        if user_manage_option == 2 then
+          user_delete_promt(choice)
+        end
+
+        if user_manage_option == 1 then
+          vim.cmd.edit(choice.full_proj_path)
+        end
+
       end)
     end
   end)
