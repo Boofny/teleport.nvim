@@ -95,11 +95,21 @@ end
 ```
 
 ### Important commands
-`AddMark`
-`ClearMarks`
-`ListMarkFiles`
-`FindMarks`
-`ManageTeleport`
+```bash
+AddMark
+```
+```bash
+ClearMarks
+```
+```bash
+ListMarkFiles
+```
+```bash
+FindMarks
+```
+```bash
+ManageTeleport
+```
 
 
 
