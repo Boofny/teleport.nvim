@@ -95,23 +95,11 @@ end
 ```
 
 ### Important commands
-```bash
-AddMark
-```
-```bash
-ClearMarks
-```
-```bash
-ListMarkFiles
-```
-```bash
-FindMarks
-```
-```bash
-ManageTeleport
-```
 
-
-
-
-
+| Command | Description |
+|---|---|
+| `:AddMark` | Add a new mark at the cursor position |
+| `:ClearMarks` | Remove all marks |
+| `:ListMarkFiles` | List files using marks |
+| `:FindMarks` | Search marks|
+| `:ManageTeleport` | Open the UI to manage marks |
