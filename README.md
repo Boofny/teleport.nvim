@@ -95,11 +95,11 @@ end
 ```
 
 ### Important commands
-    `AddMark`
-    `ClearMarks`
-    `ListMarkFiles`
-    `FindMarks`
-    `ManageTeleport`
+`AddMark`
+`ClearMarks`
+`ListMarkFiles`
+`FindMarks`
+`ManageTeleport`
 
 
 
