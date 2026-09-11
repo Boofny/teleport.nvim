@@ -1,0 +1,41 @@
+*teleport.txt*  Global mark management with git-aware persistence
+*teleport.nvim*
+*teleport*
+
+==============================================================================
+CONTENTS                                                    *teleport-contents*
+
+    1. Introduction ......................... |teleport-introduction|
+    2. Setup ................................. |teleport-setup|
+    3. Commands .............................. |teleport-commands|
+    4. Configuration .......................... |teleport-config|
+
+==============================================================================
+1. Introduction                                        *teleport-introduction*
+
+teleport.nvim provides global marks (A-D) with a picker UI showing git
+status, and persists marks per git repository.
+
+==============================================================================
+2. Setup                                                     *teleport-setup*
+
+>lua
+    require("teleport").setup({
+      exclude_paths = { "/tmp" },
+    })
+
+
+==============================================================================
+3. Commands                                                *teleport-commands*
+
+                                                                    *:Teleport*
+:Teleport               Open the mark picker.
+
+==============================================================================
+4. Configuration                                              *teleport-config*
+
+exclude_paths ~
+    List of paths where the plugin is disabled.
+    Default: {}
+
+vim:tw=78:ts=8:ft=help:norl:

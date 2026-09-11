@@ -1,0 +1,9 @@
+:Teleport	teleport.txt	/*:Teleport*
+teleport	teleport.txt	/*teleport*
+teleport-commands	teleport.txt	/*teleport-commands*
+teleport-config	teleport.txt	/*teleport-config*
+teleport-contents	teleport.txt	/*teleport-contents*
+teleport-introduction	teleport.txt	/*teleport-introduction*
+teleport-setup	teleport.txt	/*teleport-setup*
+teleport.nvim	teleport.txt	/*teleport.nvim*
+teleport.txt	teleport.txt	/*teleport.txt*
