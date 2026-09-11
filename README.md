@@ -17,6 +17,10 @@
 ```lua
 {"Boofny/teleport.nvim"},
 ```
+##### or by other means use the url
+```bash
+https://github.com/Boofny/teleport.nvim.git
+```
 
 ### Some caveats
 ---
