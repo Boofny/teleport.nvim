@@ -93,18 +93,6 @@ function ()
 end
 },
 ```
-
-### More comprehensive docs
-
-In neovim type the help command
-```bash
-:help teleport
-```
-
-or 
-
-Go to the [doc file](docs/teleport.txt)
-
 ### Important commands
 
 | Command | Description |
@@ -114,3 +102,12 @@ Go to the [doc file](docs/teleport.txt)
 | `:ListMarkFiles` | List files using marks |
 | `:FindMarks` | Search marks|
 | `:ManageTeleport` | Open the UI to manage marks |
+
+### More comprehensive docs
+
+In neovim type the help command
+```bash
+:help teleport
+```
+Or go to the [doc file](doc/teleport.txt)
+
