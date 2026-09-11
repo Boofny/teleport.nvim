@@ -94,6 +94,17 @@ end
 },
 ```
 
+### More comprehensive docs
+
+In neovim type the help command
+```bash
+:help teleport
+```
+
+or 
+
+Go to the [doc file](docs/teleport.txt)
+
 ### Important commands
 
 | Command | Description |
