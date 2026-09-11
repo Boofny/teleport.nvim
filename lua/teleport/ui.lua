@@ -389,7 +389,12 @@ function M.list_mark_files()
     local cursor = vim.api.nvim_win_get_cursor(win)
     local line_num = cursor[1]
     vim.api.nvim_win_close(win, true)
-    vim.cmd("delmark " .. markers.markings[line_num])
+    local success = vim.api.nvim_del_mark(markers.markings[line_num])
+    if not success then
+      vim.schedule(function()
+        vim.notify("Error removing mark: ", vim.log.levels.ERROR)
+      end)
+    end
     print("Teleport mark removed:", line_num)
   end, {buffer = buf, nowait = true})
 
