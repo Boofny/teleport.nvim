@@ -20,22 +20,75 @@ status, and persists marks per git repository.
 2. Setup                                                     *teleport-setup*
 
 >lua
-    require("teleport").setup({
-      exclude_paths = { "/tmp" },
+    {"Boofny/teleport.nvim"}
+>lua
+    local tele = require("teleport")
+
+    -- default opts
+    tele.setup({
+      preselect = false, -- keeping cursor on current mark when opening menu
+      border = "single", -- border for the main list 
+      position = "center", -- top, center, bottom center being default
+      preview_length = 50, -- previewing files length
+      save_warning = true, -- get a reminder that marks are not saved in non git repos
+      file_modify_status = true, -- show [+] modify status inline the list_mark_files menu
+      file_git_status = true, -- showing XY of git status inline the the list menu
+      file_git_status_color = true, -- XY git status symbols being colored in
+      exclude = {} -- paths to programs that are excluded from marks 
+      -- must have no trailing slash in full path ex: /home/<owner_name>/project_name
     })
 
 
 ==============================================================================
 3. Commands                                                *teleport-commands*
 
-                                                                    *:Teleport*
-:Teleport               Open the mark picker.
+:AddMark                        Add current file to the mark table
+
+:ClearMarks                     Clear marks 1-4 to reset teleport marks
+
+:ListMarkFiles                  Menu for managing current project marks
+
+:FindMarks                      FZF file marks by name
+
+:ManageTeleport                 Edit and Delete marks
 
 ==============================================================================
 4. Configuration                                              *teleport-config*
 
-exclude_paths ~
-    List of paths where the plugin is disabled.
+preselect ~
+    Keep the cursor on the current mark when opening the menu.
+    Default: false
+
+border ~
+    Border style for the main list window.
+    Default: "single"
+
+position ~
+    Position of the menu on screen. One of "top", "center", "bottom".
+    Default: "center"
+
+preview_length ~
+    Max length of the file preview text shown in the list.
+    Default: 50
+
+save_warning ~
+    Show a reminder that marks are not persisted in non-git repositories.
+    Default: true
+
+file_modify_status ~
+    Show a [+] modified indicator inline in the list_mark_files menu.
+    Default: true
+
+file_git_status ~
+    Show the XY git status inline in the list menu.
+    Default: true
+
+file_git_status_color ~
+    Colorize the XY git status symbols in the list menu.
+    Default: true
+
+exclude ~
+    List of paths excluded from marks.
     Default: {}
 
 vim:tw=78:ts=8:ft=help:norl:

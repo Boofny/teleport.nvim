@@ -17,7 +17,7 @@ M.markersList = {
 
 -- clearMarks BCD
 function M.clearMarks()
-  vim.cmd("delmarks BCD")
+  vim.cmd("delmarks ABCD")
 end
 
 M.ORDEREDMARKS = "ABCD"

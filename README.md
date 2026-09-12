@@ -15,7 +15,7 @@
 
 ##### Lazy
 ```lua
-{"Boofny/teleport.nvim"},
+{"Boofny/teleport.nvim"}
 ```
 ##### or by other means use the url
 ```bash
@@ -64,15 +64,15 @@ vim.keymap.set("n", "<leader>k4", function() tele.add_mark_override(4) end)
 local tele = require("teleport")
 
 -- default opts
-tele.Setup({
+tele.setup({
   preselect = false, -- keeping cursor on current mark when opening menu
   border = "single", -- border for the main list 
   position = "center", -- top, center, bottom center being default
   preview_length = 50, -- previewing files length
   save_warning = true, -- get a reminder that marks are not saved in non git repos
   file_modify_status = true, -- show [+] modify status inline the list_mark_files menu
-  file_git_status = true -- showing XY of git status inline the the list menu
-  file_git_status_color = true -- XY git status symbols being colored in
+  file_git_status = true, -- showing XY of git status inline the the list menu
+  file_git_status_color = true, -- XY git status symbols being colored in
   exclude = {} -- paths to programs that are excluded from marks 
   -- must have no trailing slash in full path ex: /home/<owner_name>/project_name
 })
