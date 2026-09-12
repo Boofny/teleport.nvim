@@ -20,6 +20,13 @@ function M.clearMarks()
   vim.cmd("delmarks ABCD")
 end
 
+--- Sets a global mark at the current cursor position.
+---@param letter string
+function M.set_mark(letter)
+  local pos = vim.api.nvim_win_get_cursor(0)
+  vim.api.nvim_buf_set_mark(0, letter, pos[1], pos[2], {})
+end
+
 M.ORDEREDMARKS = "ABCD"
 
 -- function get_teleport_marks only gets the marks from the ranges of A-D or to be change later -> it does return a custom table

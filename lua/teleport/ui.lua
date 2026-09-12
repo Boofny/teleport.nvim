@@ -465,7 +465,8 @@ function M.list_mark_files()
     for _, mark in ipairs(marks) do
       if mark.mark:sub(2) == markers.markings[line_num] then
         vim.api.nvim_win_close(win, true)
-        vim.cmd("tabnew " .. mark.file)
+        vim.cmd({ cmd = "tabnew", args = {mark.file} })
+        -- vim.cmd("tabnew " .. mark.file)
         return
       end
     end
@@ -496,7 +497,8 @@ function M.list_mark_files()
     for _, mark in ipairs(marks) do
       if mark.mark:sub(2) == markers.markings[line_num] then
         vim.api.nvim_win_close(win, true)
-        vim.cmd("rightbelow vsplit " .. vim.fn.fnamemodify(mark.file, ":."))
+        vim.cmd({ cmd = "vsplit", args = { vim.fn.fnamemodify(mark.file, ":.") }, mods = { split = "rightbelow" } })
+        -- vim.cmd("rightbelow vsplit " .. vim.fn.fnamemodify(mark.file, ":."))
         return
       end
     end
@@ -512,7 +514,8 @@ function M.list_mark_files()
     for _, mark in ipairs(marks) do
       if mark.mark:sub(2) == markers.markings[line_num] then
         vim.api.nvim_win_close(win, true)
-        vim.cmd("rightbelow split " .. vim.fn.fnamemodify(mark.file, ":."))
+        -- vim.cmd("rightbelow split " .. vim.fn.fnamemodify(mark.file, ":."))
+        vim.cmd({ cmd = "split", args = { vim.fn.fnamemodify(mark.file, ":.") }, mods = { split = "rightbelow" } })
         return
       end
     end

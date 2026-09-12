@@ -42,7 +42,8 @@ function M:add_mark()
     local letter = markers.ORDEREDMARKS:sub(i, i)
 
     if not lookup["'" .. letter]then -- has a mark and is empty
-      vim.cmd("mark " .. letter)
+      markers.set_mark(letter)
+      -- vim.cmd("mark " .. letter)
       print("Teleport marked: " .. markers.markersList[letter])
       break
     end
@@ -72,7 +73,8 @@ function M:add_mark()
       end,
     }, function(choice)
       if choice then
-        vim.cmd("mark " .. choice.markName)
+        -- vim.cmd("mark " .. choice.markName)
+        markers.set_mark(choice.markName)
       end
     end)
 
@@ -84,7 +86,8 @@ end
 -- add_mark_override overrides the addMark function in order to have custom mark setting rather than auto
 ---@param markNum integer
 function M:add_mark_override(markNum)
-  vim.cmd("mark " .. markers.markings[markNum])
+  -- vim.cmd("mark " .. markers.markings[markNum])
+  markers.set_mark(markers.markings[markNum])
   vim.notify("Teleport marked: " .. markNum, vim.log.levels.INFO)
 end
 
