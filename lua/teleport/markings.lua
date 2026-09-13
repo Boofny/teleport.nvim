@@ -166,4 +166,23 @@ function M.marks_git_status()
   return extraction
 end
 
+-- NOTE: how async func is made and used
+-- local function get_git_status_async(on_done)
+--   vim.system(
+--     { "git", "status", "--porcelain" },
+--     { text = true },
+--     function(result)
+--       -- ⚠️ this callback runs on a libuv event loop tick,
+--       -- NOT on the main "editor" thread/context
+--       on_done(result.stdout)
+--     end
+--   )
+--   -- execution reaches here immediately, before git has finished
+--   print("this prints before the git output does")
+-- end
+--
+-- get_git_status_async(function(output)
+--   print("git finished:", output)
+-- end)
+
 return M

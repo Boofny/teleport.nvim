@@ -61,7 +61,7 @@ so the solution for this was to use the toplevel pwd for the current project in 
 - [ ] 24. gotta find a better way to handle git status each time i open the ui menu NOTE: the key will be to cache and async git called in the background with a cached table 
 - [ ] 25. make real documentation and cleaner api for the plugin
 - [ ] 26. make a github CI workflow for checks and testings
-- [ ] 27. start removing a lot of the vim.cmd() functions
+- [X] 27. start removing a lot of the vim.cmd() functions
 
 
 
