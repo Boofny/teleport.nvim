@@ -70,12 +70,12 @@ local function help_buffer()
     "     ? => Show help menu",
     "     J => Move mark down",
     "     K => Move mark up",
-    "     q => Exit Teleport menu",
     "     t => Open in tab",
-    "     P => Preview File content",
-    "     H => Open horizontal split",
+    "     s => Open horizontal split",
     "     v => Open vertical split",
-    "     f => Find marks"
+    "     P => Preview File content",
+    "     f => Find marks",
+    "     q => Exit Teleport menu"
   }
 
   local width = math.floor((vim.o.columns) / 3) -- dynamic width for different screens
@@ -308,22 +308,22 @@ function M.list_mark_files()
   vim.keymap.set("n", "1", function()
     vim.api.nvim_win_close(win, true)
     navs:nav_mark(1)
-  end, {buffer = buf})
+  end, {buffer = buf, nowait = true})
 
   vim.keymap.set("n", "2", function()
     vim.api.nvim_win_close(win, true)
     navs:nav_mark(2)
-  end, {buffer = buf})
+  end, {buffer = buf, nowait = true})
 
   vim.keymap.set("n", "3", function()
     vim.api.nvim_win_close(win, true)
     navs:nav_mark(3)
-  end, {buffer = buf})
+  end, {buffer = buf, nowait = true})
 
   vim.keymap.set("n", "4", function()
     vim.api.nvim_win_close(win, true)
     navs:nav_mark(4)
-  end, {buffer = buf})
+  end, {buffer = buf, nowait = true})
 
   vim.keymap.set("n", "q", function()
     local buffer_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
@@ -418,7 +418,7 @@ function M.list_mark_files()
   vim.keymap.set("n", "f", function()
     vim.api.nvim_win_close(win, true)
     M.find_marks()
-  end, {buffer = buf})
+  end, {buffer = buf, nowait = true})
 
   vim.keymap.set("n", "J", function()
     local cursor = vim.api.nvim_win_get_cursor(win)
@@ -506,7 +506,7 @@ function M.list_mark_files()
     vim.notify("Teleport Mark " .. line_num .. " is not set", vim.log.levels.ERROR)
   end, {buffer = buf})
 
-  vim.keymap.set("n", "H", function()
+  vim.keymap.set("n", "s", function()
     local cursor = vim.api.nvim_win_get_cursor(win)
     local line_num = cursor[1]
     local marks = markers.get_nvim_api_marks()
@@ -521,7 +521,7 @@ function M.list_mark_files()
     end
 
     vim.notify("Teleport Mark " .. line_num .. " is not set", vim.log.levels.ERROR)
-  end, {buffer = buf})
+  end, {buffer = buf, nowait = true})
 
   vim.keymap.set("n", "?", function()
     help_buffer()
