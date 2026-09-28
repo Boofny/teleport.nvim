@@ -172,7 +172,6 @@ end
 --     { "git", "status", "--porcelain" },
 --     { text = true },
 --     function(result)
---       -- ⚠️ this callback runs on a libuv event loop tick,
 --       -- NOT on the main "editor" thread/context
 --       on_done(result.stdout)
 --     end

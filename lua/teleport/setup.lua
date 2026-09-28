@@ -3,12 +3,6 @@ local M = {}
 local data_path = vim.fn.stdpath("data")
 M.plugin_dir = vim.fs.joinpath(data_path, "teleport")
 
---@return boolean
--- function M.in_git_repo()
---   local resp = vim.fn.system("git rev-parse --is-inside-work-tree")
---   return resp == "true\n" -- <- had to add this stupid new line
--- end
-
 function M.get_top_level()
   -- local resp = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
   -- return resp
