@@ -62,6 +62,8 @@ so the solution for this was to use the toplevel pwd for the current project in 
 - [ ] 25. make real documentation and cleaner api for the plugin
 - [ ] 26. make a github CI workflow for checks and testings
 - [X] 27. start removing a lot of the vim.cmd() functions
+- [ ] 28. one thing that can be made to save some file size for projects is that if a project has not been init with the project if there is no marks set or the menu is 
+          is not opend then dont make any file when closing 
 
 
 
